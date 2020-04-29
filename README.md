@@ -49,9 +49,6 @@ In the paper, our system is experimented by using two parsers, C&C and depccg. I
 ```
 $ ./tools/install_parsers.sh <mac/linux>
 ```
-```
-$ ./tools/install_parsers.sh <mac/linux>
-```
 This command downloads C&C to `ccgcomp/candc-1.00` and depccg to `ccgcomp/depccg`. You can change the location of C&C by editing  `scripts/parser_location.txt`.
 ```
 $ cat scripts/parser_location.txt
