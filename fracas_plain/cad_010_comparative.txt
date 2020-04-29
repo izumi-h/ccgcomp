@@ -1,0 +1,2 @@
+Alex is less tall than Chris is.
+Alex is not as tall as Chris is.

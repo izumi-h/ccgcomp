@@ -1,0 +1,2 @@
+Ann is as tall as Bob.
+Ann is not taller than Bob.

@@ -1,0 +1,4 @@
+Bob is shorterr than Ann.
+Chris is taller than Bob.
+Daniel is shorter than Chris.
+Daniel is shorter than Ann.

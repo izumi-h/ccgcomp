@@ -1,0 +1,3 @@
+Bob is not tall.
+John is not tall.
+Bob is taller than John.

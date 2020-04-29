@@ -1,0 +1,3 @@
+John is taller than 4 feet.
+Bob is shorter than 4 feet.
+Bob is taller than John.

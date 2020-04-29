@@ -1,0 +1,3 @@
+Chris is very happy.
+Alex isn't very sad.
+Chris is more happy than Alex is sad.

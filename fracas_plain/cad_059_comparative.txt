@@ -1,0 +1,3 @@
+Bob is very much taller than John.
+Bob is a 4 feet tall boy.
+John is a 4 feet tall boy.

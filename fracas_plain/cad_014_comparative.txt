@@ -1,0 +1,4 @@
+Gill 's table is five foot wide.
+Jack 's table is four foot long.
+Gill's table is wider than Jack 's table is
+      long.

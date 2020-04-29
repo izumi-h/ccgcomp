@@ -1,0 +1,2 @@
+Bob is a tall person.
+Bob is tall.

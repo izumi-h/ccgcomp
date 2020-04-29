@@ -1,0 +1,2 @@
+Bob is tall.
+Bob is not short.

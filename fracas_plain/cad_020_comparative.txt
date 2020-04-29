@@ -1,0 +1,2 @@
+John is less tall than Bob.
+John is taller than Bob.

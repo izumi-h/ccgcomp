@@ -1,0 +1,3 @@
+Bob ate many more apples than John.
+Bob ate 3 apples.
+John ate more than 3 apples.

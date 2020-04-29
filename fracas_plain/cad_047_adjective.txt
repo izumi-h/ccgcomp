@@ -1,0 +1,3 @@
+Bob won more than 3000 computers.
+John won more orders than Bob.
+John won exactly 3000 computers.

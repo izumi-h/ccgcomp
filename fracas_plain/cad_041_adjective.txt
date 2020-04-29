@@ -1,0 +1,3 @@
+Bob is more than 4 feet tall.
+John is a taller boy than Bob.
+John is more than 4 feet tall.

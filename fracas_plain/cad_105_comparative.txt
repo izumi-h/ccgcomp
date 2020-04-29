@@ -1,0 +1,3 @@
+Bob is very sad.
+John is not very happy.
+Bob is more sad than John is happy.

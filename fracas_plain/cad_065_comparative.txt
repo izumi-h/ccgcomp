@@ -1,0 +1,2 @@
+John is as tall as 4 feet.
+John is more than 4 feet tall.

@@ -1,0 +1,2 @@
+Bob is very much taller than John.
+Bob is very tall.

@@ -1,0 +1,3 @@
+Ann is taller than Bob.
+Ann is taller than Chris.
+Bob is taller than Chris.

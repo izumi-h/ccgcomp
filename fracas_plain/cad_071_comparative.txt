@@ -1,0 +1,2 @@
+Bob is shorter than Ann.
+Ann is shorter than Bob.

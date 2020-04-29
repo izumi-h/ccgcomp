@@ -1,0 +1,1367 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE jsem-dataset SYSTEM "jsem.dtd">
+<?xml-stylesheet type="text/xsl" href="jsem.xsl"?>
+<jsem-dataset>
+  <problem answer="yes" inference_type="entailment" jsem_id="1"
+  language="jp" phenomena="comparative, measure phrase">
+    <description></description>
+    <p idx="1">
+      <script>John is 5 cm taller than Bob.</script>
+    </p>
+    <p idx="2">
+      <script>Bob is 170 cm tall.</script>
+    </p>
+    <h>
+      <script>John is 175 cm tall.</script>
+    </h>
+    <note></note>
+  </problem>
+  <problem answer="yes" inference_type="implicature" jsem_id="2"
+  language="jp" phenomena="comparative, measure phrase">
+    <description></description>
+    <p idx="1">
+      <script>John is 5 cm shorter than Bob.</script>
+    </p>
+    <p idx="2">
+      <script>Bob is 170 cm tall.</script>
+    </p>
+    <h>
+      <script>John is 165 cm tall.</script>
+    </h>
+    <note></note>
+  </problem>
+  <problem answer="no" inference_type="implicature" jsem_id="3"
+  language="jp" phenomena="comparative, measure phrase">
+    <description></description>
+    <p idx="1">
+      <script>John is 5 cm taller than Bob.</script>
+    </p>
+    <p idx="2">
+      <script>Bob is 170 cm tall.</script>
+    </p>
+    <h>
+      <script>John is 165 cm tall.</script>
+    </h>
+    <note></note>
+  </problem>
+  <problem answer="no" inference_type="implicature" jsem_id="4"
+  language="jp" phenomena="comparative, measure phrase">
+    <description></description>
+    <p idx="1">
+      <script>John is 5 cm shorter than Bob.</script>
+    </p>
+    <p idx="2">
+      <script>Bob is 170 cm tall.</script>
+    </p>
+    <h>
+      <script>John is 175 cm tall.</script>
+    </h>
+    <note></note>
+  </problem>
+  <problem answer="yes" inference_type="entailment" jsem_id="5"
+  language="jp" phenomena="adjective, degree modifier">
+    <description></description>
+    <p idx="1">
+      <script>John is very tall.</script>
+    </p>
+    <h>
+      <script>John is tall.</script>
+    </h>
+    <note>Klein(1982:123)</note>
+  </problem>
+  <problem answer="yes" inference_type="entailment" jsem_id="6"
+  language="jp" phenomena="adjective, degree modifier">
+    <description></description>
+    <p idx="1">
+      <script>Bob is a very clever politician.</script>
+    </p>
+    <h>
+      <script>Bob is a clever politician.</script>
+    </h>
+    <note></note>
+  </problem>
+  <problem answer="unknown" inference_type="entailment" jsem_id="7"
+  language="jp" phenomena="adjective, degree modifier">
+    <description></description>
+    <p idx="1">
+      <script>John is tall.</script>
+    </p>
+    <h>
+      <script>John is very tall.</script>
+    </h>
+    <note>Klein(1982:123)</note>
+  </problem>
+  <problem answer="unknown" inference_type="entailment" jsem_id="8"
+  language="jp" phenomena="adjective, degree modifier">
+    <description></description>
+    <p idx="1">
+      <script>Bob is a clever politician.</script>
+    </p>
+    <h>
+      <script>Bob is a very clever politician.</script>
+    </h>
+    <note></note>
+  </problem>
+  <problem answer="yes" inference_type="entailment" jsem_id="9"
+  language="jp" phenomena="comparative, deletion">
+    <description></description>
+    <p idx="1">
+      <script>Chris is taller than Alex is.</script>
+    </p>
+    <h>
+      <script>Alex is less tall than Chris is.</script>
+    </h>
+    <note>Klein(1982:129)</note>
+  </problem>
+  <problem answer="yes" inference_type="entailment" jsem_id="10"
+  language="jp" phenomena="comparative, deletion">
+    <description></description>
+    <p idx="1">
+      <script>Alex is less tall than Chris is.</script>
+    </p>
+    <h>
+      <script>Alex is not as tall as Chris is.</script>
+    </h>
+    <note>Klein(1982:129)</note>
+  </problem>
+  <problem answer="yes" inference_type="entailment" jsem_id="11"
+  language="jp" phenomena="comparative, deletion">
+    <description></description>
+    <p idx="1">
+      <script>Alex is not as tall as Chris is.</script>
+    </p>
+    <h>
+      <script>Chris is taller than Alex is.</script>
+    </h>
+    <note>Klein(1982:129)</note>
+  </problem>
+  <problem answer="yes" inference_type="entailment" jsem_id="12"
+  language="jp" phenomena="comparative, deletion">
+    <description></description>
+    <p idx="1">
+      <script>Chris is taller than Alex is.</script>
+    </p>
+    <h>
+      <script>Chris is as tall as Alex is.</script>
+    </h>
+    <note>Klein(1982:129)</note>
+  </problem>
+  <problem answer="yes" inference_type="entailment" jsem_id="13"
+  language="jp" phenomena="comparative, subdeletion">
+    <description></description>
+    <p idx="1">
+      <script>Chris is very happy.</script>
+    </p>
+    <p idx="2">
+      <script>Alex isn't very sad.</script>
+    </p>
+    <h>
+      <script>Chris is more happy than Alex is sad.</script>
+    </h>
+    <note>Klein(1982:130)</note>
+  </problem>
+  <problem answer="yes" inference_type="entailment" jsem_id="14"
+  language="jp" phenomena="comparative, subdeletion">
+    <description></description>
+    <p idx="1">
+      <script>Gill 's table is five foot wide.</script>
+    </p>
+    <p idx="2">
+      <script>Jack 's table is four foot long.</script>
+    </p>
+    <h>
+      <script>Gill's table is wider than Jack 's table is
+      long.</script>
+    </h>
+    <note>Klein(1982:130)</note>
+  </problem>
+  <problem answer="yes" inference_type="entailment" jsem_id="15"
+  language="jp" phenomena="comparative, degree modifier">
+    <description></description>
+    <p idx="1">
+      <script>Chris is much taller than Alex is.</script>
+    </p>
+    <h>
+      <script>Chris is taller than Alex is.</script>
+    </h>
+    <note>Klein(1982:131)</note>
+  </problem>
+  <problem answer="unknown" inference_type="entailment"
+  jsem_id="16" language="jp"
+  phenomena="comparative, decreasing comparative">
+    <description></description>
+    <p idx="1">
+      <script>John is less tall than Bob.</script>
+    </p>
+    <h>
+      <script>Bob is tall.</script>
+    </h>
+    <note></note>
+  </problem>
+  <problem answer="unknown" inference_type="entailment"
+  jsem_id="17" language="jp"
+  phenomena="comparative, decreasing comparative">
+    <description></description>
+    <p idx="1">
+      <script>John is less tall than Bob.</script>
+    </p>
+    <h>
+      <script>John is tall.</script>
+    </h>
+    <note></note>
+  </problem>
+  <problem answer="yes" inference_type="entailment" jsem_id="18"
+  language="jp" phenomena="comparative, decreasing comparative">
+    <description></description>
+    <p idx="1">
+      <script>John is less tall than Bob.</script>
+    </p>
+    <h>
+      <script>Bob is taller than John.</script>
+    </h>
+    <note></note>
+  </problem>
+  <problem answer="unknown" inference_type="entailment"
+  jsem_id="19" language="jp"
+  phenomena="comparative, decreasing comparative">
+    <description></description>
+    <p idx="1">
+      <script>John is less tall than Bob.</script>
+    </p>
+    <h>
+      <script>Bob is not tall.</script>
+    </h>
+    <note></note>
+  </problem>
+  <problem answer="no" inference_type="entailment" jsem_id="20"
+  language="jp" phenomena="comparative, decreasing comparative">
+    <description></description>
+    <p idx="1">
+      <script>John is less tall than Bob.</script>
+    </p>
+    <h>
+      <script>John is taller than Bob.</script>
+    </h>
+    <note></note>
+  </problem>
+  <problem answer="unknown" inference_type="entailment"
+  jsem_id="21" language="jp"
+  phenomena="comparative, measure phrase">
+    <description></description>
+    <p idx="1">
+      <script>Bob is a 2 cm taller politician than John.</script>
+    </p>
+    <h>
+      <script>Bob is a tall politician.</script>
+    </h>
+    <note></note>
+  </problem>
+  <problem answer="unknown" inference_type="entailment"
+  jsem_id="22" language="jp"
+  phenomena="comparative, measure phrase">
+    <description></description>
+    <p idx="1">
+      <script>Bob is a 2 cm taller politician than John.</script>
+    </p>
+    <h>
+      <script>Bob is a tall man.</script>
+    </h>
+    <note></note>
+  </problem>
+  <problem answer="yes" inference_type="entailment" jsem_id="23"
+  language="jp" phenomena="comparative, measure phrase">
+    <description></description>
+    <p idx="1">
+      <script>Bob is a 2 cm taller politician than John.</script>
+    </p>
+    <p idx="2">
+      <script>John is a tall politician.</script>
+    </p>
+    <h>
+      <script>Bob is a tall politician.</script>
+    </h>
+    <note></note>
+  </problem>
+  <problem answer="yes" inference_type="entailment" jsem_id="24"
+  language="jp" phenomena="comparative, measure phrase">
+    <description></description>
+    <p idx="1">
+      <script>Bob is a 2 cm taller politician than John.</script>
+    </p>
+    <p idx="2">
+      <script>John is a 178 cm tall politician.</script>
+    </p>
+    <h>
+      <script>Bob is a 180 cm tall politician.</script>
+    </h>
+    <note></note>
+  </problem>
+  <problem answer="yes" inference_type="implicature" jsem_id="25"
+  language="jp" phenomena="comparative, measure phrase">
+    <description></description>
+    <p idx="1">
+      <script>Bob is a 2 cm shorter politician than John.</script>
+    </p>
+    <p idx="2">
+      <script>John is a 180 cm tall politician.</script>
+    </p>
+    <h>
+      <script>Bob is a 178 cm tall politician.</script>
+    </h>
+    <note></note>
+  </problem>
+  <problem answer="yes" inference_type="implicature" jsem_id="26"
+  language="jp" phenomena="comparative, measure phrase">
+    <description></description>
+    <p idx="1">
+      <script>Bob is a 2 cm shorter politician than John.</script>
+    </p>
+    <p idx="2">
+      <script>John is a 180 cm tall.</script>
+    </p>
+    <h>
+      <script>Bob is a 178 cm tall.</script>
+    </h>
+    <note></note>
+  </problem>
+  <problem answer="unknown" inference_type="entailment"
+  jsem_id="27" language="jp"
+  phenomena="adjective, degree modifier">
+    <description></description>
+    <p idx="1">
+      <script>Bob is 6 feet tall.</script>
+    </p>
+    <h>
+      <script>John is 6 feet tall.</script>
+    </h>
+    <note></note>
+  </problem>
+  <problem answer="unknown" inference_type="entailment"
+  jsem_id="28" language="jp"
+  phenomena="adjective, degree modifier">
+    <description></description>
+    <p idx="1">
+      <script>Bob is 6 feet tall.</script>
+    </p>
+    <h>
+      <script>Bob is tall.</script>
+    </h>
+    <note></note>
+  </problem>
+  <problem answer="yes" inference_type="entailment" jsem_id="29"
+  language="jp" phenomena="adjective, degree modifier">
+    <description></description>
+    <p idx="1">
+      <script>Bob is 6 feet tall.</script>
+    </p>
+    <p idx="2">
+      <script>John is taller than Bob.</script>
+    </p>
+    <h>
+      <script>John is more than 6 feet tall.</script>
+    </h>
+    <note></note>
+  </problem>
+  <problem answer="yes" inference_type="entailment" jsem_id="30"
+  language="jp" phenomena="adjective, degree modifier">
+    <description></description>
+    <p idx="1">
+      <script>Bob is 6 feet tall.</script>
+    </p>
+    <p idx="2">
+      <script>John is taller than Bob.</script>
+    </p>
+    <h>
+      <script>John is taller than 6 feet.</script>
+    </h>
+    <note></note>
+  </problem>
+  <problem answer="no" inference_type="entailment" jsem_id="31"
+  language="jp" phenomena="adjective, degree modifier">
+    <description></description>
+    <p idx="1">
+      <script>Bob is 6 feet tall.</script>
+    </p>
+    <p idx="2">
+      <script>John is taller than Bob.</script>
+    </p>
+    <h>
+      <script>John is shorter than 6 feet.</script>
+    </h>
+    <note></note>
+  </problem>
+  <problem answer="unknown" inference_type="entailment"
+  jsem_id="32" language="jp"
+  phenomena="adjective, degree modifier">
+    <description></description>
+    <p idx="1">
+      <script>Bob is about 6 feet tall.</script>
+    </p>
+    <h>
+      <script>Bob is 6 feet tall.</script>
+    </h>
+    <note></note>
+  </problem>
+  <problem answer="yes" inference_type="entailment" jsem_id="33"
+  language="jp" phenomena="adjective, degree modifier">
+    <description></description>
+    <p idx="1">
+      <script>Bob is 6 feet tall.</script>
+    </p>
+    <h>
+      <script>Bob is about 6 feet tall.</script>
+    </h>
+    <note></note>
+  </problem>
+  <problem answer="yes" inference_type="entailment" jsem_id="34"
+  language="jp" phenomena="adjective, degree modifier">
+    <description></description>
+    <p idx="1">
+      <script>Bob is 4 feet tall.</script>
+    </p>
+    <p idx="2">
+      <script>John is taller than Bob.</script>
+    </p>
+    <h>
+      <script>John is more than 4 feet tall.</script>
+    </h>
+    <note></note>
+  </problem>
+  <problem answer="no" inference_type="entailment" jsem_id="35"
+  language="jp" phenomena="adjective, negation">
+    <description></description>
+    <p idx="1">
+      <script>Bob is tall.</script>
+    </p>
+    <p idx="2">
+      <script>John is not tall.</script>
+    </p>
+    <h>
+      <script>John is taller than Bob.</script>
+    </h>
+    <note></note>
+  </problem>
+  <problem answer="no" inference_type="entailment" jsem_id="36"
+  language="jp" phenomena="adjective, degree modifier">
+    <description></description>
+    <p idx="1">
+      <script>Bob is very short.</script>
+    </p>
+    <h>
+      <script>Bob is tall.</script>
+    </h>
+    <note></note>
+  </problem>
+  <problem answer="yes" inference_type="entailment" jsem_id="37"
+  language="jp" phenomena="adjective, comparison class">
+    <description></description>
+    <p idx="1">
+      <script>Bob is a tall person.</script>
+    </p>
+    <h>
+      <script>Bob is tall.</script>
+    </h>
+    <note></note>
+  </problem>
+  <problem answer="unknown" inference_type="entailment"
+  jsem_id="38" language="jp" phenomena="adjective, antonym">
+    <description></description>
+    <p idx="1">
+      <script>Bob is a very short politician.</script>
+    </p>
+    <h>
+      <script>Bob is tall.</script>
+    </h>
+    <note></note>
+  </problem>
+  <problem answer="yes" inference_type="entailment" jsem_id="39"
+  language="jp" phenomena="adjective, degree modifier">
+    <description></description>
+    <p idx="1">
+      <script>Bob is more than 4 feet tall.</script>
+    </p>
+    <p idx="2">
+      <script>Bob is a boy.</script>
+    </p>
+    <p idx="3">
+      <script>John is a taller boy than Bob.</script>
+    </p>
+    <h>
+      <script>John is a 4 feet tall boy.</script>
+    </h>
+    <note></note>
+  </problem>
+  <problem answer="yes" inference_type="entailment" jsem_id="40"
+  language="jp" phenomena="adjective, degree modifier">
+    <description></description>
+    <p idx="1">
+      <script>John is more than 4 feet tall.</script>
+    </p>
+    <p idx="2">
+      <script>John is shorter than Bob.</script>
+    </p>
+    <h>
+      <script>Bob is more than 4 feet tall.</script>
+    </h>
+    <note></note>
+  </problem>
+  <problem answer="yes" inference_type="entailment" jsem_id="41"
+  language="jp" phenomena="adjective, degree modifier">
+    <description></description>
+    <p idx="1">
+      <script>Bob is more than 4 feet tall.</script>
+    </p>
+    <p idx="2">
+      <script>John is a taller boy than Bob.</script>
+    </p>
+    <h>
+      <script>John is more than 4 feet tall.</script>
+    </h>
+    <note></note>
+  </problem>
+  <problem answer="no" inference_type="implicature" jsem_id="42"
+  language="jp" phenomena="adjective, degree modifier">
+    <description></description>
+    <p idx="1">
+      <script>John is more than 6 feet tall.</script>
+    </p>
+    <p idx="2">
+      <script>John is taller than Bob.</script>
+    </p>
+    <h>
+      <script>Bob is not more than 6 feet tall.</script>
+    </h>
+    <note></note>
+  </problem>
+  <problem answer="yes" inference_type="entailment" jsem_id="43"
+  language="jp" phenomena="adjective, measure phrase">
+    <description></description>
+    <p idx="1">
+      <script>John won as many orders as Bob.</script>
+    </p>
+    <p idx="2">
+      <script>Bob won 3000 orders.</script>
+    </p>
+    <h>
+      <script>John won 3000 orders.</script>
+    </h>
+    <note></note>
+  </problem>
+  <problem answer="unknown" inference_type="entailment"
+  jsem_id="44" language="jp" phenomena="comparative, equative">
+    <description></description>
+    <p idx="1">
+      <script>John won as many orders as Bob.</script>
+    </p>
+    <p idx="2">
+      <script>Bob won 3000 orders.</script>
+    </p>
+    <h>
+      <script>John won many orders.</script>
+    </h>
+    <note></note>
+  </problem>
+  <problem answer="yes" inference_type="entailment" jsem_id="45"
+  language="jp" phenomena="comparative, equative">
+    <description></description>
+    <p idx="1">
+      <script>John won as many orders as Bob.</script>
+    </p>
+    <p idx="2">
+      <script>Bob won many orders.</script>
+    </p>
+    <h>
+      <script>John won many orders.</script>
+    </h>
+    <note></note>
+  </problem>
+  <problem answer="yes" inference_type="entailment" jsem_id="46"
+  language="jp" phenomena="comparative, equative">
+    <description></description>
+    <p idx="1">
+      <script>John won as many orders as Bob.</script>
+    </p>
+    <p idx="2">
+      <script>Bob won many orders.</script>
+    </p>
+    <h>
+      <script>John won some orders.</script>
+    </h>
+    <note></note>
+  </problem>
+  <problem answer="no" inference_type="entailment" jsem_id="47"
+  language="jp" phenomena="adjective, measure phrase">
+    <description></description>
+    <p idx="1">
+      <script>Bob won more than 3000 computers.</script>
+    </p>
+    <p idx="2">
+      <script>John won more orders than Bob.</script>
+    </p>
+    <h>
+      <script>John won exactly 3000 computers.</script>
+    </h>
+    <note></note>
+  </problem>
+  <problem answer="yes" inference_type="entailment" jsem_id="48"
+  language="jp" phenomena="adjective, measure phrase">
+    <description></description>
+    <p idx="1">
+      <script>John won more than 3000 computers.</script>
+    </p>
+    <p idx="2">
+      <script>Bob won twice as many orders than John.</script>
+    </p>
+    <h>
+      <script>Bob won more than 6000 computers.</script>
+    </h>
+    <note></note>
+  </problem>
+  <problem answer="unknown" inference_type="entailment"
+  jsem_id="49" language="jp" phenomena="adjective, measure phrase">
+    <description></description>
+    <p idx="1">
+      <script>John won more than 3000 computers.</script>
+    </p>
+    <h>
+      <script>John won many orders.</script>
+    </h>
+    <note></note>
+  </problem>
+  <problem answer="unknown" inference_type="entailment"
+  jsem_id="50" language="jp"
+  phenomena="comparative, degree modifier">
+    <description></description>
+    <p idx="1">
+      <script>Bob is much taller than John.</script>
+    </p>
+    <h>
+      <script>Bob is very tall.</script>
+    </h>
+    <note></note>
+  </problem>
+  <problem answer="unknown" inference_type="entailment"
+  jsem_id="51" language="jp"
+  phenomena="comparative, degree modifier">
+    <description></description>
+    <p idx="1">
+      <script>Bob is much taller than John.</script>
+    </p>
+    <p idx="2">
+      <script>Bob is very tall.</script>
+    </p>
+    <h>
+      <script>John is very tall.</script>
+    </h>
+    <note></note>
+  </problem>
+  <problem answer="yes" inference_type="entailment" jsem_id="52"
+  language="jp" phenomena="comparative, degree modifier">
+    <description></description>
+    <p idx="1">
+      <script>Bob is much taller than John.</script>
+    </p>
+    <p idx="2">
+      <script>Bob is a 4 feet tall boy.</script>
+    </p>
+    <h>
+      <script>John is shorter than 4 feet.</script>
+    </h>
+    <note></note>
+  </problem>
+  <problem answer="yes" inference_type="entailment" jsem_id="53"
+  language="jp" phenomena="comparative, degree modifier">
+    <description></description>
+    <p idx="1">
+      <script>Bob is much taller than John.</script>
+    </p>
+    <p idx="2">
+      <script>Bob is a 4 feet tall.</script>
+    </p>
+    <h>
+      <script>John is shorter than 4 feet.</script>
+    </h>
+    <note></note>
+  </problem>
+  <problem answer="unknown" inference_type="entailment"
+  jsem_id="54" language="jp"
+  phenomena="comparative, degree modifier">
+    <description></description>
+    <p idx="1">
+      <script>Bob is much taller than John.</script>
+    </p>
+    <p idx="2">
+      <script>Bob is a 4 feet tall.</script>
+    </p>
+    <h>
+      <script>John is a 4 feet tall boy.</script>
+    </h>
+    <note></note>
+  </problem>
+  <problem answer="unknown" inference_type="entailment"
+  jsem_id="55" language="jp"
+  phenomena="comparative, degree modifier">
+    <description></description>
+    <p idx="1">
+      <script>Bob is very much taller than John.</script>
+    </p>
+    <h>
+      <script>Bob is very tall.</script>
+    </h>
+    <note></note>
+  </problem>
+  <problem answer="unknown" inference_type="entailment"
+  jsem_id="56" language="jp"
+  phenomena="comparative, degree modifier">
+    <description></description>
+    <p idx="1">
+      <script>Bob is very much taller than John.</script>
+    </p>
+    <p idx="2">
+      <script>Bob is very tall.</script>
+    </p>
+    <h>
+      <script>John is very tall.</script>
+    </h>
+    <note></note>
+  </problem>
+  <problem answer="yes" inference_type="entailment" jsem_id="57"
+  language="jp" phenomena="comparative, degree modifier">
+    <description></description>
+    <p idx="1">
+      <script>Bob is very much taller than John.</script>
+    </p>
+    <p idx="2">
+      <script>Bob is a 4 feet tall boy.</script>
+    </p>
+    <h>
+      <script>John is shorter than 4 feet.</script>
+    </h>
+    <note></note>
+  </problem>
+  <problem answer="yes" inference_type="entailment" jsem_id="58"
+  language="jp" phenomena="comparative, degree modifier">
+    <description></description>
+    <p idx="1">
+      <script>Bob is very much taller than John.</script>
+    </p>
+    <p idx="2">
+      <script>Bob is a 4 feet tall boy.</script>
+    </p>
+    <h>
+      <script>John is shorter than 4 feet.</script>
+    </h>
+    <note></note>
+  </problem>
+  <problem answer="unknown" inference_type="entailment"
+  jsem_id="59" language="jp"
+  phenomena="comparative, degree modifier">
+    <description></description>
+    <p idx="1">
+      <script>Bob is very much taller than John.</script>
+    </p>
+    <p idx="2">
+      <script>Bob is a 4 feet tall boy.</script>
+    </p>
+    <h>
+      <script>John is a 4 feet tall boy.</script>
+    </h>
+    <note></note>
+  </problem>
+  <problem answer="unknown" inference_type="entailment"
+  jsem_id="60" language="jp"
+  phenomena="comparative, degree modifier">
+    <description></description>
+    <p idx="1">
+      <script>Bob won many more orders than John.</script>
+    </p>
+    <h>
+      <script>Bob won many orders.</script>
+    </h>
+    <note></note>
+  </problem>
+  <problem answer="no" inference_type="entailment" jsem_id="61"
+  language="jp" phenomena="comparative, degree modifier">
+    <description></description>
+    <p idx="1">
+      <script>Bob won many more orders than John.</script>
+    </p>
+    <p idx="2">
+      <script>Bob won 3000 orders.</script>
+    </p>
+    <h>
+      <script>John won more than 3000 orders.</script>
+    </h>
+    <note></note>
+  </problem>
+  <problem answer="no" inference_type="entailment" jsem_id="62"
+  language="jp" phenomena="comparative, degree modifier">
+    <description></description>
+    <p idx="1">
+      <script>Bob ate many more apples than John.</script>
+    </p>
+    <p idx="2">
+      <script>Bob ate 3 apples.</script>
+    </p>
+    <h>
+      <script>John ate more than 3 apples.</script>
+    </h>
+    <note></note>
+  </problem>
+  <problem answer="unknown" inference_type="entailment"
+  jsem_id="63" language="jp"
+  phenomena="comparative, degree modifier">
+    <description></description>
+    <p idx="1">
+      <script>Bob won many more orders than John.</script>
+    </p>
+    <h>
+      <script>Bob won so many orders.</script>
+    </h>
+    <note></note>
+  </problem>
+  <problem answer="yes" inference_type="entailment" jsem_id="64"
+  language="jp" phenomena="comparative, equative">
+    <description></description>
+    <p idx="1">
+      <script>John is as tall as 4 feet.</script>
+    </p>
+    <h>
+      <script>John is 4 feet tall.</script>
+    </h>
+    <note></note>
+  </problem>
+  <problem answer="no" inference_type="implicature" jsem_id="65"
+  language="jp" phenomena="comparative, equative">
+    <description></description>
+    <p idx="1">
+      <script>John is as tall as 4 feet.</script>
+    </p>
+    <h>
+      <script>John is more than 4 feet tall.</script>
+    </h>
+    <note></note>
+  </problem>
+  <problem answer="yes" inference_type="entailment" jsem_id="66"
+  language="jp" phenomena="comparative, comparative">
+    <description></description>
+    <p idx="1">
+      <script>John is taller than Bob.</script>
+    </p>
+    <h>
+      <script>Bob is shorter than John.</script>
+    </h>
+    <note></note>
+  </problem>
+  <problem answer="no" inference_type="entailment" jsem_id="67"
+  language="jp" phenomena="comparative, comparative">
+    <description></description>
+    <p idx="1">
+      <script>John is taller than Bob.</script>
+    </p>
+    <h>
+      <script>Bob is taller than John.</script>
+    </h>
+    <note></note>
+  </problem>
+  <problem answer="no" inference_type="entailment" jsem_id="68"
+  language="jp" phenomena="comparative, comparative">
+    <description></description>
+    <p idx="1">
+      <script>John is taller than Bob.</script>
+    </p>
+    <h>
+      <script>John is shorter than Bob.</script>
+    </h>
+    <note></note>
+  </problem>
+  <problem answer="no" inference_type="entailment" jsem_id="69"
+  language="jp" phenomena="comparative, asymmetry">
+    <description></description>
+    <p idx="1">
+      <script>Ann is taller than Bob.</script>
+    </p>
+    <h>
+      <script>Bob is taller than Ann.</script>
+    </h>
+    <note></note>
+  </problem>
+  <problem answer="no" inference_type="entailment" jsem_id="70"
+  language="jp" phenomena="comparative, asymmetry">
+    <description></description>
+    <p idx="1">
+      <script>Ann is taller than Bob.</script>
+    </p>
+    <h>
+      <script>Ann is shorter than Bob.</script>
+    </h>
+    <note></note>
+  </problem>
+  <problem answer="no" inference_type="entailment" jsem_id="71"
+  language="jp" phenomena="comparative, asymmetry">
+    <description></description>
+    <p idx="1">
+      <script>Bob is shorter than Ann.</script>
+    </p>
+    <h>
+      <script>Ann is shorter than Bob.</script>
+    </h>
+    <note></note>
+  </problem>
+  <problem answer="yes" inference_type="entailment" jsem_id="72"
+  language="jp" phenomena="comparative, asymmetry">
+    <description></description>
+    <p idx="1">
+      <script>Ann is taller than Bob.</script>
+    </p>
+    <h>
+      <script>Bob is shorter than Ann.</script>
+    </h>
+    <note></note>
+  </problem>
+  <problem answer="yes" inference_type="entailment" jsem_id="73"
+  language="jp" phenomena="comparative, asymmetry">
+    <description></description>
+    <p idx="1">
+      <script>Bob is shorter than Ann.</script>
+    </p>
+    <h>
+      <script>Ann is taller than Bob.</script>
+    </h>
+    <note></note>
+  </problem>
+  <problem answer="unknown" inference_type="entailment"
+  jsem_id="74" language="jp" phenomena="comparative, asymmetry">
+    <description></description>
+    <p idx="1">
+      <script>Ann is not taller than Bob.</script>
+    </p>
+    <h>
+      <script>Bob is taller than Ann.</script>
+    </h>
+    <note></note>
+  </problem>
+  <problem answer="unknown" inference_type="entailment"
+  jsem_id="75" language="jp" phenomena="comparative, asymmetry">
+    <description></description>
+    <p idx="1">
+      <script>Ann is not taller than Bob.</script>
+    </p>
+    <h>
+      <script>Ann is shorter than Bob.</script>
+    </h>
+    <note></note>
+  </problem>
+  <problem answer="yes" inference_type="entailment" jsem_id="76"
+  language="jp" phenomena="comparative, asymmetry">
+    <description></description>
+    <p idx="1">
+      <script>Ann is taller than Bob.</script>
+    </p>
+    <h>
+      <script>Ann is not shorter than Bob.</script>
+    </h>
+    <note></note>
+  </problem>
+  <problem answer="yes" inference_type="entailment" jsem_id="77"
+  language="jp" phenomena="comparative, asymmetry">
+    <description></description>
+    <p idx="1">
+      <script>Ann is taller than Bob.</script>
+    </p>
+    <h>
+      <script>Bob is not taller than Ann.</script>
+    </h>
+    <note></note>
+  </problem>
+  <problem answer="yes" inference_type="entailment" jsem_id="78"
+  language="jp" phenomena="comparative, asymmetry">
+    <description></description>
+    <p idx="1">
+      <script>Ann is not as tall as Bob.</script>
+    </p>
+    <h>
+      <script>Bob is taller than Ann.</script>
+    </h>
+    <note></note>
+  </problem>
+  <problem answer="unknown" inference_type="entailment"
+  jsem_id="79" language="jp" phenomena="comparative, asymmetry">
+    <description></description>
+    <p idx="1">
+      <script>Ann is as tall as Bob.</script>
+    </p>
+    <h>
+      <script>Ann is not taller than Bob.</script>
+    </h>
+    <note></note>
+  </problem>
+  <problem answer="unknown" inference_type="entailment"
+  jsem_id="80" language="jp" phenomena="comparative, asymmetry">
+    <description></description>
+    <p idx="1">
+      <script>Ann is not taller than Bob.</script>
+    </p>
+    <h>
+      <script>Ann is not as tall as Bob.</script>
+    </h>
+    <note></note>
+  </problem>
+  <problem answer="yes" inference_type="entailment" jsem_id="81"
+  language="jp" phenomena="comparative, transitive relation">
+    <description></description>
+    <p idx="1">
+      <script>Ann is taller than Bob.</script>
+    </p>
+    <p idx="2">
+      <script>Bob is taller than Chris.</script>
+    </p>
+    <h>
+      <script>Ann is taller than Chris.</script>
+    </h>
+    <note></note>
+  </problem>
+  <problem answer="yes" inference_type="entailment" jsem_id="82"
+  language="jp" phenomena="comparative, transitive relation">
+    <description></description>
+    <p idx="1">
+      <script>Ann is taller than Bob.</script>
+    </p>
+    <p idx="2">
+      <script>Bob is taller than Chris.</script>
+    </p>
+    <h>
+      <script>Chris is shorter than Ann.</script>
+    </h>
+    <note></note>
+  </problem>
+  <problem answer="yes" inference_type="entailment" jsem_id="83"
+  language="jp" phenomena="comparative, transitive relation">
+    <description></description>
+    <p idx="1">
+      <script>Bob is shorter than Ann.</script>
+    </p>
+    <p idx="2">
+      <script>Bob is taller than Chris.</script>
+    </p>
+    <h>
+      <script>Ann is taller than Chris.</script>
+    </h>
+    <note></note>
+  </problem>
+  <problem answer="yes" inference_type="entailment" jsem_id="84"
+  language="jp" phenomena="comparative, transitive relation">
+    <description></description>
+    <p idx="1">
+      <script>Bob is shorter than Ann.</script>
+    </p>
+    <p idx="2">
+      <script>Chris is shorter than Bob.</script>
+    </p>
+    <h>
+      <script>Ann is taller than Chris.</script>
+    </h>
+    <note></note>
+  </problem>
+  <problem answer="yes" inference_type="entailment" jsem_id="85"
+  language="jp" phenomena="comparative, transitive relation">
+    <description></description>
+    <p idx="1">
+      <script>Ann is shorter than Bob.</script>
+    </p>
+    <p idx="2">
+      <script>Bob is shorter than Chris.</script>
+    </p>
+    <h>
+      <script>Ann is shorter than Chris.</script>
+    </h>
+    <note></note>
+  </problem>
+  <problem answer="unknown" inference_type="entailment"
+  jsem_id="86" language="jp"
+  phenomena="comparative, transitive relation">
+    <description></description>
+    <p idx="1">
+      <script>Ann is taller than Bob.</script>
+    </p>
+    <p idx="2">
+      <script>Ann is taller than Chris.</script>
+    </p>
+    <h>
+      <script>Bob is taller than Chris.</script>
+    </h>
+    <note></note>
+  </problem>
+  <problem answer="unknown" inference_type="entailment"
+  jsem_id="87" language="jp"
+  phenomena="comparative, transitive relation">
+    <description></description>
+    <p idx="1">
+      <script>Ann is taller than Bob.</script>
+    </p>
+    <p idx="2">
+      <script>Ann is taller than Chris.</script>
+    </p>
+    <h>
+      <script>Chris is taller than Bob.</script>
+    </h>
+    <note></note>
+  </problem>
+  <problem answer="unknown" inference_type="entailment"
+  jsem_id="88" language="jp"
+  phenomena="comparative, transitive relation">
+    <description></description>
+    <p idx="1">
+      <script>Bob is shorter than Ann.</script>
+    </p>
+    <p idx="2">
+      <script>Ann is taller than Chris.</script>
+    </p>
+    <h>
+      <script>Chris is taller than Bob.</script>
+    </h>
+    <note></note>
+  </problem>
+  <problem answer="unknown" inference_type="entailment"
+  jsem_id="89" language="jp"
+  phenomena="comparative, transitive relation">
+    <description></description>
+    <p idx="1">
+      <script>Ann is taller than Chris.</script>
+    </p>
+    <p idx="2">
+      <script>Bob is taller than Chris.</script>
+    </p>
+    <h>
+      <script>Ann is taller than Bob.</script>
+    </h>
+    <note></note>
+  </problem>
+  <problem answer="unknown" inference_type="entailment"
+  jsem_id="90" language="jp"
+  phenomena="comparative, transitive relation">
+    <description></description>
+    <p idx="1">
+      <script>Ann is taller than Chris.</script>
+    </p>
+    <p idx="2">
+      <script>Bob is taller than Chris.</script>
+    </p>
+    <h>
+      <script>Bob is taller than Ann.</script>
+    </h>
+    <note></note>
+  </problem>
+  <problem answer="unknown" inference_type="entailment"
+  jsem_id="91" language="jp"
+  phenomena="comparative, transitive relation">
+    <description></description>
+    <p idx="1">
+      <script>Ann is taller than Chris.</script>
+    </p>
+    <p idx="2">
+      <script>Bob is taller than Chris.</script>
+    </p>
+    <h>
+      <script>Ann is shorter than Bob.</script>
+    </h>
+    <note></note>
+  </problem>
+  <problem answer="unknown" inference_type="entailment"
+  jsem_id="92" language="jp"
+  phenomena="comparative, transitive relation">
+    <description></description>
+    <p idx="1">
+      <script>Ann is taller than Chris.</script>
+    </p>
+    <p idx="2">
+      <script>Chris is shorter than Bob.</script>
+    </p>
+    <h>
+      <script>Bob is taller than Ann.</script>
+    </h>
+    <note></note>
+  </problem>
+  <problem answer="yes" inference_type="entailment" jsem_id="93"
+  language="jp" phenomena="comparative, transitive relation">
+    <description></description>
+    <p idx="1">
+      <script>Ann is taller than Bob.</script>
+    </p>
+    <p idx="2">
+      <script>Bob is taller than Chris.</script>
+    </p>
+    <p idx="3">
+      <script>Chris is taller than Daniel.</script>
+    </p>
+    <h>
+      <script>Ann is taller than Daniel.</script>
+    </h>
+    <note></note>
+  </problem>
+  <problem answer="yes" inference_type="entailment" jsem_id="94"
+  language="jp" phenomena="comparative, transitive relation">
+    <description></description>
+    <p idx="1">
+      <script>Ann is taller than Bob.</script>
+    </p>
+    <p idx="2">
+      <script>Bob is taller than Chris.</script>
+    </p>
+    <p idx="3">
+      <script>Daniel is shorter than Chris.</script>
+    </p>
+    <h>
+      <script>Daniel is shorter than Ann.</script>
+    </h>
+    <note></note>
+  </problem>
+  <problem answer="unknown" inference_type="entailment"
+  jsem_id="95" language="jp"
+  phenomena="comparative, transitive relation">
+    <description></description>
+    <p idx="1">
+      <script>Bob is shorterr than Ann.</script>
+    </p>
+    <p idx="2">
+      <script>Chris is taller than Bob.</script>
+    </p>
+    <p idx="3">
+      <script>Daniel is shorter than Chris.</script>
+    </p>
+    <h>
+      <script>Daniel is shorter than Ann.</script>
+    </h>
+    <note></note>
+  </problem>
+  <problem answer="unknown" inference_type="entailment"
+  jsem_id="96" language="jp"
+  phenomena="comparative, transitive relation">
+    <description></description>
+    <p idx="1">
+      <script>Ann is taller than Bob.</script>
+    </p>
+    <p idx="2">
+      <script>Bob is taller than Chris.</script>
+    </p>
+    <p idx="3">
+      <script>Chris is shorter than Daniel.</script>
+    </p>
+    <h>
+      <script>Ann is shorter than Daniel.</script>
+    </h>
+    <note></note>
+  </problem>
+  <problem answer="yes" inference_type="entailment" jsem_id="97"
+  language="jp" phenomena="adjective, degree modifier">
+    <description></description>
+    <p idx="1">
+      <script>Bob is a very tall politician.</script>
+    </p>
+    <h>
+      <script>Bob is a tall politician.</script>
+    </h>
+    <note></note>
+  </problem>
+  <problem answer="no" inference_type="entailment" jsem_id="98"
+  language="jp" phenomena="comparative, measure phrase">
+    <description></description>
+    <p idx="1">
+      <script>John is taller than 4 feet.</script>
+    </p>
+    <p idx="2">
+      <script>Bob is shorter than 4 feet.</script>
+    </p>
+    <h>
+      <script>Bob is taller than John.</script>
+    </h>
+    <note></note>
+  </problem>
+  <problem answer="unknown" inference_type="entailment"
+  jsem_id="99" language="jp" phenomena="adjective, antonym">
+    <description></description>
+    <p idx="1">
+      <script>Bob is a very tall politician.</script>
+    </p>
+    <h>
+      <script>Bob is short.</script>
+    </h>
+    <note></note>
+  </problem>
+  <problem answer="yes" inference_type="entailment" jsem_id="100"
+  language="jp" phenomena="adjective, antonym">
+    <description></description>
+    <p idx="1">
+      <script>Bob is tall.</script>
+    </p>
+    <h>
+      <script>Bob is not short.</script>
+    </h>
+    <note></note>
+  </problem>
+  <problem answer="unknown" inference_type="entailment"
+  jsem_id="101" language="jp"
+  phenomena="adjective, comparison class">
+    <description></description>
+    <p idx="1">
+      <script>Bob is a tall boy.</script>
+    </p>
+    <h>
+      <script>Bob is tall.</script>
+    </h>
+    <note></note>
+  </problem>
+  <problem answer="yes" inference_type="entailment" jsem_id="102"
+  language="jp" phenomena="adjective, comparison class">
+    <description></description>
+    <p idx="1">
+      <script>Bob is a American basketball player.</script>
+    </p>
+    <h>
+      <script>Bob is a basketball player.</script>
+    </h>
+    <note></note>
+  </problem>
+  <problem answer="unknown" inference_type="entailment"
+  jsem_id="103" language="jp" phenomena="adjective, negation">
+    <description></description>
+    <p idx="1">
+      <script>Bob is not tall.</script>
+    </p>
+    <p idx="2">
+      <script>John is not tall.</script>
+    </p>
+    <h>
+      <script>John is taller than Bob.</script>
+    </h>
+    <note></note>
+  </problem>
+  <problem answer="unknown" inference_type="entailment"
+  jsem_id="104" language="jp" phenomena="adjective, negation">
+    <description></description>
+    <p idx="1">
+      <script>Bob is not tall.</script>
+    </p>
+    <p idx="2">
+      <script>John is not tall.</script>
+    </p>
+    <h>
+      <script>Bob is taller than John.</script>
+    </h>
+    <note></note>
+  </problem>
+  <problem answer="yes" inference_type="entailment" jsem_id="105"
+  language="jp" phenomena="comparative, subdeletion">
+    <description></description>
+    <p idx="1">
+      <script>Bob is very sad.</script>
+    </p>
+    <p idx="2">
+      <script>John is not very happy.</script>
+    </p>
+    <h>
+      <script>Bob is more sad than John is happy.</script>
+    </h>
+    <note></note>
+  </problem>
+</jsem-dataset>

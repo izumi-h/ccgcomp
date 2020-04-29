@@ -1,0 +1,3 @@
+John won as many orders as Bob.
+Bob won 3000 orders.
+John won many orders.

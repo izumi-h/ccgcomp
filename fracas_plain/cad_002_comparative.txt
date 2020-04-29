@@ -1,0 +1,3 @@
+John is 5 cm shorter than Bob.
+Bob is 170 cm tall.
+John is 165 cm tall.
