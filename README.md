@@ -45,10 +45,15 @@ There are the following three as typical CCG parsers.
 * [depccg](https://github.com/masashi-y/depccg)
 * [EasyCCG](https://github.com/mikelewis0/easyccg)
 
-In the paper, our system is experimented by using two parsers, C&C and depccg. If you hope the same environment, choose **mac** or **linux** in the second argument `<mac/linux>` and execute the following command.
-```
-$ ./tools/install_parsers.sh <mac/linux>
-```
+In the paper, our system is experimented by using two parsers, C&C and depccg. If you hope the same environment, choose `mac` or `linux` and execute the following command:
+* Mac
+    ```
+    $ ./tools/install_parsers.sh mac
+    ```
+* Linux
+    ```
+    $ ./tools/install_parsers.sh linux
+    ```
 This command downloads C&C to `ccgcomp/candc-1.00` and depccg to `ccgcomp/depccg`. You can change the location of C&C by editing  `scripts/parser_location.txt`.
 ```
 $ cat scripts/parser_location.txt
