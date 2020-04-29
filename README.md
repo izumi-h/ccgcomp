@@ -1,6 +1,3 @@
-# README (ACL-SRW)
-
-
 # Logical Inferences with Comparatives and Generalized Quantifiers
 This repository contains code for our paper Logical Inferences with Comparatives and Generalized Quantifiers
 * Izumi Haruta, Koji Mineshima and Daisuke Bekki. 2020. Logical Inferences with Comparatives and Generalized Quantifiers. In *Proceedings of the 2020 ACL Student Research Workshop (ACL-SRW)*
