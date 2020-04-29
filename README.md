@@ -31,7 +31,7 @@ $ git clone https://github.com/izumi-h/ccgcomp.git
     $ cd ccgcomp
     $ ./tools/install_tools.sh
     ```
-2. This command downloads Vampire (version 4.4.0) to `ccgcomp/vampire-4.4` and Tsurgeon (version 3.9.2). You can change the location of Vampire and Tsurgeon by editing `scripts/vampire_dir.txt` and `scripts/tregex_location.txt`.
+2. This command downloads Vampire (version 4.4.0) to `ccgcomp/vampire-4.4` and Tsurgeon (version 3.9.2) to `ccgcomp/stanford-tregex-2018-10-16`. You can change the location of Vampire and Tsurgeon by editing `scripts/vampire_dir.txt` and `scripts/tregex_location.txt`.
 
     ```
     $ cat scripts/vampire_dir.txt
@@ -183,6 +183,7 @@ The code is divided into the following:
     ```
 3. `./scripts` - main scripts including semantic templates (`scripts/semantic_templates.yaml`), Tsurgeon script (`scripts/transform.tsgn`) and the COMP axioms.
 4. `./tools` - tools for setup
+5. `cad_2020-03-07.xml` - a new dataset which focuses on comparatives and numerical constructions
 
 ## Citation
 ## Results
