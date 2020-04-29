@@ -177,17 +177,7 @@ The code is divided into the following:
     yes
     ```
 3. `./scripts` - main scripts including semantic templates (`scripts/semantic_templates.yaml`), Tsurgeon script (`scripts/transform.tsgn`) and the COMP axioms.
-4. `./tools` - tools for checking output files and trimming data
-
-    ### HTML output of tree transformation by [Tsurgeon](https://nlp.stanford.edu/software/tregex.html)
-    #### Usage:
-    ```
-    $ ./tools/checktree.sh <ptbファイル> <tsgnファイル>
-    ```
-    #### Example:
-    ```
-    $ ./scripts/checktree.sh cache/fracas_030_generalized_quantifiers.txt.depccg.ptb scripts/transform.tsgn
-    ```
+4. `./tools` - tools for setup
 
 ## Citation
 ## Results
