@@ -22,6 +22,8 @@ cd ${vampire_dir}
 make vampire_rel
 cp vampire_rel_* vampire
 
+cd ..
+
 tregex_url="https://nlp.stanford.edu/software/stanford-tregex-2018-10-16.zip"
 tregex_basename=`basename $tregex_url`
 

@@ -50,4 +50,4 @@ awk -F'\t' -v tdir=${plain_dir} \
    }'
 
 # Copy all files to fracas_plain (for evaluation by eval_fracas.sh)
-cp /med_plain/* fracas_plain/
+cp med_plain/* fracas_plain/
