@@ -4,19 +4,24 @@ This repository contains code for our paper Logical Inferences with Comparatives
 
 ## Requirements
 * Python 3.6.5+
-* [Vampire](https://github.com/vprover/vampire) 4.3.0+
+* [Vampire](https://github.com/vprover/vampire) 4.4.0
 * [Tsurgeon](https://nlp.stanford.edu/software/tregex.html) 3.9.2
 * [spaCy](https://github.com/explosion/spaCy) 2.1.8
-* [word2number](https://github.com/akshaynagpal/w2n) 1.1
+* [word2number](https://github.com/akshaynagpal/w2n) 1.1+
 ## Setup
 The system uses scripts available from [ccg2lambda](https://github.com/mynlp/ccg2lambda). It is necessary to install **python3** (3.6.5 or later), **nltk**, **lxml**, **simplejson** and **pyyaml** python libraries. 
-In addition, **spacy** and **word2number** are used when performing semantic assignment in the semantic template.
 If python3 and pip are already installed, you can install these packages with pip:
 
 ```
-$ pip install lxml simplejson pyyaml nltk spacy word2number
+$ pip install lxml simplejson pyyaml nltk
 ```
 See also [installation](https://github.com/mynlp/ccg2lambda#installation) of ccg2lambda.
+
+In addition, **spacy** (version 2.1.8) and **word2number** are used when performing semantic assignment in the semantic template. Then, install the English version of spacy.
+```
+$ pip install spacy==2.1.8 word2number
+$ python3 -m spacy download en
+```
 
 To run the system, first clone our repository:
 ```
@@ -62,7 +67,6 @@ depccg:
 1. In ccgcomp directory, clone [the git repository of MED](https://github.com/verypluming/MED) and get `MED.tsv`.
 2. To divide the dataset into two types, do the following:
     ```
-    $ cd ccgcomp
     $ ./tools/extract_med.sh
     ```
 3. Then, we are ready to divide it into those that do not require lexical knowledge (`gq` tag) and those that require lexical knowledge (`gqlex` tag) in `./med_plain` and `./fracas_plain`.
