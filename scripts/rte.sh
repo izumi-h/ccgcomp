@@ -58,7 +58,9 @@ mkdir -p "tptp"
 cat $sentences_fname | \
   sed -f ${c2l_dir}/tokenizer.sed | \
   sed 's/ _ /_/g' | \
-  sed 's/[[:space:]]*$//' \
+  sed 's/[[:space:]]*$//' | \
+  sed 's/ (//g' | \
+  sed 's/) //g' \
   > ${plain_dir}/${sentences_basename}.tok
 
 # Set parser locations
