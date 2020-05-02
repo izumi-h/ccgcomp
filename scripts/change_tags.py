@@ -197,15 +197,17 @@ def main():
     Fpos = ['fast', 'genuine', 'great', 'ambitious', 'many', 'indispensable']
     Fneg = ['short', 'slow', 'few', 'less', 'little']
     Fpre = ['four_legged', 'major', 'several', 'law', 'leading', 'former',
-            'true', 'false', 'sci-fi', 'other', 'hooded', 'colored']
+            'true', 'false']
     Fin = ['clever', 'successful', 'important', 'genuine', 'competent',
            'stupid', 'great', 'modest', 'popular', 'poor', 'indispensable',
            'excellent', 'interest', 'ambitious']
-    adj = ['cleverer', 'four_legged', 'light', 'tan', 'colored', 'elder']
-    surf = ['hundreds', 'more', 'less', 'Irishman', 'sci-fi', 'Aldo', 'half',
-            'garlic', 'Garlic', 'kick', 'singing', 'squirt', 'drunk', 'pasta',
-            'Pasta', 'Okra', 'Europeans']
+    adj = ['cleverer', 'four_legged', 'light', 'tan', 'elder']
+    surf = ['hundreds', 'more', 'less', 'half', 'kick', 'singing',
+            'squirt', 'drunk', 'Europeans']
     org = ['PC_6082', 'ITEL_XZ', 'ITEL_ZX', 'ITEL_ZY']
+    # adj = []
+    # surf = ['hundreds', 'more', 'less', 'half']
+    # org = []
 
     tree = ET.parse(filename)
     root = tree.getroot()
