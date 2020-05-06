@@ -1384,9 +1384,15 @@
   semantics: \E X. X
   surf: other
 
+# - category: N/N
+#   semantics: \E N1 F x. E(N1(F,x))
+#   surf: former
+
 - category: N/N
   semantics: \E N1 F x. E(N1(F,x))
   surf: former
+  pos: JJ
+  entity: N-SUB
 
 - category: N/N
   semantics: \E N1 F x. N1(\N2.(E(x) & F(N2)),x)

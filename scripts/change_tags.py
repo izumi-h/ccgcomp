@@ -38,7 +38,7 @@ def add_adj_tags(token):
         token.attrib['entity'] = "PRE"
 
 
-def change_tags(root, Fpre, Fin, adj, surf, org, Fpos, Fneg):
+def change_tags(root, Fpre, Fin, adj, surf, org, Fpos, Fneg, Fnsub):
     for token in root.iter('token'):
         if token.attrib['surf'] in org:
             token.attrib['entity'] = "B-ORG"
@@ -123,9 +123,12 @@ def change_tags(root, Fpre, Fin, adj, surf, org, Fpos, Fneg):
                 token.attrib['entity'] = "NEG"
             elif token.attrib['base'] in Fpre:
                 token.attrib['entity'] = "PRE"
+            elif token.attrib['base'] in Fnsub:
+                token.attrib['entity'] = "N-SUB"
             elif token.attrib['entity'] != 'POS' \
                     and token.attrib['entity'] != 'NEG' \
-                    and token.attrib['entity'] != 'PRE':
+                    and token.attrib['entity'] != 'PRE' \
+                    and token.attrib['entity'] != 'N-SUB':
                 add_color_tags(token)
                 if token.attrib['entity'] != 'PRE':
                     add_adj_tags(token)
@@ -196,8 +199,9 @@ def main():
 
     Fpos = ['fast', 'genuine', 'great', 'ambitious', 'many', 'indispensable']
     Fneg = ['short', 'slow', 'few', 'less', 'little']
-    Fpre = ['four_legged', 'major', 'several', 'law', 'leading', 'former',
-            'true', 'false']
+    Fpre = ['four_legged', 'major', 'several', 'law', 'leading', 'true',
+            'false']
+    Fnsub = ['former']
     Fin = ['clever', 'successful', 'important', 'genuine', 'competent',
            'stupid', 'great', 'modest', 'popular', 'poor', 'indispensable',
            'excellent', 'interest', 'ambitious']
@@ -212,7 +216,7 @@ def main():
     tree = ET.parse(filename)
     root = tree.getroot()
 
-    change_tags(root, Fpre, Fin, adj, surf, org, Fpos, Fneg)
+    change_tags(root, Fpre, Fin, adj, surf, org, Fpos, Fneg, Fnsub)
 
     tree.write(filename, 'utf-8', True)
 

@@ -589,7 +589,7 @@ relabel y /N\/N/Nadj\/N/
 
 % Insert pos to "a + adjective + noun": is (a (adjective noun)) --> is (a ((pos adj) noun))
 
-/^N\/N;JJ;[A-Z-]+$/=x !<: half ! $, /<N\/N>\/<N\/N>/ ! $, /^<<<Sdcl\\NP>\\<<Sdcl\\NP>\/NP>>\/N>\/<N\/N>$/ !< /^<N\/N>\/<Nadj\/N>$/ !== /^N\/N;JJ;(PRE$|B-NORP)$/
+/^N\/N;JJ;[A-Z-]+$/=x !<: half ! $, /<N\/N>\/<N\/N>/ ! $, /^<<<Sdcl\\NP>\\<<Sdcl\\NP>\/NP>>\/N>\/<N\/N>$/ !< /^<N\/N>\/<Nadj\/N>$/ !== /^N\/N;JJ;(PRE$|N-SUB$|B-NORP)$/
 
 relabel x /N\/N/Nadj\/N/
 adjoinF (N\/N=y @) x
