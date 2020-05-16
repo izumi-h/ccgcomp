@@ -57,8 +57,7 @@ def change_tags(root, Fpre, Fin, adj, surf, org, Fpos, Fneg, Fnsub):
                    or token.attrib['cat'] == 'N[adj]/N':
                     token.attrib['base'] = "old"
 
-            elif token.attrib['surf'] == 'sci-fi' \
-                    or token.attrib['surf'] == 'light' \
+            elif token.attrib['surf'] == 'light' \
                     or token.attrib['surf'] == 'tan':
                 if token.attrib['cat'] == 'N/N' \
                    or token.attrib['cat'] == 'N[adj]/N':
@@ -72,14 +71,7 @@ def change_tags(root, Fpre, Fin, adj, surf, org, Fpos, Fneg, Fnsub):
                 pass
 
         elif token.attrib['surf'] in surf:
-            if token.attrib['base'] == 'garlic' \
-                    or token.attrib['base'] == 'pasta' \
-                    or token.attrib['base'] == 'okra':
-                token.attrib['pos'] = "NN"
-                token.attrib['surf'] = token.attrib['base']
-            elif token.attrib['surf'] == 'Aldo':
-                token.attrib['pos'] = "NNP"
-            elif token.attrib['surf'] == 'half':
+            if token.attrib['surf'] == 'half':
                 token.attrib['pos'] = "CD"
             elif token.attrib['surf'] == 'drunk':
                 if token.attrib['cat'] == 'S[pss]\\NP':
@@ -96,8 +88,6 @@ def change_tags(root, Fpre, Fin, adj, surf, org, Fpos, Fneg, Fnsub):
             elif token.attrib['surf'] == 'singing':
                 token.attrib['base'] = "sing"
 
-            elif token.attrib['surf'] == 'Irishman':
-                token.attrib['entity'] = "B-NORP"
             elif token.attrib['surf'] == 'kick' \
                     or token.attrib['surf'] == 'squirt':
                 token.attrib['pos'] = "NN"
