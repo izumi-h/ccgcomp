@@ -10,7 +10,7 @@ if [ "$1" = "mac" ]; then
 elif [ "$1" = "linux" ]; then
   candc_url=$candc_url_linux
 else
-  echo 'no type'
+  echo 'Please choose `mac` or `linux` in $1.'
   exit
 fi
 
