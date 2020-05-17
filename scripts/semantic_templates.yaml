@@ -843,7 +843,7 @@
 
 # ex. John is a more expensive car than Bob is.
 - category: (N[adj=true]/N)/(N[adj=true]/N) 
-  semantics: \E A N1 F d1 d2 d3 I J W1 W2 c.A(\A1 A2.N1(A1,A2),F,d1,d2,d3,\A1 A2 A3.W1(\y.(N1(\w.True,y) & I(A1,A3(y),A2))),J,W1,W2,c)
+  semantics: \E A N1 F d1 d2 d3 I J W1 W2 c.A(\A1 A2.N1(A1,A2),F,d1,d2,d3,\A1 A2 A3.W2(\y.(N1(\w.True,y) & I(A1,A3(y),A2))),J,W1,W2,c)
   surf: more
 
 - category: (S\NP)\(S\NP)
