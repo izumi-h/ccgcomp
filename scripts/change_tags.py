@@ -38,7 +38,7 @@ def add_adj_tags(token):
         token.attrib['entity'] = "PRE"
 
 
-def change_tags(root, Fpre, Fin, adj, surf, org, Fpos, Fneg, Fnsub):
+def change_tags(root, Fpre, Fin, adj, word, lemma, org, Fpos, Fneg, Fnsub):
     for token in root.iter('token'):
         if token.attrib['surf'] in org:
             token.attrib['entity'] = "B-ORG"
@@ -70,27 +70,34 @@ def change_tags(root, Fpre, Fin, adj, surf, org, Fpos, Fneg, Fnsub):
             else:
                 pass
 
-        elif token.attrib['surf'] in surf:
-            if token.attrib['surf'] == 'half':
-                token.attrib['pos'] = "CD"
-            elif token.attrib['surf'] == 'drunk':
+        elif token.attrib['surf'] in word:
+            if token.attrib['surf'] == 'drunk':
                 if token.attrib['cat'] == 'S[pss]\\NP':
                     token.attrib['pos'] = "VBN"
 
-            elif token.attrib['surf'] == 'more':
+            elif token.attrib['surf'] == 'singing':
+                token.attrib['base'] = "sing"
+            else:
+                pass
+
+        elif token.attrib['base'] in lemma:
+            if token.attrib['base'] == 'hundred':
+                token.attrib['base'] = "100"
+            elif token.attrib['base'] == 'more':
                 token.attrib['base'] = "many"
             elif token.attrib['surf'] == 'less':
                 token.attrib['base'] = "little"
-            elif token.attrib['surf'] == 'hundreds':
-                token.attrib['base'] = "100"
+                
+            elif token.attrib['base'] == 'half':
+                token.attrib['pos'] = "CD"
+            elif token.attrib['surf'] == 'Irishman':
+                token.attrib['entity'] = "B-NORP"
             elif token.attrib['surf'] == 'Europeans':
                 token.attrib['base'] = "european"
-            elif token.attrib['surf'] == 'singing':
-                token.attrib['base'] = "sing"
-
             elif token.attrib['surf'] == 'kick' \
                     or token.attrib['surf'] == 'squirt':
                 token.attrib['pos'] = "NN"
+
             else:
                 pass
         else:
@@ -188,7 +195,7 @@ def main():
     filename = args[1]
 
     Fpos = ['fast', 'genuine', 'great', 'ambitious', 'many', 'indispensable']
-    Fneg = ['short', 'slow', 'few', 'less', 'little']
+    Fneg = ['short', 'slow', 'few', 'little']
     Fpre = ['four_legged', 'major', 'several', 'law', 'leading', 'true',
             'false']
     Fnsub = ['former']
@@ -196,17 +203,17 @@ def main():
            'stupid', 'great', 'modest', 'popular', 'poor', 'indispensable',
            'excellent', 'interest', 'ambitious']
     adj = ['cleverer', 'four_legged', 'light', 'tan', 'elder']
-    surf = ['hundreds', 'more', 'less', 'half', 'kick', 'singing',
-            'squirt', 'drunk', 'Europeans']
+    # surf = ['hundreds', 'more', 'less', 'half', 'kick', 'singing',
+    #         'squirt', 'drunk', 'Europeans']
+    word = ['singing', 'drunk']
+    lemma = ['hundred', 'more', 'less', 'half', 'kick', 'squirt',
+             'europeans', 'irishman']
     org = ['PC_6082', 'ITEL_XZ', 'ITEL_ZX', 'ITEL_ZY']
-    # adj = []
-    # surf = ['hundreds', 'more', 'less', 'half']
-    # org = []
 
     tree = ET.parse(filename)
     root = tree.getroot()
 
-    change_tags(root, Fpre, Fin, adj, surf, org, Fpos, Fneg, Fnsub)
+    change_tags(root, Fpre, Fin, adj, word, lemma, org, Fpos, Fneg, Fnsub)
 
     tree.write(filename, 'utf-8', True)
 

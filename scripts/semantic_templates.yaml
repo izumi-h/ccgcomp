@@ -1292,10 +1292,10 @@
   pos: JJR
   entity: NEG
 
-- category: S[adj=true]\NP
-  semantics: \E d2 d1 d3 H I J Q. Q(\w.True,I(\x.(little(x,d1) & J(\d4.$less(d1,d4))),H(E,d2),-(d1 = d3)))
-  pos: JJR
-  surf: less
+# - category: S[adj=true]\NP
+#   semantics: \E d2 d1 d3 H I J Q. Q(\w.True,I(\x.(little(x,d1) & J(\d4.$less(d1,d4))),H(E,d2),-(d1 = d3)))
+#   pos: JJR
+#   surf: less
 
 - category: S[adj=true]\NP
   semantics: \E d2 d1 d3 H I J Q. Q(\w.True,I(\x.(few(x,d1) & J(\d4.$less(d1,d4))),H(E,d2),-(d1 = d3)))

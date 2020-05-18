@@ -9,7 +9,7 @@
 # <tag> ::= gq | gqlex | all
 #
 # Example:
-# ./scripts/eval_med.sh gq 1 semantic_templates_en_comparatives.yaml 1 100
+# ./scripts/eval_med.sh gq 1 scripts/semantic_templates.yaml 1 100
 
 tag=$1
 nbest=$2
@@ -32,7 +32,7 @@ function proving() {
   id=$1
   label=$2
   if [ -f ${plain_dir}/med_${id}_${label}.txt ]; then
-    ./scripts/rte2.sh ${plain_dir}/med_${id}_${label}.txt $templates $nbest
+    ./scripts/rte.sh ${plain_dir}/med_${id}_${label}.txt $templates $nbest
   fi
 }
 
@@ -56,7 +56,6 @@ echo "<!doctype html>
   <td>gold answer</td>
   <td>system answer</td>
   <td>C&C</td>
-  <td>EasyCCG</td>
   <td>depccg</td>
 </tr>" > $results_dir/main_med.html
 
@@ -75,7 +74,7 @@ function display() {
     echo '<tr>
     <td>'${base_filename/.answer/}'</td>
     <td>'$gold_answer'</td>' >> $results_dir/main_med.html
-    for parser in "" "candc." "easyccg." "depccg."; do
+    for parser in "" "candc." "depccg."; do
       res=${results_dir}/${base_filename/.answer/.txt}.${parser}answer
       if [ -e "$res" -a -s "$res" ]; then
         system_answer=`cat ${results_dir}/${base_filename/.answer/.txt}.${parser}answer`
@@ -119,12 +118,10 @@ function calculate_score() {
     gold_answer=`cat ${plain_dir}/${base_filename}.answer`
     system_answer=`cat ${results_dir}/${base_filename}.txt.answer`
     candc_answer=`cat ${results_dir}/${base_filename}.txt.candc.answer`
-    easyccg_answer=`cat ${results_dir}/${base_filename}.txt.easyccg.answer`
     depccg_answer=`cat ${results_dir}/${base_filename}.txt.depccg.answer`
     echo $base_filename $premises $gold_answer >> gold.results
     echo $base_filename $premises $system_answer >> system.results
     echo $base_filename $premises $candc_answer >> candc.results
-    echo $base_filename $premises $easyccg_answer >> easyccg.results
     echo $base_filename $premises $depccg_answer >> depccg.results
   fi
 }
@@ -164,13 +161,9 @@ echo -e "C&C:" >> ${results_dir}/score.txt
 python scripts/report_results_med.py gold.results candc.results >> ${results_dir}/score.txt
 echo "----------------------------------------------------------------------------" \
  >> ${results_dir}/score.txt
-echo -e "EasyCCG:" >> ${results_dir}/score.txt
-python scripts/report_results_med.py gold.results easyccg.results >> ${results_dir}/score.txt
-echo "----------------------------------------------------------------------------" \
- >> ${results_dir}/score.txt
 echo -e "depccg:" >> ${results_dir}/score.txt
 python scripts/report_results_med.py gold.results depccg.results >> ${results_dir}/score.txt
 
 cat ${results_dir}/score.txt
 
-rm -f gold.results system.results candc.results easyccg.results depccg.results
+rm -f gold.results system.results candc.results depccg.results
