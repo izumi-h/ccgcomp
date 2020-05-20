@@ -188,4 +188,4 @@ The code is divided into the following:
 
 ## Citation
 ## Results
-You can see [the html files](https://drive.google.com/drive/folders/1CgPnFAjdLY61OEpLPn4d6Zrqm5lx6Esi?usp=sharing) as the results that maps CCG derivation trees to semantic representaions.
+You can see [the html files](https://drive.google.com/drive/folders/1C2bGkiqo8EadqJECXzIuGU8nNSDkhpqC?usp=sharing) as the results that maps CCG derivation trees to semantic representaions.
