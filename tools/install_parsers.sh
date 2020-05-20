@@ -37,7 +37,7 @@ test -d candc-1.00 || {
   tar xvzf $models_basename --directory candc-1.00
   parser_dir=`pwd`"/"candc-1.00
   echo "Setting scripts/parser_location.txt pointing to ${parser_dir}"
-  echo $parser_dir > scripts/parser_location.txt
+  echo "candc:"$parser_dir > scripts/parser_location.txt
   rm -f $parser_basename $models_basename
 }
 
