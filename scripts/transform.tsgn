@@ -439,27 +439,25 @@ relabel x /N\/N/<N\/N>\/<N\/N>/
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % fracas-233
-% from: (S{dcl}\NP (<S{dcl}\NP>/NP tv) (NP (NP (N (N/N more) (N _))) (NP\NP (<NP\NP>/NP than) (NP (N _)))))
-% to: (S{dcl}\NP (<S\NP>/NP (<S\NP>/NP tv) (<S\NP>/NP>\<<S\NP>/NP> (<<S\NP>/NP>\<<S\NP>/NP>/N more) (N _))) (NP (N _)))
 
 /^S[a-z]*\\NP$/ <1 (/^<S[a-z]*\\NP>\/NP;[A-Z;-]+$/=v !<: /^is$|^are$|^was$|^were$/) <2 (NP=z <1 (NP=x <: (N=n < (/N\/N/=m $. /^N;[A-Z;-]+$/))) <2 (/^NP\\NP$/=w < (/^<NP\\NP>\/NP;[A-Z;-]+$/=y < /^than$/)))
 
 relabel z /<Sdcl\\NP>\\<<Sdcl\\NP>\/NP>/
 excise x x
-relabel n /<Sdcl\\NP>\\<<Sdcl\\NP>\/NP>/
-relabel m /N\/N/<<Sdcl\\NP>\\<<Sdcl\\NP>\/NP>>\/N/
-relabel y /<NP\\NP>\/NP/<<<Sdcl\\NP>\\<<Sdcl\\NP>\/NP>>\\<<Sdcl\\NP>\\<<Sdcl\\NP>\/NP>>>\/NP/
-relabel w /NP\\NP/<<Sdcl\\NP>\\<<Sdcl\\NP>\/NP>>\\<<Sdcl\\NP>\\<<Sdcl\\NP>\/NP>>/
+relabel n /NPadj/
+relabel m /N\/N/NPadj\/N/
+relabel y /<NP\\NP>\/NP/<<<Sdcl\\NP>\\<<Sdcl\\NP>\/NP>>\\NPadj>\/NP/
+relabel w /NP\\NP/<<Sdcl\\NP>\\<<Sdcl\\NP>\/NP>>\\NPadj/
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % fracas-243
 
 % ex. John won 3000/many more orders than Bob .
 
-/^<<Sdcl\\NP>\\<<Sdcl\\NP>\/NP>>\/N$/ <1 /^N\/N;[A-Z;-]+$/=d <2 /^N\/N;(JJR|RBR);[A-Z-]+$/=p
+/^NPadj\/N$/ <1 /^N\/N;[A-Z;-]+$/=d <2 /^N\/N;(JJR|RBR);[A-Z-]+$/=p
 
-relabel p /N\/N/<<Sdcl\\NP>\\<<Sdcl\\NP>\/NP>>\/N/
-relabel d /N\/N/<<<Sdcl\\NP>\\<<Sdcl\\NP>\/NP>>\/N>\/<<<Sdcl\\NP>\\<<Sdcl\\NP>\/NP>>\/N>/
+relabel p /N\/N/NPadj\/N/
+relabel d /N\/N/<NPadj\/N>\/<NPadj\/N>/
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % fracas-230
@@ -468,41 +466,41 @@ relabel d /N\/N/<<<Sdcl\\NP>\\<<Sdcl\\NP>\/NP>>\/N>\/<<<Sdcl\\NP>\\<<Sdcl\\NP>\/
 
 relabel z /<Sdcl\\NP>\\<<Sdcl\\NP>\/NP>/
 excise x x
-relabel n /<Sdcl\\NP>\\<<Sdcl\\NP>\/NP>/
-relabel m /N\/N/<<Sdcl\\NP>\\<<Sdcl\\NP>\/NP>>\/N/
-relabel y /<NP\\NP>\/Sdcl/<<<Sdcl\\NP>\\<<Sdcl\\NP>\/NP>>\\<<Sdcl\\NP>\\<<Sdcl\\NP>\/NP>>>\/Sdcl/
-relabel w /NP\\NP/<<Sdcl\\NP>\\<<Sdcl\\NP>\/NP>>\\<<Sdcl\\NP>\\<<Sdcl\\NP>\/NP>>/
+relabel n /NPadj/
+relabel m /N\/N/NPadj\/N/
+relabel y /<NP\\NP>\/Sdcl/<<<Sdcl\\NP>\\<<Sdcl\\NP>\/NP>>\\NPadj>\/Sdcl/
+relabel w /NP\\NP/<<Sdcl\\NP>\\<<Sdcl\\NP>\/NP>>\\NPadj/
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % as many orders as 
 
 /^S[a-z]*\\NP$/ < (/^<S[a-z]*\\NP>\/NP;[A-Z;-]+$/=v !<: /^is$|^are$|^was$|^were$/) < (NP=z <1 (NP=x <: (N=s <1 /^N\/N$/=o <2 /^N$|^N;[A-Z;-]+$/)) <2 (/^NP\\NP$/=w < (/^<NP\\NP>\/NP;[A-Z;-]+$/=y < /^as$/)))
 
-relabel y /<NP\\NP>\/NP/<<<Sdcl\\NP>\\<<Sdcl\\NP>\/NP>>\\<<Sdcl\\NP>\\<<Sdcl\\NP>\/NP>>>\/NP/
-relabel w /NP\\NP/<<Sdcl\\NP>\\<<Sdcl\\NP>\/NP>>\\<<Sdcl\\NP>\\<<Sdcl\\NP>\/NP>>/
+relabel y /<NP\\NP>\/NP/<<<Sdcl\\NP>\\<<Sdcl\\NP>\/NP>>\\NPadj>\/NP/
+relabel w /NP\\NP/<<Sdcl\\NP>\\<<Sdcl\\NP>\/NP>>\\NPadj/
 relabel z /<Sdcl\\NP>\\<<Sdcl\\NP>\/NP>/
-relabel x /<Sdcl\\NP>\\<<Sdcl\\NP>\/NP>/
+relabel x /NPadj/
 excise s s
-relabel o /<<Sdcl\\NP>\\<<Sdcl\\NP>\/NP>>\/N/
+relabel o /NPadj\/N/
 
 % John won as many orders as Bob.
 
-/^<<Sdcl\\NP>\\<<Sdcl\\NP>\/NP>>\/N$/=y <1 (/^<N\/N>\/<N\/N>;[A-Z;-]+$/=x < /^as$/) <2 (/^N\/N;[A-Z;-]+$/=t < /^many$/=z)
+/^NPadj\/N$/=y <1 (/^<N\/N>\/<N\/N>;[A-Z;-]+$/=x < /^as$/) <2 (/^N\/N;[A-Z;-]+$/=t < /^many$/=z)
 
 relabel z /as~many/
 excise y y
-relabel t /N\/N/<<Sdcl\\NP>\\<<Sdcl\\NP>\/NP>>\/N/
+relabel t /N\/N/NPadj\/N/
 delete x
 
 % John won twice as many orders as Bob.
 
-/^<<Sdcl\\NP>\\<<Sdcl\\NP>\/NP>>\/N$/ <1 /^<N\/N>\/<N\/N>;[A-Z;-]+$/=c <2 (/^N\/N$/=p <1 (/^<N\/N>\/<N\/N>;[A-Z;-]+$/=x < /^as$/=z) <2 (/^N\/N;[A-Z;-]+$/=y < /^many$/))
+/^NPadj\/N$/ <1 /^<N\/N>\/<N\/N>;[A-Z;-]+$/=c <2 (/^N\/N$/=p <1 (/^<N\/N>\/<N\/N>;[A-Z;-]+$/=x < /^as$/=z) <2 (/^N\/N;[A-Z;-]+$/=y < /^many$/))
 
 excise p p
 relabel z /as~many/
 delete y
-relabel c /<N\/N>\/<N\/N>/<<<Sdcl\\NP>\\<<Sdcl\\NP>\/NP>>\/N>\/<<<Sdcl\\NP>\\<<Sdcl\\NP>\/NP>>\/N>/
-relabel x /<N\/N>\/<N\/N>/<<Sdcl\\NP>\\<<Sdcl\\NP>\/NP>>\/N/
+relabel c /<N\/N>\/<N\/N>/<NPadj\/N>\/<NPadj\/N>/
+relabel x /<N\/N>\/<N\/N>/NPadj\/N/
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % from: John is ((a (taller boy)) (than Bob)).
@@ -597,17 +595,17 @@ insert (<N\/N>\/<Nadj\/N> pos) >1 y
 
 % Insert dgr to "more + noun": won (more noun) --> won ((dgr more) noun)
 
-/^<<Sdcl\\NP>\\<<Sdcl\\NP>\/NP>>\/N;JJR;[A-Z-]+$/=x !$, /<<<Sdcl\\NP>\\<<Sdcl\\NP>\/NP>>\/N>\/<<<Sdcl\\NP>\\<<Sdcl\\NP>\/NP>>\/N>/ !< /^<<<Sdcl\\NP>\\<<Sdcl\\NP>\/NP>>\/N>\/<<<Sdcl\\NP>\\<<Sdcl\\NP>\/NP>>\/N>$/
+/^NPadj\/N;JJR;[A-Z-]+$/=x !$, /<NPadj\/N>\/<NPadj\/N>/ !< /^<NPadj\/N>\/<NPadj\/N>$/
 
-adjoinF (<<Sdcl\\NP>\\<<Sdcl\\NP>\/NP>>\/N=y @) x
-insert (<<<Sdcl\\NP>\\<<Sdcl\\NP>\/NP>>\/N>\/<<<Sdcl\\NP>\\<<Sdcl\\NP>\/NP>>\/N> dgr) >1 y
+adjoinF (NPadj\/N=y @) x
+insert (<NPadj\/N>\/<NPadj\/N> dgr) >1 y
 
 % Insert dgr2 to "as~many + noun + as": won ((as~many) noun) as --> won ((dgr2 (as~many)) noun) as
 
-/^<<Sdcl\\NP>\\<<Sdcl\\NP>\/NP>>\/N;[A-Z;-]+$/=x <: /^as~many$/ !$, /<<<Sdcl\\NP>\\<<Sdcl\\NP>\/NP>>\/N>\/<<<Sdcl\\NP>\\<<Sdcl\\NP>\/NP>>\/N>/ !< /<<<Sdcl\\NP>\\<<Sdcl\\NP>\/NP>>\/N>\/<<<Sdcl\\NP>\\<<Sdcl\\NP>\/NP>>\/N>/
+/^NPadj\/N;[A-Z;-]+$/=x <: /^as~many$/ !$, /<NPadj\/N>\/<NPadj\/N>/ !< /<NPadj\/N>\/<NPadj\/N>/
 
-adjoinF (<<Sdcl\\NP>\\<<Sdcl\\NP>\/NP>>\/N=y @) x
-insert (<<<Sdcl\\NP>\\<<Sdcl\\NP>\/NP>>\/N>\/<<<Sdcl\\NP>\\<<Sdcl\\NP>\/NP>>\/N> dgr2) >1 y
+adjoinF (NPadj\/N=y @) x
+insert (<NPadj\/N>\/<NPadj\/N> dgr2) >1 y
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % cad_123

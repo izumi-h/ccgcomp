@@ -226,6 +226,7 @@ function add_feature_brackets(){
   | sed 's/NPthr/NP[thr]/g' \
   | sed 's/NPnpi/NP[npi]/g' \
   | sed 's/NPdeg/NP[deg]/g' \
+  | sed 's/NPadj/NP[adj]/g' \
   | sed 's/NPnb/NP[nb]/g' \
   | sed 's/Nadj/N[adj]/g' \
   | sed 's/Nnum/N[num]/g' \

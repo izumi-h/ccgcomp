@@ -448,11 +448,11 @@
   child0_surf: very
   child1_surf: much
 
-- category: (((S[dcl=true]\NP)\((S[dcl=true]\NP)/NP))/(NP\NP))/N
-  rule: ba
-  semantics: \L R.R(\d.$sum(d,L))
-  child0_pos: CD
-  child1_surf: more
+# - category: (((S[dcl=true]\NP)\((S[dcl=true]\NP)/NP))/(NP\NP))/N
+#   rule: ba
+#   semantics: \L R.R(\d.$sum(d,L))
+#   child0_pos: CD
+#   child1_surf: more
 
 ### Adverbs ###
 
@@ -920,14 +920,18 @@
 #   surf: much
 
 # ex. John won many more orders than Bob.
-- category: (((S\NP)\((S\NP)/NP))/N)/(((S\NP)\((S\NP)/NP))/N)
-  semantics: \E A N V Q.all d1.exists c.A(N,V,$sum(d1,_e),d1,\A1 A2 z2 z1.(exists y.A2(y,z2) -> exists x.A1(x,z1)),c,Q)
+# - category: (((S\NP)\((S\NP)/NP))/N)/(((S\NP)\((S\NP)/NP))/N)
+- category: (NP[adj=true]/N)/(NP[adj=true]/N)
+  # semantics: \E A N V Q.all d1.exists c.A(N,V,$sum(d1,_e),d1,\A1 A2 z2 z1.(exists y.A2(y,z2) -> exists x.A1(x,z1)),c,Q)
+  semantics: \E A N V d1 d2 I c Q.all d1.exists c.A(N,V,$sum(d1,_e),d1,\A1 A2 z2 z1.(exists y.A2(y,z2) -> exists x.A1(x,z1)),c,Q)
   surf: many
 
 # John won dgr more orders than Bob .
-- category: (((S\NP)\((S\NP)/NP))/N)/(((S\NP)\((S\NP)/NP))/N)
+# - category: (((S\NP)\((S\NP)/NP))/N)/(((S\NP)\((S\NP)/NP))/N)
+- category: (NP[adj=true]/N)/(NP[adj=true]/N)
   # semantics: \E A N V Q.exists d1.A(N,V,d1,d1,\A1 A2 z2 z1.exists y x.(A1(x,\W.W,z1) & A2(y,\W.-W,z2)),Q)
-  semantics: \E A N V Q.exists d1.exists c.A(N,V,d1,d1,\A1 A2 z2 z1.(exists x.A1(x,z1) & -exists y.A2(y,z2)),c,Q)
+  # semantics: \E A N V Q.exists d1.exists c.A(N,V,d1,d1,\A1 A2 z2 z1.(exists x.A1(x,z1) & -exists y.A2(y,z2)),c,Q)
+  semantics: \E A N V d1 d2 I c Q.exists d1.exists c.A(N,V,d1,d1,\A1 A2 z2 z1.(exists x.A1(x,z1) & -exists y.A2(y,z2)),c,Q)
   surf: dgr
 
 # John won dgr2 as many orders as Bob .
@@ -1072,12 +1076,15 @@
   semantics: \E Q1 A d1 d2 d3 H I J Q2. A(d1,d2,d3,\H d.Q1(\X.X,\w.True,\y.-H(y,d)),I,\w.True,Q2)
   surf: than
 
-- category: (((S[dcl=true]\NP)\((S[dcl=true]\NP)/NP))\((S[dcl=true]\NP)\((S[dcl=true]\NP)/NP)))/NP
-  semantics: \E Q1 A V Q2. A(V,\A1 A2.Q2(A1,\z1.Q1(\w.True,\x.A2(x,z1))))
+# - category: (((S[dcl=true]\NP)\((S[dcl=true]\NP)/NP))\((S[dcl=true]\NP)\((S[dcl=true]\NP)/NP)))/NP
+- category: (((S[dcl=true]\NP)\((S[dcl=true]\NP)/NP))\NP[adj=true])/NP
+  # semantics: \E Q1 A V Q2. A(V,\A1 A2.Q2(A1,\z1.Q1(\w.True,\x.A2(x,z1))))
+  semantics: \E Q1 A V Q2. A(V,d1,d2,I,c,\A1 A2.Q2(A1,\z1.Q1(\w.True,\x.A2(x,z1))))
   surf: than
 
-- category: (((S[dcl=true]\NP)\((S[dcl=true]\NP)/NP))\((S[dcl=true]\NP)\((S[dcl=true]\NP)/NP)))/S[dcl=true]
-  semantics: \E Q1 A V Q2. A(V,\A1 A2.Q2(A1,\z1.Q1(\w.True,\x.A2(x,z1))))
+# - category: (((S[dcl=true]\NP)\((S[dcl=true]\NP)/NP))\((S[dcl=true]\NP)\((S[dcl=true]\NP)/NP)))/S[dcl=true]
+- category: (((S[dcl=true]\NP)\((S[dcl=true]\NP)/NP))\NP[adj=true])/S[dcl=true]
+  semantics: \E Q1 A V Q2. A(V,d1,d2,I,c,\A1 A2.Q2(A1,\z1.Q1(\w.True,\x.A2(x,z1))))
   surf: than
 
 - category: ((S[adj=true]\NP)\(S[adj=true]\NP))/NP
@@ -1093,8 +1100,9 @@
   semantics: \E Q1 A d1 d2 d3 H I J Q2. A(d1,d2,d3,\H d.Q1(\X.X,\w.True,\y.H(y,d)),I,\w.True,Q2)
   surf: as
 
-- category: (((S[dcl=true]\NP)\((S[dcl=true]\NP)/NP))\((S[dcl=true]\NP)\((S[dcl=true]\NP)/NP)))/NP
-  semantics: \E Q1 A V Q2.A(V,\A1 A2.Q2(A1,\z1.Q1(\w.True,\x.A2(x,z1))))
+# - category: (((S[dcl=true]\NP)\((S[dcl=true]\NP)/NP))\((S[dcl=true]\NP)\((S[dcl=true]\NP)/NP)))/NP
+- category: (((S[dcl=true]\NP)\((S[dcl=true]\NP)/NP))\NP[adj=true])/NP
+  semantics: \E Q1 A V Q2.A(V,d1,d2,I,c,\A1 A2.Q2(A1,\z1.Q1(\w.True,\x.A2(x,z1))))
   surf: as
   
 
@@ -1398,33 +1406,35 @@
   semantics: \E N1 F x. N1(\N2.(E(x) & F(N2)),x)
   entity: B-NORP
 
-- category: ((S\NP)\((S\NP)/NP))/N
-  semantics: \E N1 V d2 d1 I c Q.V(\F1 F2 y.F2(y),\F1 F2.Q(F1,I(\x z1.(F2(z1,x) & N1(\w.True,x)),\y z2.(F2(z2,y) & N1(\w.True,y)),\x.E(x,d1),\y.E(y,d2))))
-  pos: JJR
-  entity: NEG
+# - category: ((S\NP)\((S\NP)/NP))/N
+#   semantics: \E N1 V d2 d1 I c Q.V(\F1 F2 y.F2(y),\F1 F2.Q(F1,I(\x z1.(F2(z1,x) & N1(\w.True,x)),\y z2.(F2(z2,y) & N1(\w.True,y)),\x.E(x,d1),\y.E(y,d2))))
+#   pos: JJR
+#   entity: NEG
 
-- category: ((S\NP)\((S\NP)/NP))/N
-  semantics: \E N1 V d1 d2 I c Q.V(\F1 F2 y.F2(y),\F1 F2.Q(F1,I(\x z1.(F2(z1,x) & N1(\w.True,x)),\y z2.(F2(z2,y) & N1(\w.True,y)),\x.E(x,d1),\y.E(y,d2))))
-  pos: JJR
-  entity: POS
+# - category: ((S\NP)\((S\NP)/NP))/N
+#   semantics: \E N1 V d1 d2 I c Q.V(\F1 F2 y.F2(y),\F1 F2.Q(F1,I(\x z1.(F2(z1,x) & N1(\w.True,x)),\y z2.(F2(z2,y) & N1(\w.True,y)),\x.E(x,d1),\y.E(y,d2))))
+#   pos: JJR
+#   entity: POS
 
 # ex. John won more orders than Bob.
-- category: ((S\NP)\((S\NP)/NP))/N
+# - category: ((S\NP)\((S\NP)/NP))/N
+- category: NP[adj=true]/N
   # semantics: \E N1 V d1 d2 I c Q.V(\F1 F2 y.F2(y),\F1 F2.Q(F1,I(\x z1.(F2(z1,x) & N1(\w.True,x)),\y z2.(F2(z2,y) & N1(\w.True,y)),\x._many(x,d1),\y._many(y,d2))))
   semantics: \E N1 V d1 d2 I c Q.V(\F1 F2 y.F2(y),\F1 F2.Q(F1,I(\x z1.(F2(z1,x) & N1(\w.True,x) & _many(x,d1)),\y z2.(F2(z2,y) & N1(\w.True,y) & _many(y,d2)))))
   surf: more
 
-- category: ((S\NP)\((S\NP)/NP))/N
-  semantics: \E N1 V d2 d1 I c Q.V(\F1 F2 y.F2(y),\F1 F2.Q(F1,I(\x z1.(F2(z1,x) & N1(\N2.(c = N2),x)),\y z2.(F2(z2,y) & N1(\w.True,y)),\x.E(x,_np(c,d1)),\y.E(y,_np(c,d2)))))
-  pos: JJR
-  entity: NEG-INT
+# - category: ((S\NP)\((S\NP)/NP))/N
+#   semantics: \E N1 V d2 d1 I c Q.V(\F1 F2 y.F2(y),\F1 F2.Q(F1,I(\x z1.(F2(z1,x) & N1(\N2.(c = N2),x)),\y z2.(F2(z2,y) & N1(\w.True,y)),\x.E(x,_np(c,d1)),\y.E(y,_np(c,d2)))))
+#   pos: JJR
+#   entity: NEG-INT
 
-- category: ((S\NP)\((S\NP)/NP))/N
-  semantics: \E N1 V d1 d2 I c Q.V(\F1 F2 y.F2(y),\F1 F2.Q(F1,I(\x z1.(F2(z1,x) & N1(\N2.(c = N2),x)),\y z2.(F2(z2,y) & N1(\w.True,y)),\x.E(x,_np(c,d1)),\y.E(y,_np(c,d2)))))
-  pos: JJR
-  entity: POS-INT
+# - category: ((S\NP)\((S\NP)/NP))/N
+#   semantics: \E N1 V d1 d2 I c Q.V(\F1 F2 y.F2(y),\F1 F2.Q(F1,I(\x z1.(F2(z1,x) & N1(\N2.(c = N2),x)),\y z2.(F2(z2,y) & N1(\w.True,y)),\x.E(x,_np(c,d1)),\y.E(y,_np(c,d2)))))
+#   pos: JJR
+#   entity: POS-INT
 
-- category: ((S\NP)\((S\NP)/NP))/N
+# - category: ((S\NP)\((S\NP)/NP))/N
+- category: NP[adj=true]/N
   semantics: \E N1 V d1 d2 I c Q.V(\F1 F2 y.F2(y),\F1 F2.Q(F1,I(\x z1.(F2(z1,x) & N1(\w.True,x) & _many(x,d1)),\y z2.(F2(z2,y) & N1(\w.True,y) & _many(y,d2)))))
   surf: as~many
 
@@ -1609,9 +1619,10 @@
   semantics: \E. E
   pos: CD
 
-- category: (((S\NP)\((S\NP)/NP))/N)/(((S\NP)\((S\NP)/NP))/N)
-  semantics: \E A N V d1 d2 H Q.A(N,V,$sum(d1,E),d2,H,Q)
-  pos: CD
+# # - category: (((S\NP)\((S\NP)/NP))/N)/(((S\NP)\((S\NP)/NP))/N)
+# - category: (NP[adj=true]/N)/(NP[adj=true]/N)
+#   semantics: \E A N V d1 d2 H Q.A(N,V,$sum(d1,E),d2,H,Q)
+#   pos: CD
 
 - category: ((S[adj=true]\NP)/(S[adj=true]\NP))/((S[adj=true]\NP)/(S[adj=true]\NP))
   semantics: \E. E
@@ -1642,12 +1653,16 @@
   semantics: \E A d1 d2 d3 H I J Q.exists d1.A($product(d1,2),d1,_th(_u),H,\A1 A2 A3 x.(A2 -> A1(x)),J,Q)
   surf: twice
 
-- category: (((S[dcl=true]\NP)\((S[dcl=true]\NP)/NP))/N)/(((S[dcl=true]\NP)\((S[dcl=true]\NP)/NP))/N)
-  semantics: \E A N V Q.all d1.exists c.A(N,V,$product(d1,2),d1,\A1 A2 z2 z1.(exists y.A2(y,z2) -> exists x.A1(x,z1)),c,Q)
+# - category: (((S[dcl=true]\NP)\((S[dcl=true]\NP)/NP))/N)/(((S[dcl=true]\NP)\((S[dcl=true]\NP)/NP))/N)
+- category: (NP[adj=true]/N)/(NP[adj=true]/N)
+  # semantics: \E A N V Q.all d1.exists c.A(N,V,$product(d1,2),d1,\A1 A2 z2 z1.(exists y.A2(y,z2) -> exists x.A1(x,z1)),c,Q)
+  semantics: \E A N V d1 d2 I c Q.all d1.exists c.A(N,V,$product(d1,2),d1,\A1 A2 z2 z1.(exists y.A2(y,z2) -> exists x.A1(x,z1)),c,Q)
   surf: twice
 
-- category: (((S[dcl=true]\NP)\((S[dcl=true]\NP)/NP))/N)/(((S[dcl=true]\NP)\((S[dcl=true]\NP)/NP))/N)
-  semantics: \E A N V Q.all d1.exists c.A(N,V,$sum(d1,E),d1,\A1 A2 z2 z1.(exists y.A2(y,z2) -> exists x.A1(x,z1)),c,Q)
+# - category: (((S[dcl=true]\NP)\((S[dcl=true]\NP)/NP))/N)/(((S[dcl=true]\NP)\((S[dcl=true]\NP)/NP))/N)
+- category: (NP[adj=true]/N)/(NP[adj=true]/N)
+  # semantics: \E A N V Q.all d1.exists c.A(N,V,$sum(d1,E),d1,\A1 A2 z2 z1.(exists y.A2(y,z2) -> exists x.A1(x,z1)),c,Q)
+  semantics: \E A N V d1 d2 I c Q.all d1.exists c.A(N,V,$sum(d1,E),d1,\A1 A2 z2 z1.(exists y.A2(y,z2) -> exists x.A1(x,z1)),c,Q)
   pos: CD
 
 # sententce final particle
