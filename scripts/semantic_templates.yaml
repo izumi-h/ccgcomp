@@ -887,7 +887,7 @@
   pos: JJ
 
 - category: (S[adj=true]\NP)/(S[adj=true]\NP)
-  semantics: \E A d1 d2 d3 H I J Q.exists d1.(A(d1,d1,_th(_u),H,\A1 A2 A3 x.(A1(x) & -A2),J,Q) & E(x))
+  semantics: \E A d1 d2 d3 H I J Q.exists d1.(A(d1,d1,_th(_u),H,\A1 A2 A3 x.(A1(x) & -A2 & E(x)),J,Q))
   pos: RB
   
 # John is deg taller than Bob .
@@ -935,8 +935,10 @@
   surf: dgr
 
 # John won dgr2 as many orders as Bob .
-- category: (((S\NP)\((S\NP)/NP))/N)/(((S\NP)\((S\NP)/NP))/N)
-  semantics: \E A N V Q.all d1.exists c.A(N,V,d1,d1,\A1 A2 z2 z1.(exists y.A2(y,z2) -> exists x.A1(x,z1)),c,Q)
+# - category: (((S\NP)\((S\NP)/NP))/N)/(((S\NP)\((S\NP)/NP))/N)
+- category: (NP[adj=true]/N)/(NP[adj=true]/N)
+  # semantics: \E A N V Q.all d1.exists c.A(N,V,d1,d1,\A1 A2 z2 z1.(exists y.A2(y,z2) -> exists x.A1(x,z1)),c,Q)
+  semantics: \E A N V d1 d2 I c Q.all d1.exists c.A(N,V,d1,d1,\A1 A2 z2 z1.(exists y.A2(y,z2) -> exists x.A1(x,z1)),c,Q)
   surf: dgr2
 
 - category: (S[adj=true]\NP)/(S[adj=true]\NP)
