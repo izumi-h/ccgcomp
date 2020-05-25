@@ -686,7 +686,6 @@ NP <1 /^NPnb\/N;DT;[A-Z-]+$/=b <2 (N=z <1 (N <1 (/^N\/N$/=c <1 /^<N\/N>\/<N\/N>$
 relabel x /N\/N/Nadj\/N/
 relabel y /<Nadj\/N>\/<Nadj\/N>/
 relabel c /Nadj\/N/
-relabel z Nadj
 
 % ex. John is a many (more important) politician than Bill .
 
@@ -695,7 +694,6 @@ NP <1 /^NPnb\/N;DT;[A-Z-]+$/=b <2 (N=z <1 (N <1 (/^N\/N$/=c <1 /^<N\/N>\/<N\/N>$
 relabel x /N\/N/Nadj\/N/
 relabel y /<N\/N>\/<N\/N>/<Nadj\/N>\/<Nadj\/N>/
 relabel c /Nadj\/N/
-relabel z Nadj
 relabel t /N\/N/Nadj\/N/
 relabel p /<N\/N>\/<N\/N>/<Nadj\/N>\/<Nadj\/N>/
 
