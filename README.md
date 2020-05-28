@@ -4,7 +4,7 @@ This repository contains code for our paper Logical Inferences with Comparatives
 
 ## Requirements
 * Python 3.6.5+
-* [Vampire](https://github.com/vprover/vampire) 4.4.0
+* [Vampire](https://github.com/vprover/vampire) 4.3.0
 * [Tsurgeon](https://nlp.stanford.edu/software/tregex.html) 3.9.2
 * [spaCy](https://github.com/explosion/spaCy) 2.1.8
 * [word2number](https://github.com/akshaynagpal/w2n) 1.1+
@@ -43,7 +43,7 @@ $ git clone https://github.com/izumi-h/ccgcomp.git
     ```
 ### Installing CCG parsers
 There are the following three as typical CCG parsers.
-* [C\&C](https://github.com/chrzyki/candc)
+* [C\&C](https://sites.google.com/site/stephenclark609/resources/c-c_parser)
 * [depccg](https://github.com/masashi-y/depccg)
 * [EasyCCG](https://github.com/mikelewis0/easyccg)
 
