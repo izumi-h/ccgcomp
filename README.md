@@ -33,11 +33,11 @@ $ git clone https://github.com/izumi-h/ccgcomp.git
     $ cd ccgcomp
     $ ./tools/install_tools.sh
     ```
-2. This command downloads Vampire (version 4.4.0) to `ccgcomp/vampire-4.4` and Tsurgeon (version 3.9.2) to `ccgcomp/stanford-tregex-2018-10-16`. You can change the location of Vampire and Tsurgeon by editing `scripts/vampire_dir.txt` and `scripts/tregex_location.txt`.
+2. This command downloads Vampire (version 4.3.0) to `ccgcomp/vampire-4.3.0` and Tsurgeon (version 3.9.2) to `ccgcomp/stanford-tregex-2018-10-16`. You can change the location of Vampire and Tsurgeon by editing `scripts/vampire_dir.txt` and `scripts/tregex_location.txt`.
 
     ```
     $ cat scripts/vampire_dir.txt
-    /Users/izumi/ccgcomp/vampire-4.4
+    /Users/izumi/ccgcomp/vampire-4.3.0
     $ cat scripts/tregex_location.txt
     /Users/izumi/ccgcomp/stanford-tregex-2018-10-16
     ```
