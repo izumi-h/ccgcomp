@@ -187,5 +187,21 @@ The code is divided into the following:
 5. `cad_2020-03-07.xml` - a new dataset which focuses on comparatives and numerical constructions
 
 ## Citation
+* Izumi Haruta, Koji Mineshima, Daisuke Bekki. Logical Inferences with Comparatives and Generalized Quantifiers. Proceedings of the 58th Annual Meeting of the Association for Computational Linguistics: Student Research Workshop (ACL-SRW), pages 263--270, Online, july, 2020. [pdf](https://www.aclweb.org/anthology/2020.acl-srw.35.pdf)
+```
+@inproceedings{haruta-etal-2020-logical,
+    title = "Logical Inferences with Comparatives and Generalized Quantifiers",
+    author = "Haruta, Izumi  and
+      Mineshima, Koji  and
+      Bekki, Daisuke",
+    booktitle = "Proceedings of the 58th Annual Meeting of the Association for Computational Linguistics: Student Research Workshop (ACL-SRW)",
+    month = july,
+    year = "2020",
+    address = "Online",
+    publisher = "Association for Computational Linguistics",
+    url = "https://www.aclweb.org/anthology/2020.acl-srw.35",
+    pages = "263--270",
+}
+```
 ## Results
 You can see [the html files](https://drive.google.com/drive/folders/1C2bGkiqo8EadqJECXzIuGU8nNSDkhpqC?usp=sharing) as the results that maps CCG derivation trees to semantic representaions.
