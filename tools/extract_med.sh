@@ -5,12 +5,13 @@
 # ./eval_med_gq.sh
 #
 
-if [ ! -f MED/MED.tsv ]; then
-  echo "no MED.tsv file. Try:"
-  echo "git clone https://github.com/verypluming/MED.git"
+if [ ! -d MED ]; then
+  git clone https://github.com/verypluming/MED.git
+  cd MED
+  git checkout 981440277c6b1c148c917cf813607b4bfdd0a892
+  cd ..
   # echo "cd MED"
   # echo "cp MED.tsv <parsing_comp directory>"
-  exit 1
 fi
 
 # Create med_gq.tsv
