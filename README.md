@@ -64,12 +64,11 @@ depccg:
 ```
 
 ### Selecting MED dataset
-1. In ccgcomp directory, clone [the git repository of MED](https://github.com/verypluming/MED) and get `MED.tsv`.
-2. To divide the dataset into two types, do the following:
+1. To get `MED.tsv` and divide the dataset into two types, do the following in ccgcomp directory: 
     ```
     $ ./tools/extract_med.sh
     ```
-3. Then, we are ready to divide it into those that do not require lexical knowledge (`gq` tag) and those that require lexical knowledge (`gqlex` tag) in `./med_plain` and `./fracas_plain`.
+2. Then, we are ready to divide it into those that do not require lexical knowledge (`gq` tag) and those that require lexical knowledge (`gqlex` tag) in `./med_plain` and `./fracas_plain`.
 
     ```
     $ cat ./med_plain/*
