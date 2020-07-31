@@ -610,7 +610,7 @@
       <script>John won more than 3000 computers.</script>
     </p>
     <p idx="2">
-      <script>Bob won twice as many orders than John.</script>
+      <script>Bob won twice as many computers than John.</script>
     </p>
     <h>
       <script>Bob won more than 6000 computers.</script>
@@ -624,7 +624,7 @@
       <script>John won more than 3000 computers.</script>
     </p>
     <h>
-      <script>John won many orders.</script>
+      <script>John won many computers.</script>
     </h>
     <note></note>
   </problem>
