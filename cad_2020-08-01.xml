@@ -662,10 +662,10 @@
       <script>Bob is much taller than John.</script>
     </p>
     <p idx="2">
-      <script>Bob is a 4 feet tall boy.</script>
+      <script>Bob is a 5 feet tall boy.</script>
     </p>
     <h>
-      <script>John is shorter than 4 feet.</script>
+      <script>John is shorter than 5 feet.</script>
     </h>
     <note></note>
   </problem>
@@ -732,10 +732,10 @@
       <script>Bob is very much taller than John.</script>
     </p>
     <p idx="2">
-      <script>Bob is a 4 feet tall boy.</script>
+      <script>Bob is a 5 feet tall boy.</script>
     </p>
     <h>
-      <script>John is shorter than 4 feet.</script>
+      <script>John is shorter than 5 feet.</script>
     </h>
     <note></note>
   </problem>
