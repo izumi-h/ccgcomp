@@ -316,10 +316,10 @@
       <script>Bob is a 2 cm shorter politician than John.</script>
     </p>
     <p idx="2">
-      <script>John is a 180 cm tall.</script>
+      <script>John is 180 cm tall.</script>
     </p>
     <h>
-      <script>Bob is a 178 cm tall.</script>
+      <script>Bob is 178 cm tall.</script>
     </h>
     <note></note>
   </problem>
