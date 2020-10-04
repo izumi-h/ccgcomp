@@ -2350,8 +2350,8 @@
   surf: "no"
 
 - category: NP[nb=true]/N
-  # semantics: \E F1 F2 F3. exists x. (F1(\w.True,x) & F2(x) & F3(x))
-  semantics: \E F1 F2 F3. -exists x. (F1(\N._many(x,_th(N)),x) & F2(x) & F3(x))
+  semantics: \E F1 F2 F3. exists x. (F1(\w.True,x) & F2(x) & F3(x))
+  # semantics: \E F1 F2 F3. -exists x. (F1(\N._many(x,_th(N)),x) & F2(x) & F3(x))
   surf: a~few
 
 # - category: (NP/N)/(N/N)
