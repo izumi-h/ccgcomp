@@ -68,7 +68,7 @@ easyccg:/Users/izumi/ccgcomp/easyccg
 depccg:
 ```
 
-### Selecting MED dataset
+### Selecting [MED](https://github.com/verypluming/MED) dataset
 1. To get `MED.tsv` and divide the dataset into two types, do the following in ccgcomp directory: 
     ```
     $ ./tools/extract_med.sh
@@ -76,7 +76,7 @@ depccg:
 2. Then, we are ready to divide it into those that do not require lexical knowledge (`gq` tag) and those that require lexical knowledge (`gqlex` tag) in `./med_plain` and `./fracas_plain`.
 
     ```
-    $ cat ./med_plain/*
+    $ ls ./med_plain/*
     ./med_plain/med_1000_gq.answer     ./med_plain/med_465_gqlex.txt
     ./med_plain/med_1000_gq.txt        ./med_plain/med_466_gqlex.answer
     ./med_plain/med_1001_gq.answer     ./med_plain/med_466_gqlex.txt
@@ -84,9 +84,37 @@ depccg:
     ・・・
     ```
     
+### Setting [HANS](https://github.com/tommccoy1/hans) test dataset
+1. To get HANS dataset, do the following in ccgcomp directory:
+```
+./tools/setting_hans.sh
+```
+2. Then the test data of the hans is set to `./hans_plain`.
+```
+ls ./hans_plain/*
+./hans_plain/hans_10000_lexical_overlap.answer  ./hans_plain/hans_10000_lexical_overlap.txt
+./hans_plain/hans_10001_subsequence.answer      ./hans_plain/hans_10001_subsequence.txt
+./hans_plain/hans_28001_constituent.answer      ./hans_plain/hans_28001_constituent.txt
+...
+```
+### Setting [SICK](http://alt.qcri.org/semeval2014/) dataset and downloading VerbOcean
+1. To get SICK dataset and download [VerbOcean](http://demo.patrickpantel.com/demos/verbocean/), do the following in ccgcomp directory:
+```
+./ccg2lambda/download_dependencies.sh
+```
+2. Then, if you do `./scripts/eval_sick.sh`, the problems are set in `./sick_plain`.
+```
+$ ls ./sick_plain/*
+./sick_plain/sick_test_10.answer      ./sick_plain/sick_train_1064.txt
+./sick_plain/sick_test_10.txt         ./sick_plain/sick_train_1065.answer
+./sick_plain/sick_test_1001.answer    ./sick_plain/sick_train_1065.txt
+./sick_plain/sick_test_1001.txt       ./sick_plain/sick_train_1068.answer
+...
+```
+    
 ## Running the system on several datasets
  
-You can use the [FraCaS](https://nlp.stanford.edu/~wcmac/downloads/fracas.xml), [MED](https://github.com/verypluming/MED), CAD, and [HANS](https://github.com/tommccoy1/hans) test sets.
+You can use the [FraCaS](https://nlp.stanford.edu/~wcmac/downloads/fracas.xml), MED, CAD, and HANS test sets.
 
 ### Usage:
 ```
@@ -167,7 +195,7 @@ C&C:
 ・・・     
 ```
 
-In addition, you can use the following for [SICK](http://alt.qcri.org/semeval2014) dataset:
+In addition, you can use the following for SICK dataset:
 ### Usage:
 ```
 ./scripts/eval_sick.sh <ncores> <split> <templates.yaml>

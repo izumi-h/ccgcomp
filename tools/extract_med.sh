@@ -2,7 +2,7 @@
 
 # Usage:
 #
-# ./eval_med_gq.sh
+# ./extract_med.sh
 #
 
 # if [ ! -d MED ]; then
