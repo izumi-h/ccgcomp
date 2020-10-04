@@ -103,7 +103,7 @@ def new_degree_variable(var):
     return v
 
 
-true_preds = ['True', 'TrueP']
+true_preds = ['True', 'TrueP', '(True & True)']
 
 def remove_true(expression):
     # Remove True and TrueP
@@ -136,7 +136,7 @@ def remove_true(expression):
         left_str = str(left)
         right_str = str(right)
         if left_str in true_preds:
-            expr = remove_true(left)
+            expr = remove_true(right)
         elif right_str in true_preds:
             expr = remove_true(right)
         else:
@@ -172,6 +172,10 @@ def remove_true(expression):
         term = expression.term
         term = remove_true(term)
         expr = LambdaExpression(variable, term)
+    elif isinstance(expression, IffExpression):
+        left = remove_true(expression.first)
+        right = remove_true(expression.second)
+        expr = IffExpression(left, right)
     else:
         expr = expression
     return expr
@@ -265,7 +269,53 @@ def remove_true_(expression):
     return expr
 
 
-def take_degree_variables_for_np(formulas):
+# def take_degree_variables_for_np(formulas):
+#     vars = []
+#     for formula in formulas:
+#         if isinstance(formula, ApplicationExpression):
+#             arg = formula.argument
+#             if isinstance(arg, ApplicationExpression) and \
+#                str(arg.uncurry()[0]) == '_np':
+#                 vars.append(arg.argument)
+#     return vars
+
+
+def take_degree_constants(expr):
+    var = expr.variable
+    term = expr.term
+    if str(var)[0] == 'd':
+        formulas = get_atomic_formulas(term)
+        for formula in formulas:
+            if isinstance(formula, EqualityExpression):
+                fvar = formula.first
+                svar = formula.second
+                if isinstance(fvar, IndividualVariableExpression) and \
+                   (str(fvar) == str(var)) and \
+                   (isinstance(svar, ConstantExpression) or
+                        '_th' in str(svar)):
+                    term = str(term).replace(str(var), str(svar))
+                    if isinstance(expr, ExistsExpression):
+                        string = ' & (' + str(svar) + ' = ' + str(svar) + ')'
+                    elif isinstance(expr, AllExpression):
+                        string = '(' + str(svar) + ' = ' + str(svar) + ') -> '
+                    else:
+                        return expr
+                    term = str(term).replace(string, '')
+                    expr = lexpr(term)
+    return expr
+
+
+def subj_to_true(expr):
+    if isinstance(expr, ExistsExpression):
+        var = expr.variable
+        if str(var)[0] == 'e':
+            string = 'exists ' + str(var) + '.((Subj(' + str(var) + ') = Subj(' + str(var) + ')) & True)'
+            if str(expr) == string:
+                expr = lexpr('True')
+    return expr
+
+
+def take_degree_variables(formulas):
     vars = []
     for formula in formulas:
         if isinstance(formula, ApplicationExpression):
@@ -273,6 +323,30 @@ def take_degree_variables_for_np(formulas):
             if isinstance(arg, ApplicationExpression) and \
                str(arg.uncurry()[0]) == '_np':
                 vars.append(arg.argument)
+            if str(formula.uncurry()[0])[0] == '$':
+                var = formula.function.argument
+                if isinstance(arg, IndividualVariableExpression):
+                    vars.append(arg)
+                if isinstance(var, IndividualVariableExpression):
+                    vars.append(var)
+            if isinstance(arg, ApplicationExpression) and \
+               str(arg.uncurry()[0])[0] == '$':
+                vars.append(arg.argument)
+        elif isinstance(formula, EqualityExpression):
+            fvar = formula.first
+            svar = formula.second
+            # if isinstance(fvar, IndividualVariableExpression) and \
+            #    (isinstance(svar, ConstantExpression) or \
+            #     '_th' in str(svar)):
+            Flag = False
+            if isinstance(fvar, IndividualVariableExpression):
+                if isinstance(svar, ConstantExpression):
+                    s = str(svar).replace('_', '')
+                    Flag = s.isdigit()
+                if Flag or '_th' in str(svar):
+                    vars.append(fvar)
+        else:
+            pass
     return vars
 
 
@@ -304,7 +378,7 @@ def rename_degree_variable(expression):
         variable = expression.variable
         term = expression.term
         formulas = get_atomic_formulas(term)
-        dvars = take_degree_variables_for_np(formulas)
+        dvars = take_degree_variables(formulas)
         var = VariableExpression(variable)
         if str(var)[0] == 'z' and var in dvars:
             newvar = new_degree_variable(variable)
@@ -314,14 +388,23 @@ def rename_degree_variable(expression):
         term = term.replace(variable, newvar_expr)
         term = rename_degree_variable(term)
         expr = ExistsExpression(newvar, term)
+        expr = take_degree_constants(expr)
+        expr = subj_to_true(expr)
     elif isinstance(expression, AllExpression):
         variable = expression.variable
         term = expression.term
-        newvar = new_variable(variable)
+        formulas = get_atomic_formulas(term)
+        dvars = take_degree_variables(formulas)
+        var = VariableExpression(variable)
+        if str(var)[0] == 'z' and var in dvars:
+            newvar = new_degree_variable(variable)
+        else:
+            newvar = new_variable(variable)
         newvar_expr = VariableExpression(newvar)
         term = term.replace(variable, newvar_expr)
         term = rename_degree_variable(term)
         expr = AllExpression(newvar, term)
+        # expr = take_degree_constants(expr)
     elif isinstance(expression, LambdaExpression):
         variable = expression.variable
         term = expression.term
@@ -330,6 +413,10 @@ def rename_degree_variable(expression):
         term = term.replace(variable, newvar_expr)
         term = rename_degree_variable(term)
         expr = LambdaExpression(newvar, term)
+    elif isinstance(expression, IffExpression):
+        left = rename_degree_variable(expression.first)
+        right = rename_degree_variable(expression.second)
+        expr = IffExpression(left, right)
     # elif isinstance(expression, IndividualVariableExpression):
     #     expr = expression
     # elif isinstance(expression, EventVariableExpression):
@@ -367,8 +454,12 @@ def rename_variable(expression):
         right = rename_variable(expression.second)
         expr = ImpExpression(left, right)
     elif isinstance(expression, NegatedExpression):
-        term = rename_variable(expression.term)
-        expr = NegatedExpression(term)
+        eterm = expression.term
+        if isinstance(eterm, NegatedExpression):
+            expr = rename_variable(eterm.term)
+        else:
+            term = rename_variable(expression.term)
+            expr = NegatedExpression(term)
     elif isinstance(expression, ExistsExpression):
         variable = expression.variable
         term = expression.term
@@ -393,6 +484,10 @@ def rename_variable(expression):
         term = term.replace(variable, newvar_expr)
         term = rename_variable(term)
         expr = LambdaExpression(newvar, term)
+    elif isinstance(expression, IffExpression):
+        left = rename_variable(expression.first)
+        right = rename_variable(expression.second)
+        expr = IffExpression(left, right)
     # elif isinstance(expression, IndividualVariableExpression):
     #     expr = expression
     # elif isinstance(expression, EventVariableExpression):

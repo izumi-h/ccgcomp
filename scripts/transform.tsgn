@@ -1,11 +1,58 @@
 % Tsugeson script for comparatives
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% ex. more or less, more and more
+
+(/^conj;CC;O$/ <: (/^or$|^and$/ == /^(.+)$/#1\%con)) >1 (/^(.+)\\(.+)$/=z $, (/^(.+)$/#1\%cat=o <: /^[Mm]ore$/=x >1 /^(.+)$/=y)) . (/^more$|^less$/ == /^(.+)$/#1\%word)
+
+relabel x /^.*$/more~\%{con}~\%{word}/
+excise y y
+relabel o /^.*$/\%{cat};RB;O/
+delete z
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% ex. I pay more than the target premium.
+% comparatives of "many"
+
+NP=o <1 (NP=y <: /^N;JJR;[A-Z-]+$/=x) <2 (/^NP\\NP$/=c <1 (/^<NP\\NP>\/NP;[A-Z;-]+$/=z <: than) <2 NP)
+
+relabel x /N;JJR/<S\\NP>\\<S\\NP>;RBR/
+excise y y
+relabel z /<NP\\NP>\/NP/<<<S\\NP>\\<S\\NP>>\\<<S\\NP>\\<S\\NP>>>\/NP/
+relabel c /<<S\\NP>\\<S\\NP>>\\<<S\\NP>\\<S\\NP>>/
+relabel o /<S\\NP>\\<S\\NP>/
+
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% % med_459, 575
+% % from: (NP (DT (alien (N ate)))) (NP\NP (<NP\NP>/NP at) NP)
+% % to: (DT alien) (S\NP (S\NP ate) (<S\NP>\<S\NP> (<<S\NP>\<S\NP>>/NP at) NP))
+
+% NP=i <1 (NP=o <1 (/^NP[a-z]*$/=x <1 /^NP[a-z]*\/N;DT;[A-Z-]+$/=z <2 (N=y <1 (/^N\/N;[A-Z;-]+$/=v <: alien) <2 (/^N;VBD;O$/=u <: ate))) <2 (/^NP\\NP$/=p <1 (/^<NP\\NP>\/NP;[A-Z;-]+$/=q <: at) <2 /^NP[a-z]*$/))
+
+% move y >2 o
+% move v >2 x
+% move p >2 y
+% relabel v /N\/N/N/
+% relabel u /N/S\\NP/
+% relabel p /<S\\NP>\\<S\\NP>/
+% relabel q /<<S\\NP>\\<S\\NP>>\/NP/
+% relabel y /S\\NP/
+% relabel o S
+% relabel i S
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % fracas_005
 % from: There ((are really) NP)
-% to: There (are (reall NP))
+% to: There (are (really NP))
 
-/^S[a-z]*\\NP[a-z]*$/ <1 (/^<S[a-z]*\\NP[a-z]*>\/NP$/=w <1 (/^<S[a-z]*\\NP[a-z]*>\/NP;[A-Z;-]+$/ <: /^is$|^are$|^was$|^were$/) <2 (/^<S\\NP>\\<S\\NP>;RB;O$/=z <: /^really$/)) <2 (NP << (N <1 /^N\/N;[A-Z;-]+$/=x <2 /^N;[A-Z;-]+$/))
+% /^S[a-z]*\\NP[a-z]*$/ <1 (/^<S[a-z]*\\NP[a-z]*>\/NP$/=w <1 (/^<S[a-z]*\\NP[a-z]*>\/NP;[A-Z;-]+$/ <: /^is$|^are$|^was$|^were$/) <2 (/^<S\\NP>\\<S\\NP>;RB;O$/=z <: /^really$/)) <2 (NP << (N <1 /^N\/N;[A-Z;-]+$/=x <2 /^N;[A-Z;-]+$/))
+
+% adjoinF (N\/N=y @) x
+% move z >1 y
+% relabel z /<S\\NP>\\<S\\NP>/<N\/N>\/<N\/N>/
+% excise w w
+
+/^S[a-z]*$/ <1 /^NPthr;EX;O$/ <2 (/^S[a-z]*\\NPthr$/ <1 (/^<S[a-z]*\\NPthr>\/NP$/=w <1 /^<S[a-z]*\\NPthr>\/NP;VB[A-Z;-]+$/ <2 (/^<S\\NP>\\<S\\NP>;RB;[A-Z-]+$/=z <: /^really$/)) <2 (NP <1 (NP <: (N <1 /^N\/N;JJ[A-Z;-]+$/=x <2 /^N$|^N;[A-Z;-]+$/))))
 
 adjoinF (N\/N=y @) x
 move z >1 y
@@ -13,48 +60,20 @@ relabel z /<S\\NP>\\<S\\NP>/<N\/N>\/<N\/N>/
 excise w w
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% ex. The candy is being eaten in lovely way by my sister. (sick_trial_1754)
-% ex. The candy is being eaten by my sister. (sick_trial_3384)
-
-/^Spss\\NP$/ << (/^<S[A-Z-]*\\NP>\\<S[A-Z-]*\\NP>$/=y <1 /^<<S\\NP>\\<S\\NP>>\/NP;IN;O$/=x <2 /^NP[a-z]*[A-Z;-]*$/)
-
-relabel x /<<S\\NP>\\<S\\NP>>\/NP/<<Spss\\NP>\\<Spss\\NP>>\/NP/
-relabel y /<Spss\\NP>\\<Spss\\NP>/
-
-% sick_trial_2221
-% ex. The man is not knocked off of a horse.
-
-/^Spss\\NP$/ <1 /^Spss\\NP;[A-Z;-]+$|^Spss\\NP$/ <2 (/^<S[A-Z-]*\\NP>\\<S[A-Z-]*\\NP>$/=x <1 /^<<S\\NP>\\<S\\NP>>\/PP;IN;O$/=y <2 PP)
-
-relabel x /<Spss\\NP>\\<Spss\\NP>/
-relabel y /<<S\\NP>\\<S\\NP>>\/PP/<<Spss\\NP>\\<Spss\\NP>>\/PP/
-
-% sick_trial_2096
-% ex. A man's white car is being driven away.
-
-/^Spss\\NP$/ << /^<S\\NP>\\<S\\NP>;[A-Z;-]+$/=x
-
-relabel x /<S\\NP>\\<S\\NP>/<Spss\\NP>\\<Spss\\NP>/
-
-% % med_1_gq
-% % ex. Pluto and Uranus are directly aligned with neptune .
-
-/^Spss\\NP$/ << /^<S\\NP>\/<S\\NP>;[A-Z;-]+$/=x
-
-relabel x /<S\\NP>\/<S\\NP>/<Spss\\NP>\/<Spss\\NP>/
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % med_853
 % from: ((NP RB) VP)
 % to: (NP (RB VP))
 
-/^Sdcl$/ <1 (NP=w <1 /^NP$|^NP;/ <2 /^NP\\NP;RB;[A-Z-]+$/=z) <2 /^Sdcl\\NP$/=x
+/^S[a-z]*$/=p <1 (NP=w <1 /^NP$|^NP;/=q <2 /^NP\\NP;RB;[A-Z-]+$/=z) <2 (/^S[a-z]*\\NP$/=x <1 /[A-Z-]+;VB[A-Z;-]+/=o)
 
-adjoinF (Sdcl\\NP=y @) x
-move z >1 y
-excise w w
+% adjoinF (Sdcl\\NP=y @) x
+% move z >1 y
+% excise w w
 relabel z /NP\\NP/<S\\NP>\/<S\\NP>/
+move q >1 p
+move w >1 x
+move o >2 w
+relabel w /<S\\NP>\/NP/
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % fracas-085
@@ -71,7 +90,7 @@ relabel z /NP\\NP/
 % fracas-053
 % bug for candc & easyccg
 
-/^Sdcl\\NP$/ <1 /^<S[a-z]*\\NP>\/NP;[A-Z;-]+$/ <2 (/^NP[a-z]*$/ <1 /^NPnb\/N;[A-Z;-]+$/=q <2 (N=p <1 /^N;[A-Z;-]+$/=y <2 /^N\\N$/=x))
+/^S[a-z]*\\NP$/ <1 /^<S[a-z]*\\NP>\/NP;[A-Z;-]+$/ <2 (/^NP[a-z]*$/ <1 /^NPnb\/N;[A-Z;-]+$/=q <2 (N=p <1 /^N;[A-Z;-]+$/=y <2 /^N\\N$/=x))
 
 relabel x /NP\\NP/
 adjoinF (NP=z @) q
@@ -91,12 +110,26 @@ relabel y /N\/N/
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % from: (NP (NP[nb]/N a) (N (N/N few) (N _)))
-% to: (NP (NP[nb]/N a~few) (N _))
+% to: (NP (NP[nb]/N a~few|the~few) (N _))
 % fracas-011
 
-/NP/ < (/NP[a-z]*\/N/ < /^A|a$/=x) < (N=y < (/N\/N/=z < few))
+/NP/ < (/NP[a-z]*\/N/ <: /^A|a$/=x) < (N=y < (/N\/N/=z < few))
 
 relabel x /a~few/
+excise y y
+delete z
+
+% quite a~few
+
+NP=x <1 /^NP\/NP;PDT;[A-Z-]+$/=y <2 (/^NP[a-z]*$/=z <1 (/^NP[a-z]*\/N;DT;[A-Z-]+$/ <: /^a~few$/) <2 /^N$|^N;[A-Z;-]+$/=u)
+
+move y >1 z
+move u >2 x
+relabel z /NP\/N/
+
+/NP/ < (/NP[a-z]*\/N/ <: /^[T|t]he$/=x) < (N=y < (/N\/N/=z < few))
+
+relabel x /the~few/
 excise y y
 delete z
 
@@ -105,11 +138,23 @@ delete z
 % to: (NP (NP/N a~lot~of) (N _))
 % fracas-030
 
-NP <1 (NP=y < (/^NP[a-z]*\/N;[A-Z;-]+$/ <: /^a$/) < (/^N;[A-Z;-]+$/ <: /^lot$/)) <2 (/^NP\\NP$/=x <1 (/^<NP\\NP>\/NP;[A-Z;-]+$/=z <: /^of$/=w) <2 NP=np)
+% NP <1 (NP=y < (/^NP[a-z]*\/N;[A-Z;-]+$/ <: /^a$/) < (/^N;[A-Z;-]+$/ <: /^lot$/)) <2 (/^NP\\NP$/=x <1 (/^<NP\\NP>\/NP;[A-Z;-]+$/=z <: /^of$/=w) <2 (NP=np <: N))
+NP=p <1 (NP=d <1 (/^NP[a-z]*\/N;DT;[A-Z-]+$/ <: a=x) <2 (/^N;[A-Z;-]+$/=z <: lot)) <2 (/^NP\\NP$/=t <1 (/^<NP\\NP>\/NP;[A-Z;-]+$/ <: of) <2 (NP <: /^N$|^N;[A-Z;-]+$/=y))
+
+relabel x /a~lot~of/
+delete z
+move y >2 d
+delete t
+excise p p
+
+% ex. a lot of the expensive wines
+
+NP <1 (NP=y < (/^NP[a-z]*\/N;[A-Z;-]+$/ <: /^a$/) < (/^N;[A-Z;-]+$/ <: /^lot$/)) <2 (/^NP\\NP$/=x <1 (/^<NP\\NP>\/NP;[A-Z;-]+$/=z <: /^of$/) <2 (NP=np <1 (/^NP[a-z]*\/N;DT;O$/ <: /^[A-Za-z_]+$/=w) <2 /^N$|^N;NN/))
 
 delete y
 excise x x
-relabel z /NP\/N;DT;O/
+%relabel z /NP\/N;DT;O/
+delete z
 relabel w /a~lot~of/
 excise np np
 
@@ -135,6 +180,98 @@ delete z
 excise w w
 excise v v
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% hans_26090
+% from: (whether (or not)) = whether
+% to: whether~or~not
+
+/^<S\/S>\/S[a-z]*$/=z <1 (/^<S\/S>\/S[a-z]*;[A-Z;-]+$/ <: /^[W|w]hether$/=x) <2 (/^<S\/S>\\<S\/S>$/=y <1 (/^conj;CC;O$/ <: /^or$/) <2 (/^S\/S;RB;O$/ <: /^not$/))
+
+relabel x /whether~or~not/
+delete y
+excise z z
+
+% hans_26064
+
+/^<S\/S>\/S[a-z]*$/=z <1 (/^<S\/S>\/S[a-z]*;[A-Z;-]+$/ <: /^[W|w]hether$/=x) <2 (/^<S\/S>\\<S\/S>$/=y <1 (/^S\/S;CC;O$/ <: /^or$/) <2 (/^<S\/S>\\<S\/S>;RB;O$/ <: /^not$/))
+
+relabel x /whether~or~not/
+delete y
+excise z z
+
+% hans_26153
+
+/^S[a-zX]*\/S[a-zX]*$/ <1 (NP=q <1 (NP=w <1 (/^N;[A-Z;-]+$/ <: /^[Ww]hether$/)) <2 (/^NP\\NP$/=p <1 (/^conj;CC;O$/=y <: or=z) <2 (NP=i <1 (NP=u <1 (/^NP\/NP;RB;O$/=d <: not)) <2 (/^NP\\NP$/=x <: /^S[a-z]*\\NP$|^S[a-z]*\\NP;VB[A-Z;-]+$/))))
+
+excise x x
+relabel y /conj/<S\/S>\/S/
+relabel z /whether~or~not/
+delete w
+excise q q
+delete d
+relabel i S
+relabel p /S\/S/
+excise u u
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% hans_20001
+% for depccg & candc
+% from: (S (S (S/S ((S/S)/NP in (NP (N case)))) S) S\S)
+% to: (S (S/S ((S/S)/S in~case) S) S)
+
+/^S[a-z]*$/ <1 (/^S[a-z]*$/=r <1 (/^S[A-Z]*\/S[A-Z]*$/=y <1 (/^<S\/S>\/NP;IN;O$/=t <: /^[I|i]n$/=x) <2 (NP=z <: (/^N;NN;O$/ <: /^case$/))) <2 /^S[a-z]*$/) <2 /^S[a-z]*\\S[a-z]*$/=o
+
+relabel x /in~case/
+excise y y
+delete z
+relabel t /<S\/S>\/NP/<S\/S>\/S/
+relabel r /S\/S/
+relabel o S
+
+% for easyccg
+
+/^S[a-z]*$/ <1 (/^S\/S$/=y <1 (/^<S\/S>\/NP;IN;O$/=t <: /^[I|i]n$/=x) <2 (NP=z <: (/^N;NN;O$/ <: /^case$/))) <2 (/^S[a-z]*$/ <1 /^S[a-z]*$/=u <2 /^S[a-z]*\\S[a-z]*$/=o)
+
+relabel x /in~case/
+delete z
+move u >2 y
+relabel t /<S\/S>\/NP/<S\/S>\/S/
+relabel o S
+
+% from: (S (S/S in case) S)
+
+/^S[a-z]*$/ <1 (/^S[A-Z]*\/S[A-Z]*$/=y <1 (/^<S\/S>\/NP;IN;O$/=t <: /^[I|i]n$/=x) <2 (NP=z <: (/^N;NN;O$/ <: /^case$/))) <2 (/^S[a-z]*$/ <1 (/^S[a-z]*$/=i <1 /^NP[a-z]*$/=q <2 (/^S[a-z]*\\NP$/=l <1 /^<S[a-z]*\\NP>\/NP;VB[A-Z;-]+$/=b <2 (/^NP[a-z]*$/=p <1 /^NP[a-z]*$/=u <2 (/^NP[a-z]*\\NP[a-z]*$/=e <: /^S[a-z]*$/)))))
+
+relabel x /in~case/
+delete z
+relabel t /<S\/S>\/NP/<S\/S>\/S/
+excise e e
+adjoinF (S\\NP=s @) b
+move u >2 s
+excise p p
+adjoinF (S=w @) s
+move q >1 w
+move w >2 y
+excise l l
+excise i i
+
+% from: (S (S/S in case) S)
+
+/^S[a-z]*$/ <1 (/^S[A-Z]*\/S[A-Z]*$/=y <1 (/^<S\/S>\/NP;IN;O$/=t <: /^[I|i]n$/=x) <2 (NP=z <: (/^N;NN;O$/ <: /^case$/))) <2 (/^S[a-z]*$/=i <1 /^NP[a-z]*$/=q <2 (/^S[a-z]*\\NP$/=l <1 /^<S[a-z]*\\NP>\/NP;VB[A-Z;-]+$/=b <2 (/^NP[a-z]*$/=p <1 /^NP[a-z]*$/=u <2 (/^NP[a-z]*\\NP[a-z]*$/=e <: /^S[a-z]*$/))))
+
+relabel x /in~case/
+delete z
+relabel t /<S\/S>\/NP/<S\/S>\/S/
+excise e e
+adjoinF (S\\NP=s @) b
+move u >2 s
+excise p p
+adjoinF (S=w @) s
+move q >1 w
+move w >2 y
+excise l l
+excise i i
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % from: ((N/N)/(N/N) (((N/N)/(N/N))/(S[asup=true]\NP) at) (S[asup=true]\NP least))
 % to: ((NP/N)/(N/N) (((NP/N)/(N/N))/(S[asup=true]\NP) at) (S[asup=true]\NP least))
@@ -148,9 +285,9 @@ relabel y /<NP\/N>\/<N\/N>/
 relabel x /<<N\/N>\/<N\/N>>\/<Sasup\\NP>/<<NP\/N>\/<N\/N>>\/<Sasup\\NP>/
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
 % from: ((N/N)/(N/N) at (N/N ((N/N)/(N/N) most) (N/N _)))
 % to: ((NP/N)/(N/N) (((NP/N)/(N/N))/(S[asup=true]\NP) at) (S[asup=true]\NP most))
+
 % fracas-032
 
 NP=x <: (N=y <1 (/^N\/N$/=z <1 (/^<N\/N>\/<N\/N>;[A-Z;-]+$/=u <: /^[A|a]t$/) <2 (/^N\/N$/=v < (/^<N\/N>\/<N\/N>;[A-Z;-]+$/=l <: /^most$/=h) < /^N\/N;[A-Z;-]+$/)) <2 /^N$|^N;[A-Z;-]+$/)
@@ -165,7 +302,7 @@ relabel h /at~most/
 
 % fracas-064
 
-/^NP$/=x < (/^N$/=y < (/N\/N/=z < /^[A|a]t$/) < (/^N$/=u < (/N\/N/=v < (/<N\/N>\/<N\/N>/=l < /^most$/=h) < /N\/N/) < /N/))
+NP=x < (N=y < (/N\/N/=z < /^[A|a]t$/) < (N=u < (/N\/N/=v < (/<N\/N>\/<N\/N>/=l < /^most$/=h) < /N\/N/) < /N/))
 
 excise x x
 excise y y
@@ -177,7 +314,7 @@ relabel h /at~most/
 
 % med_948_gq
 
-/^S\/S$/=z < (/<S\/S>\/NP/=e <: /^[A|a]t$/) < (/^NP$/=x < (/^N$/=y < (/N\/N/=v < (/<N\/N>\/<N\/N>/=l <: /^most$/=h))))
+/^S\/S$/=z < (/<S\/S>\/NP/=e <: /^[A|a]t$/) < (NP=x <: (N=y < (/N\/N/=v < (/<N\/N>\/<N\/N>/=l <: /^most$/=h))))
 
 excise z z
 delete e
@@ -187,20 +324,37 @@ relabel v /NP\/N/
 relabel l /<NP\/N>\/<N\/N>/
 relabel h /at~most/
 
-% cad_115
+% cad_125
+% bag for easyccg
 
-Sdcl <1 (/^S\/S;IN;[A-Z-]+$/=x <: /^[A|a]t$/) <2 (Sdcl=y <1 (NP <: (N=g <1 (/^N\/N$/=o <1 (/^<N\/N>\/<N\/N>;[A-Z;-]+$/=k <: /^most$/=z) <2 /^N\/N;CD;[A-Z-]+$/) <2 /^N$|^N;[A-Z;-]+$/)) <2 /^Sdcl\\NP;[A-Z;-]+$/)
+(/^S\/S$/=i <1 (/^<S\/S>\/NP;[A-Z;-]+$/=l <: /^[A|a]t$/=h) <2 (NP <: (/^N;[A-Z;-]+$/ <: /^most$/))) $. (/^S[a-z]*$/=f <1 (NP=q <: (N=p <1 /^N\/N;CD;[A-Z-]+$/=c <2 /^N$|^N;[A-Z;-]+$/=n)))
+
+relabel l /<NP\/N>\/<N\/N>/
+relabel h /at~most/
+move l >1 p
+move n >2 q
+relabel p /NP\/N/
+delete i
+excise f f
+
+% cad_115
+% bag for easyccg
+
+/^S[a-z]*$/ <1 (/^S\/S;IN;[A-Z-]+$/=x <: /^[A|a]t$/) <2 (/^S[a-z]*$/=y <1 (NP=o <: (N=g <1 (/^N\/N;[A-Z;-]+$/=k <: /^most$/=z) <2 (N=q <1 /^N\/N;CD;[A-Z-]+$/ <2 /^N$|^N;[A-Z;-]+$/=p))) <2 /^S[a-z]*\\NP$/)
 
 delete x
 excise y y
 relabel z /at~most/
-relabel k /<N\/N>\/<N\/N>/<NP\/N>\/<N\/N>/
-relabel o /NP\/N/
+relabel k /N\/N/<NP\/N>\/<N\/N>/
 excise g g
+relabel q /NP\/N/
+move k >1 q
+move p >2 o
 
 % cad_121
 
-/^Sdcl\\NP$/ <1 /^Sdcl\\NP;[A-Z;-]+$/=e <2 (/^<S\\NP>\\<S\\NP>$/=p <1 (/^<<S\\NP>\\<S\\NP>>\/NP;[A-Z;-]+$/=x <: /^at$/) <2 (NP <: (N=o <1 (/^N\/N$/=k <1 (/^<N\/N>\/<N\/N>;[A-Z;-]+$/=z <: /^most$/=y) <2 /^N\/N;CD;[A-Z-]+$/) <2 /^N$|^N;[A-Z;-]+$/)))
+% /^S[a-z]*\\NP$/ <1 /^Sdcl\\NP;[A-Z;-]+$/=e <2 (/^<S\\NP>\\<S\\NP>$/=p <1 (/^<<S\\NP>\\<S\\NP>>\/NP;[A-Z;-]+$/=x <: /^at$/) <2 (NP <: (N=o <1 (/^N\/N$/=k <1 (/^<N\/N>\/<N\/N>;[A-Z;-]+$/=z <: /^most$/=y) <2 /^N\/N;CD;[A-Z-]+$/) <2 /^N$|^N;[A-Z;-]+$/)))
+/^S[a-z]*\\NP$/ <1 (/^(.+);(.+);(.+)$/#1\%cat#2\%pos#3\%ent=e !== /\/NP/) <2 (/^<S\\NP>\\<S\\NP>$/=p <1 (/^<<S\\NP>\\<S\\NP>>\/NP;[A-Z;-]+$/=x <: /^at$/) <2 (NP <: (N=o <1 (/^N\/N$/=k <1 (/^<N\/N>\/<N\/N>;[A-Z;-]+$/=z <: /^most$/=y) <2 /^N\/N;CD;[A-Z-]+$/) <2 /^N$|^N;[A-Z;-]+$/)))
 
 delete x
 relabel y /at~most/
@@ -208,13 +362,26 @@ relabel z /<N\/N>\/<N\/N>/<NP\/N>\/<N\/N>/
 relabel k /NP\/N/
 excise o o
 excise p p
-relabel e /Sdcl\\NP/<Sdcl\\NP>\/NP/
+% relabel e /Sdcl\\NP/<Sdcl\\NP>\/NP/
+% relabel e /\%{cat}/<\%{cat}>\/NP/
+relabel e /^.*$/<\%{cat}>\/NP;\%{pos};\%{ent}/
+
+% cad_124
+
+/^S[a-z]*$/=x <1 (/^S\/S;[A-Z;-]+$/=y <: /^[A|a]t$/) <2 (/^S[a-z]*$/ <1 (NP <: (N=o <1 (/^N\/N$/=k <1 (/^<N\/N>\/<N\/N>;[A-Z;-]+$/=z <: /^most$/=a) <2 /^N\/N;CD;[A-Z-]+$/) <2 /^N$|^N;[A-Z;-]+$/)))
+
+excise x x
+delete y
+relabel z /<N\/N>\/<N\/N>/<NP\/N>\/<N\/N>/
+relabel a /at~most/
+excise o o
+relabel k /NP\/N/
 
 % ex. Bob saw at most two students .
 % from: (at (most (two students)))
 % tp: (((at most) two) students)
 
-/^Sdcl\\NP$/ <1 /^Sdcl\\NP;[A-Z;-]+$/=e <2 (/^<S\\NP>\\<S\\NP>$/=p <1 (/^<<S\\NP>\\<S\\NP>>\/NP;[A-Z;-]+$/=x <: /^at$/) <2 (NP=i <: (N=o <1 (/^N\/N;[A-Z;-]+$/=k <: /^most$/=y) <2 (N=z <1 /^N\/N;CD;[A-Z-]+$/ <2 /^N$|^N;[A-Z;-]+$/=q))))
+/^S[a-z]*\\NP$/ <1 (/^(.+);(.+);(.+)$/#1\%cat#2\%pos#3\%ent=e !== /\/NP/) <2 (/^<S\\NP>\\<S\\NP>$/=p <1 (/^<<S\\NP>\\<S\\NP>>\/NP;[A-Z;-]+$/=x <: /^at$/) <2 (NP=i <: (N=o <1 (/^N\/N;[A-Z;-]+$/=k <: /^most$/=y) <2 (N=z <1 /^N\/N;CD;[A-Z-]+$/ <2 /^N$|^N;[A-Z;-]+$/=q))))
 
 delete x
 relabel y /at~most/
@@ -224,22 +391,33 @@ move q >2 i
 relabel z /NP\/N/
 excise o o
 excise p p
-relabel e /Sdcl\\NP/<Sdcl\\NP>\/NP/
+% relabel e /Sdcl\\NP/<Sdcl\\NP>\/NP/
+relabel e /^.*$/<\%{cat}>\/NP;\%{pos};\%{ent}/
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % from: (NP (N (N/N Most) (N _)))
 % to: (NP (NP/N Most) (N _))
 % fracas-010
 
-/NP/ < (N=x < (/^N\/N;[A-Z;-]+$/=y <: /^[M|m]ost$/) < /N/)
+% /NP/ < (N=x < (/^N\/N;[A-Z;-]+$/=y <: /^[M|m]ost$/) < /N/)
+/NP/ <: (N=x <1 (/^N\/N;[A-Z;-]+$/=y <: /^[M|m]ost$/) <2 /N/)
 
 excise x x
 relabel y /NP\/N/
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% one of nouns
+% fracas_014
+
+NP <1 (/^NP[a-z]*$/=z <: /^N;CD;[A-Z-]+$/) <2 (/^NP\\NP$/=y <1 (/^<NP\\NP>\/NP;[A-Z;-]+$/=x <: /^of$/) <2 /^NP[a-z]*$/)
+
+relabel x /<NP\\NP>\/NP/NP\/NP/
+relabel y NP
+relabel z /NP/NP\/NP/
+
 % many/some/none of nouns
 
-NP <1 /^NP[a-z]*$|^NP;[A-Z;-]+$/=z <2 (/^NP\\NP$/=y <1 (/^<NP\\NP>\/NP;[A-Z;-]+$/=x <: /^of$/) <2 /^NP[a-z]*$/) << /^[F|f]ew$|^[M|m]any$|^[L|l]ittle$|^[S|s]ome$|^[N|n]one$|^[O|o]nly$|^[L|l]ess$|^[M|m]ore$|^[F|f]ewer$/
+NP <1 (/^NP[a-z]*$|^NP;[A-Z;-]+$/=z << (/^N$|^N;[A-Z;-]+$/ <: /^[F|f]ew$|^[M|m]any$|^[L|l]ittle$|^[S|s]ome$|^[N|n]one$|^[O|o]nly$|^[L|l]ess$|^[M|m]ore$|^[F|f]ewer$/)) <2 (/^NP\\NP$/=y <1 (/^<NP\\NP>\/NP;[A-Z;-]+$/=x <: /^of$/) <2 /^NP[a-z]*$/)
 
 relabel x /<NP\\NP>\/NP/NP\/NP/
 relabel y NP
@@ -258,8 +436,8 @@ relabel x /^N;/N\/N;/
 /^NP\/NP$/ <: (N=b <1 (/^N\/N;[A-Z;-]+$|^N\/N$/=a <: /^[O|o]nly$|^[E|e]xactly$|^[J|j]ust$/) <2 /^N;CD;[A-Z-]+$/=p)
 
 relabel p /N;/N\/N;/
-relabel a /N\/N/<N\/N>\/<N\/N>/
-relabel b /N/N\/N/
+relabel a /N\/N/<Nnm\/N>\/<N\/N>/
+relabel b /N/Nnm\/N/
 
 % not many of nouns (med_984_gq)
 % very few of nouns (med_1000_gq)
@@ -293,7 +471,9 @@ excise z z
 % no~any
 % med_15_gq
 
-Sdcl << /^[F|f]ew|^[N|n]o|^[L|l]ess$|^without$/ << (/^NPnb\/N;DT;O$/=x <: /^any$/)
+% Sdcl << /^[F|f]ew|^[N|n]o|^[L|l]ess$|^without$/ << (/^NPnb\/N;DT;O$/=x <: /^any$/)
+% Sdcl << (/^[F|f]ew|^[N|n]o$|^[N|n]ot$|^[N|n]obody$|^[L|l]ess$|^without$/ << (/^NPnb\/N;DT;O$/=x <: /^any$/))
+/^S[a-z]*$/ << /^[F|f]ew|^[N|n]o$|^n't$|^[N|n]ot$|^[N|n]obody$|^[L|l]ess$|^without$/ << (/^NPnb\/N;DT;O$/=x <: /^any$/) !<< /^S[a-z]*$/
 
 relabel x /NPnb\/N/NPnpi\/N/
 
@@ -323,7 +503,7 @@ relabel o /Sadj\\NP/
 % fracas-242
 % than + measure phrase
 
-/<S[a-z]*\\NP>\\<S[a-z]*\\NP>/ <1 (/^<<S[a-z]*\\NP>\\<S[a-z]*\\NP>>\/NP;IN;[A-Z-]+$/=y < /^than$|^as$/) <2 (NP=x <: (N <1 /^N\/N;CD;[A-Z-]+$/ <2 (/^N;[A-Z;-]+$/ <: /^MIPS$|^feet$/)))
+/^<S[a-z]*\\NP>\\<S[a-z]*\\NP>$/ <1 (/^<<S[a-z]*\\NP>\\<S[a-z]*\\NP>>\/NP;IN;[A-Z-]+$/=y <: /^than$|^as$/) <2 (NP=x <: (N <1 /^N\/N;CD;[A-Z-]+$/ <2 (/^N;[A-Z;-]+$/ <: /^MIPS$|^feet$/)))
 
 relabel x /NPdeg/
 relabel y /<<Sadj\\NP>\\<Sadj\\NP>>\/NPdeg/
@@ -344,17 +524,43 @@ delete d
 % relabel m /more~than/
 relabel n /Sadj\\NP/<<<Sadj\\NP>\/<Sadj\\NP>>\/<<Sadj\\NP>\/<Sadj\\NP>>>\/<<<Sadj\\NP>\/<Sadj\\NP>>\/<<Sadj\\NP>\/<Sadj\\NP>>>/
 
-/^<<Sadj\\NP>\/<Sadj\\NP>>\/<<Sadj\\NP>\/<Sadj\\NP>>$/ <1 (/^<<<Sadj\\NP>\/<Sadj\\NP>>\/<<Sadj\\NP>\/<Sadj\\NP>>>\/<<<Sadj\\NP>\/<Sadj\\NP>>\/<<Sadj\\NP>\/<Sadj\\NP>>>;[A-Z;-]+$/ <: /^more$/=x) <2 /^<<Sadj\\NP>\/<Sadj\\NP>>\/<<Sadj\\NP>\/<Sadj\\NP>>;[A-Z;-]+$/
+/^<<Sadj\\NP>\/<Sadj\\NP>>\/<<Sadj\\NP>\/<Sadj\\NP>>$/ <1 (/^<<<Sadj\\NP>\/<Sadj\\NP>>\/<<Sadj\\NP>\/<Sadj\\NP>>>\/<<<Sadj\\NP>\/<Sadj\\NP>>\/<<Sadj\\NP>\/<Sadj\\NP>>>;[A-Z;-]+$/ <: /^more$|^fewer$|^less$/#1\%word=x) <2 /^<<Sadj\\NP>\/<Sadj\\NP>>\/<<Sadj\\NP>\/<Sadj\\NP>>;[A-Z;-]+$/
 
-relabel x /more~than/
+% relabel x /more~than/
+relabel x /^.*$/\%{word}~than/
 
-/^<<Sadj\\NP>\/<Sadj\\NP>>\/<<Sadj\\NP>\/<Sadj\\NP>>$/ <1 (/^<<<Sadj\\NP>\/<Sadj\\NP>>\/<<Sadj\\NP>\/<Sadj\\NP>>>\/<<<Sadj\\NP>\/<Sadj\\NP>>\/<<Sadj\\NP>\/<Sadj\\NP>>>;[A-Z;-]+$/ <: /^less$/=x) <2 /^<<Sadj\\NP>\/<Sadj\\NP>>\/<<Sadj\\NP>\/<Sadj\\NP>>;[A-Z;-]+$/
+% /^<<Sadj\\NP>\/<Sadj\\NP>>\/<<Sadj\\NP>\/<Sadj\\NP>>$/ <1 (/^<<<Sadj\\NP>\/<Sadj\\NP>>\/<<Sadj\\NP>\/<Sadj\\NP>>>\/<<<Sadj\\NP>\/<Sadj\\NP>>\/<<Sadj\\NP>\/<Sadj\\NP>>>;[A-Z;-]+$/ <: /^less$/=x) <2 /^<<Sadj\\NP>\/<Sadj\\NP>>\/<<Sadj\\NP>\/<Sadj\\NP>>;[A-Z;-]+$/
 
-relabel x /less~than/
+% relabel x /less~than/
 
-/^<<Sadj\\NP>\/<Sadj\\NP>>\/<<Sadj\\NP>\/<Sadj\\NP>>$/ <1 (/^<<<Sadj\\NP>\/<Sadj\\NP>>\/<<Sadj\\NP>\/<Sadj\\NP>>>\/<<<Sadj\\NP>\/<Sadj\\NP>>\/<<Sadj\\NP>\/<Sadj\\NP>>>;[A-Z;-]+$/ <: /^fewer$/=x) <2 /^<<Sadj\\NP>\/<Sadj\\NP>>\/<<Sadj\\NP>\/<Sadj\\NP>>;[A-Z;-]+$/
+% /^<<Sadj\\NP>\/<Sadj\\NP>>\/<<Sadj\\NP>\/<Sadj\\NP>>$/ <1 (/^<<<Sadj\\NP>\/<Sadj\\NP>>\/<<Sadj\\NP>\/<Sadj\\NP>>>\/<<<Sadj\\NP>\/<Sadj\\NP>>\/<<Sadj\\NP>\/<Sadj\\NP>>>;[A-Z;-]+$/ <: /^fewer$/=x) <2 /^<<Sadj\\NP>\/<Sadj\\NP>>\/<<Sadj\\NP>\/<Sadj\\NP>>;[A-Z;-]+$/
 
-relabel x /fewer~than/
+% relabel x /fewer~than/
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% 6 feet Adj
+% from: Sadj\NP ((NP (N 6 feet)) <Sadj\NP>\NP;JJ)
+% to: Sadj\NP ((<Sadj\NP>\\<Sadj\NP>  6 feet) <Sadj\NP>;JJ)
+
+/^Sadj\\NP$/ <1 (NP=x <: (N=y <1 /^N\/N;CD;[A-Z-]+$/=d <2 /^N;[A-Z;-]+$/=z)) <2 /^<Sadj\\NP>\\NP;JJ;(POS$|NEG$|POS-INT$|NEG-INT)$/=a
+
+relabel x /<Sadj\\NP>\/<Sadj\\NP>/
+excise y y
+relabel d /N\/N/<<Sadj\\NP>\/<Sadj\\NP>>\/<<Sadj\\NP>\/<Sadj\\NP>>/
+relabel z /N;/<Sadj\\NP>\/<Sadj\\NP>;/
+relabel a /<Sadj\\NP>\\NP/Sadj\\NP/
+
+% cad_026
+
+/^S[a-z]*\\NP$/ <1 /^<S[a-z]*\\NP>\/NP;VB[A-Z;-]+$/=x <2 (NP=y <1 (NP=p <: /^N;CD;[A-Z-]+$/=z) <2 (/^NP\\NP$/=q <: (/^Sadj\\NP$/=a <1 /^<Sadj\\NP>\/<Sadj\\NP>;[A-Z-]+;I-QUANTITY$/=c <2 /^Sadj\\NP;JJ;(POS$|NEG$|POS-INT$|NEG-INT)$/)))
+
+relabel x /\/NP/\/<Sadj\\NP>/
+relabel y /Sadj\\NP/
+relabel z /N;/<<Sadj\\NP>\/<Sadj\\NP>>\/<<Sadj\\NP>\/<Sadj\\NP>>;/
+relabel p /<Sadj\\NP>\/<Sadj\\NP>/
+move c >2 p
+excise q q
+excise a a
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % RB 6 feet Adj
@@ -371,30 +577,30 @@ relabel p /<N\/N>\/<N\/N>/<<<Sadj\\NP>\/<Sadj\\NP>>\/<<Sadj\\NP>\/<Sadj\\NP>>>\/
 relabel q /N\/N/<<Sadj\\NP>\/<Sadj\\NP>>\/<<Sadj\\NP>\/<Sadj\\NP>>/
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% fracas-214,215
 % compound nouns
-% legal_authority
+% fracas-214,215
+% legal_authority, law_lecturer, Ancient_Greek
 
-N=y < (/^N\/N;[A-Z;-]+$/=z < /^legal$/) < (/^N;[A-Z;-]+$/ < /^authorities$/=x)
-
-excise y y
-relabel x /legal_authority/
-delete z
-
-% law_lecturer
-
-N=y < (/^N\/N;[A-Z;-]+$/=z < /^law$/) < (/^N;[A-Z;-]+$/ < /^lecturers$/=x)
+N=y <1 (/^N\/N;[A-Z;-]+$/=z <: /^legal$|^law$|^Ancient$/) <2 (/^N;[A-Z;-]+$/ <: /^authorities$|^lecturers$|^Greek$/=x)
 
 excise y y
-relabel x /law_lecturer/
+relabel x /authorities/legal_authority/
+relabel x /lecturers/law_lecturer/
+relabel x /Greek/Ancient_Greek/
 delete z
 
-% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% % law_lecturer
+
+% N=y <1 (/^N\/N;[A-Z;-]+$/=z <: law) <2 (/^N;[A-Z;-]+$/ <: lecturers=x)
+
+% excise y y
+% relabel x /law_lecturer/
+% delete z
+
 % % fracas-095,096
-% % compound nouns
 % % Ancient_Greek
 
-% N=y <1 (/N\/N;[A-Z;-]+$/=z <: /^Ancient$/) <2 (/^N;[A-Z;-]+$/ <: /^Greek/=x)
+% N=y <1 (/^N\/N;[A-Z;-]+$/=z <: Ancient) <2 (/^N;[A-Z;-]+$/ <: Greek=x)
 
 % excise y y
 % relabel x /Ancient_Greek/
@@ -418,6 +624,43 @@ relabel x /<N\/N>\/<N\/N>/<<N\/N>\/<N\/N>>\/<<N\/N>\/<N\/N>>/
 relabel y /N\/N/<N\/N>\/<N\/N>/
 relabel z /<N\/N>\/<N\/N>/
 
+% ex. John is a exactly 5 feet tall boy .
+
+/^NP[a-z]*$/ <1 /^NPnb\/N;DT;[A-Z-]+$/ <2 (N <1 (/^N\/N$/=z <1 /^<N\/N>\/<N\/N>;RB;[A-Z-]+$/=x <2 /^N\/N;CD;[A-Z-]+$/=y) <2 (N=u <1 /^N\/N;[A-Z;-]+$/=f <2 (N=o <1 /^N\/N;JJ;[A-Z-]+$/=a <2 /^N$|^N;[A-Z;-]+$/)))
+
+relabel z /<<N\/N>\/<N\/N>>\/<<N\/N>\/<N\/N>>/
+adjoinF (<N\/N>\/<N\/N>=e @) z
+move f >2 e
+relabel f /N\/N/<N\/N>\/<N\/N>/
+relabel y /N\/N/<<N\/N>\/<N\/N>>\/<<N\/N>\/<N\/N>>/
+relabel x /<N\/N>\/<N\/N>/<<<N\/N>\/<N\/N>>\/<<N\/N>\/<N\/N>>>\/<<<N\/N>\/<N\/N>>\/<<N\/N>\/<N\/N>>>/
+adjoinF (N\/N=g @) e
+move a >2 g
+excise u u
+excise o o
+
+% ex. They are 2 cm tall boys.
+% from: (NP 2 (cm (tall boys)))
+% to: (N (N/N (<N/N>/<N/N> 2 cm) (N/N tall)) (N boy))
+
+NP <: (N=y <1 /^N\/N$|^N\/N;CD;[A-Z-]+$/=p <2 (N=o <1 /^N\/N;[A-Z;-]+$/=h <2 (N=q <1 /^N\/N;JJ;[A-Z-]+$/=z <2 /^N$|^N;[A-Z;-]+$/=x)))
+
+move x >3 y
+move z >3 o
+move p >1 q
+move h >2 q
+relabel q /<N\/N>\/<N\/N>/
+relabel p /N\/N/<<N\/N>\/<Nadj\/N>>\/<<N\/N>\/<Nadj\/N>>/
+relabel h /N\/N/<N\/N>\/<Nadj\/N>/
+relabel o /N\/N/
+
+% ex. They are about 2 cm tall boys.
+
+/^<<N\/N>\/<Nadj\/N>>\/<<N\/N>\/<Nadj\/N>>$/ <1 /^<N\/N>\/<N\/N>;RB;[A-Z-]+$/=x <2 /^N\/N;CD;[A-Z-]+$/=y
+
+relabel x /N\/N/<<N\/N>\/<Nadj\/N>>\/<<N\/N>\/<Nadj\/N>>/
+relabel y /N\/N/<<N\/N>\/<Nadj\/N>>\/<<N\/N>\/<Nadj\/N>>/
+
 % ex. John is a much more expensive car than Bob .
 
 /^NP[a-z]*$/ <1 /^NPnb\/N;DT;[A-Z-]+$/ <2 (N <1 (/^N\/N$/ <1 /^N\/N;RB;[A-Z-]+$|^N\/N$/=x <2 (/^N\/N$/ <1 (/^<N\/N>\/<N\/N>;RBR;O$/ <: /^more$/) <2 /^N\/N;(JJ|JJR);(POS$|NEG$|POS-INT$|NEG-INT)$/)) <2 /^N$|^N;[A-Z;-]+$/)
@@ -433,7 +676,7 @@ relabel y /N\/N/<N\/N>\/<N\/N>/
 
 % ex. John won many more cars than Bob lost.
 
-/^S[a-z]*\\NP$/ <1 (/^<S[a-z]*\\NP>\/NP;[A-Z;-]+$/=v !<: /^is$|^are$|^was$|^were$/) <2 (NP=z <1 (NP <: (N <1 (/^N\/N$/ <1 /^N\/N;[A-Z;-]+$/=x <2 (/^N\/N;[A-Z;-]+$/ <: /^more$/)) <2 /^N$|^N;[A-Z;-]+$/)) <2 (/^NP\\NP$/=w <1 (/^<NP\\NP>\/Sdcl;[A-Z;-]+$/ <: /^than$/)))
+/^S[a-z]*\\NP$/ <1 (/^<S[a-z]*\\NP>\/NP;[A-Z;-]+$/=v !<: /^is$|^are$|^was$|^were$/) <2 (NP=z <1 (NP <: (N <1 (/^N\/N$/ <1 /^N\/N;[A-Z;-]+$/=x <2 (/^N\/N;[A-Z;-]+$/ <: /^more$/)) <2 /^N$|^N;[A-Z;-]+$/)) <2 (/^NP\\NP$/=w <1 (/^<NP\\NP>\/S[a-z]*;[A-Z;-]+$/ <: /^than$/)))
 
 relabel x /N\/N/<N\/N>\/<N\/N>/
 
@@ -442,12 +685,12 @@ relabel x /N\/N/<N\/N>\/<N\/N>/
 
 /^S[a-z]*\\NP$/ <1 (/^<S[a-z]*\\NP>\/NP;[A-Z;-]+$/=v !<: /^is$|^are$|^was$|^were$/) <2 (NP=z <1 (NP=x <: (N=n < (/N\/N/=m $. /^N;[A-Z;-]+$/))) <2 (/^NP\\NP$/=w < (/^<NP\\NP>\/NP;[A-Z;-]+$/=y < /^than$/)))
 
-relabel z /<Sdcl\\NP>\\<<Sdcl\\NP>\/NP>/
+relabel z /<S\\NP>\\<<S\\NP>\/NP>/
 excise x x
 relabel n /NPadj/
 relabel m /N\/N/NPadj\/N/
-relabel y /<NP\\NP>\/NP/<<<Sdcl\\NP>\\<<Sdcl\\NP>\/NP>>\\NPadj>\/NP/
-relabel w /NP\\NP/<<Sdcl\\NP>\\<<Sdcl\\NP>\/NP>>\\NPadj/
+relabel y /<NP\\NP>\/NP/<<<S\\NP>\\<<S\\NP>\/NP>>\\NPadj>\/NP/
+relabel w /NP\\NP/<<S\\NP>\\<<S\\NP>\/NP>>\\NPadj/
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % fracas-243
@@ -460,25 +703,46 @@ relabel p /N\/N/NPadj\/N/
 relabel d /N\/N/<NPadj\/N>\/<NPadj\/N>/
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% fracas-230
+% from: (NP (NP (N (N/N more) (N orders))) (NP\NP than NP VP))
+% to: (NP (NPadj (NPadj/N more) (N orders)) (NP\NP than NP VP))
 
-/^S[a-z]*\\NP$/ <1 (/^<S[a-z]*\\NP>\/NP;[A-Z;-]+$/=v !<: /^is$|^are$|^was$|^were$/) <2 (NP=z <1 (NP=x <: (N=n < (/N\/N/=m $. /^N$|^N;[A-Z;-]+$/))) <2 (/^NP\\NP$/=w < (/^<NP\\NP>\/S[a-z]*;[A-Z;-]+$/=y < /^than$/) < (Sdcl < NP < (/^Sdcl\\NP;[A-Z;-]+$/ < /^did$|^do$/))))
+/^S[a-z]*\\NP$/ <1 (/^<S[a-z]*\\NP>\/NP;[A-Z;-]+$/=v !<: /^is$|^are$|^was$|^were$/) <2 (NP <1 (NP=x <: (N=n < ((/N\/N/=m <: /^more$/) $. /^N$|^N;[A-Z;-]+$/))) <2 (/^NP\\NP$/=w <1 (/^<NP\\NP>\/S[a-z]*;[A-Z;-]+$/=y <: /^than$/)))
 
-relabel z /<Sdcl\\NP>\\<<Sdcl\\NP>\/NP>/
 excise x x
 relabel n /NPadj/
 relabel m /N\/N/NPadj\/N/
-relabel y /<NP\\NP>\/Sdcl/<<<Sdcl\\NP>\\<<Sdcl\\NP>\/NP>>\\NPadj>\/Sdcl/
-relabel w /NP\\NP/<<Sdcl\\NP>\\<<Sdcl\\NP>\/NP>>\\NPadj/
+
+% fracas-230
+
+% /^S[a-z]*\\NP$/ <1 (/^<S[a-z]*\\NP>\/NP;[A-Z;-]+$/=v !<: /^is$|^are$|^was$|^were$/) <2 (NP=z <1 (NP=x <: (N=n < (/N\/N/=m $. /^N$|^N;[A-Z;-]+$/))) <2 (/^NP\\NP$/=w <1 (/^<NP\\NP>\/S[a-z]*;[A-Z;-]+$/=y <: /^than$/) <2 (Sdcl < NP < (/^Sdcl\\NP;[A-Z;-]+$/ < /^did$|^do$/))))
+NP=z <1 /^NPadj$/ <2 (/^NP\\NP$/=w <1 (/^<NP\\NP>\/S[a-z]*;[A-Z;-]+$/=y <: /^than$/) <2 (/^S[a-z]*$/ <1 NP <2 (/^S[a-z]*\\NP;[A-Z;-]+$/ <: /^did$|^do$/)))
+
+relabel y /<NP\\NP>\/S/<<<S\\NP>\\<<S\\NP>\/NP>>\\NPadj>\/S/
+relabel w /NP\\NP/<<S\\NP>\\<<S\\NP>\/NP>>\\NPadj/
+relabel z /<S\\NP>\\<<S\\NP>\/NP>/
+
+% fracas-239
+
+NP <1 /^NPadj$/ <2 (/^NP\\NP$/=w <1 (/^<NP\\NP>\/S[a-z]*;[A-Z;-]+$/=y <: /^than$/) <2 (/^S[a-z]*$/ <1 NP <2 /^S[a-z]*\\NP;VB[A-Z;-]+$/))
+
+relabel y /<NP\\NP>\/S/<NP\\NPadj>\/S/
+relabel w /NP\\NP/NP\\NPadj/
+
+% subdeletion
+
+NP <1 /^NPadj$/ <2 (/^NP\\NP$/=y <1 (/^<NP\\NP>\/S[a-z]*;[A-Z;-]+$/=x <: /^than$/) <2 /^S[a-z]*$/)
+
+relabel x /NP\\NP/NP\\NPadj/
+relabel y /NP\\NPadj/
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % as many orders as 
 
 /^S[a-z]*\\NP$/ < (/^<S[a-z]*\\NP>\/NP;[A-Z;-]+$/=v !<: /^is$|^are$|^was$|^were$/) < (NP=z <1 (NP=x <: (N=s <1 /^N\/N$/=o <2 /^N$|^N;[A-Z;-]+$/)) <2 (/^NP\\NP$/=w < (/^<NP\\NP>\/NP;[A-Z;-]+$/=y < /^as$/)))
 
-relabel y /<NP\\NP>\/NP/<<<Sdcl\\NP>\\<<Sdcl\\NP>\/NP>>\\NPadj>\/NP/
-relabel w /NP\\NP/<<Sdcl\\NP>\\<<Sdcl\\NP>\/NP>>\\NPadj/
-relabel z /<Sdcl\\NP>\\<<Sdcl\\NP>\/NP>/
+relabel y /<NP\\NP>\/NP/<<<S\\NP>\\<<S\\NP>\/NP>>\\NPadj>\/NP/
+relabel w /NP\\NP/<<S\\NP>\\<<S\\NP>\/NP>>\\NPadj/
+relabel z /<S\\NP>\\<<S\\NP>\/NP>/
 relabel x /NPadj/
 excise s s
 relabel o /NPadj\/N/
@@ -527,7 +791,9 @@ relabel z N
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Insert pos to positive adjectives: is tall --> is pos tall
 
-/^Sadj\\NP;JJ;(POS$|NEG$|POS-INT$|NEG-INT)$/=x $, (/<S[a-z]*\\NP>\/<S[a-z]*\\NP>/ <: /^is$|^are$|^be$|^was$|^were$/) < /^[A-Za-z_]+$/
+% /^Sadj\\NP;JJ;(POS$|NEG$|POS-INT$|NEG-INT)$/=x $, (/<S[a-z]*\\NP>\/<S[a-z]*\\NP>/ <: /^is$|^are$|^be$|^was$|^were$/) < /^[A-Za-z_]+$/
+
+/^Sadj\\NP;JJ;(POS$|NEG$|POS-INT$|NEG-INT)$/=x !$, /<Sadj\\NP>\/<Sadj\\NP>/ !$. /^\.;\.;O$/ !, /<Sadj\\NP>\/<Sadj\\NP>/
 
 adjoinF (Sadj\\NP=y @) x
 insert (<Sadj\\NP>\/<Sadj\\NP> pos) >1 y
@@ -541,14 +807,14 @@ insert (<Sadj\\NP>\/<Sadj\\NP> pos) >1 y
 
 % Insert dgr to comparative adjectives: taller --> dgr taller
 
-/^Sadj\\NP;JJR;(POS$|NEG$|POS-INT$|NEG-INT)$/=x ! $, /<Sadj\\NP>\/<Sadj\\NP>/ !< /^<Sadj\\NP>\/<Sadj\\NP>$/
+/^Sadj\\NP;(JJR|RBR);(POS$|NEG$|POS-INT$|NEG-INT$|B-DATE)$/=x ! $, /<Sadj\\NP>\/<Sadj\\NP>/ !< /^<Sadj\\NP>\/<Sadj\\NP>$/
 
 adjoinF (Sadj\\NP=y @) x
 insert (<Sadj\\NP>\/<Sadj\\NP> dgr) >1 y
 
 % Insert dgr to "more/less + adjective": is (more/less adj) --> is (dgr (more/less adj))
 
-/^Sadj\\NP$/=x <1 (/^<Sadj\\NP>\/<Sadj\\NP>;RBR;[A-Z-]+$/ < /^more$|^less$/) <2 /^Sadj\\NP;JJ;(POS$|NEG$|POS-INT$|NEG-INT)$/ !> (/^Sadj\\NP$/ > /^Sadj\\NP$/) !$, /^<Sadj\\NP>\/<Sadj\\NP>$/
+/^Sadj\\NP$/=x <1 (/^<Sadj\\NP>\/<Sadj\\NP>;RBR;[A-Z-]+$/ <: /^more$|^less$/) <2 /^Sadj\\NP;JJ;(POS$|NEG$|POS-INT$|NEG-INT)$/ !> (/^Sadj\\NP$/ > /^Sadj\\NP$/) !$, /^<Sadj\\NP>\/<Sadj\\NP>$/
 
 adjoinF (Sadj\\NP @) x
 insert (<Sadj\\NP>\/<Sadj\\NP> dgr) $+ x
@@ -562,7 +828,8 @@ insert (<Sadj\\NP>\/<Sadj\\NP> dgr2) $+ x
 
 % Insert dgr to "a + taller + noun": is (a (taller noun)) --> is (a ((dgr taller) noun))
 
-/N\/N;JJR;(POS$|NEG$|POS-INT$|NEG-INT)/=x ! $, /<N\/N>\/<N\/N>/ <: /er$|^more$|^less$/ !< /<N\/N>\/<N\/N>/
+% /N\/N;JJR;(POS$|NEG$|POS-INT$|NEG-INT)/=x ! $, /<N\/N>\/<N\/N>/ <: /er$|^more$|^less$/ !< /<N\/N>\/<N\/N>/
+NP << (/N\/N;JJR;(POS$|NEG$|POS-INT$|NEG-INT)/=x ! $, /<N\/N>\/<N\/N>/ <: /er$/ !< /<N\/N>\/<N\/N>/) << /^than$/
 
 adjoinF (Nadj\/N=y @) x
 insert (<Nadj\/N>\/<Nadj\/N> dgr) >1 y
@@ -570,28 +837,47 @@ relabel x /N\/N/Nadj\/N/
 
 % Insert dgr to "more + nouns": (more nouns) --> ((dgr more) nouns)
 
-/^N\/N;JJR;O$/=x <: /^more$/=y ! $, /<N\/N>\/<N\/N>/ !< /<N\/N>\/<N\/N>/
+/^N\/N;JJR;[A-Z-]+$/=x <: /^more$/=y ! $, /<N\/N>\/<N\/N>/ !< /<N\/N>\/<N\/N>/
 
 insert (<Nadj\/N>\/<Nadj\/N> dgr) >1 x
 adjoinF (Nadj\/N @) y
 relabel x /N\/N/Nadj\/N/
 
-% Insert dgr2 to "a + more/less + adjective + noun": is (a ((more/less adjective) noun)) --> is (a ((dgr2 (more/less adjective)) noun))
+% Insert dgr to "a + more/less + adjective + noun": is (a ((more/less adjective) noun)) --> is (a ((dgr (more/less adjective)) noun))
 
-/^N\/N$/=x ! $, /<N\/N>\/<N\/N>/ <1 (/^<N\/N>\/<N\/N>;[A-Z;-]+$/=z < /^more$|^less$/) <2 /^N\/N;JJ;(POS$|NEG$|POS-INT$|NEG-INT)$/=y
+NP << (/^N\/N$/=x ! $, /<N\/N>\/<N\/N>/ <1 (/^<N\/N>\/<N\/N>;[A-Z;-]+$/=z <: /^more$|^less$/) <2 /^N\/N;JJ;(POS$|NEG$|POS-INT$|NEG-INT)$/=y) << than
 
 adjoinF (Nadj\/N @) x
 insert (<Nadj\/N>\/<Nadj\/N> dgr) $+ x
-relabel z /<Nadj\/N>\/<Nadj\/N>/
+relabel z /N\/N/Nadj\/N/
 relabel y /N\/N/Nadj\/N/
+relabel x /Nadj\/N/
 
 % Insert pos to "a + adjective + noun": is (a (adjective noun)) --> is (a ((pos adj) noun))
 
-/^N\/N;JJ;[A-Z-]+$/=x !<: half ! $, /<N\/N>\/<N\/N>/ ! $, /^<<<Sdcl\\NP>\\<<Sdcl\\NP>\/NP>>\/N>\/<N\/N>$/ !< /^<N\/N>\/<Nadj\/N>$/ !== /^N\/N;JJ;(PRE$|N-SUB$|B-NORP)$/
+/^N\/N;JJ;[A-Z-]+$/=x !<: half ! $, /<N\/N>\/<N\/N>/ ! $, /^<<<S[a-z]*\\NP>\\<<S[a-z]*\\NP>\/NP>>\/N>\/<N\/N>$/ !< /^<N\/N>\/<Nadj\/N>$/ !== /^N\/N;JJ;(PRE$|N-SUB$|B-NORP$|O)$/
 
 relabel x /N\/N/Nadj\/N/
 adjoinF (N\/N=y @) x
 insert (<N\/N>\/<Nadj\/N> pos) >1 y
+
+% Insert dgr to "a + taller + noun": is (a (taller noun)) --> is (a ((dgr taller) noun))
+
+NP << (/N\/N;JJR;(POS$|NEG$|POS-INT$|NEG-INT)/=x ! $, /<N\/N>\/<N\/N>/ <: /er$/ !< /<N\/N>\/<N\/N>/) !<< than
+
+adjoinF (N\/N=y @) x
+insert (<N\/N>\/<Nadj\/N> dgr) >1 y
+relabel x /N\/N/Nadj\/N/
+
+% Insert dgr to "a + more adj + noun": is (a (taller noun)) --> is (a ((dgr (more adj)) noun))
+
+NP << (/^N\/N$/=x ! $, /<N\/N>\/<N\/N>/ <1 (/^<N\/N>\/<N\/N>;[A-Z;-]+$/=z <: /^more$|^less$/) <2 /^N\/N;JJ;(POS$|NEG$|POS-INT$|NEG-INT)$/=y) !<< than
+
+adjoinF (N\/N @) x
+insert (<N\/N>\/<Nadj\/N> dgr) $+ x
+relabel z /N\/N/Nadj\/N/
+relabel y /N\/N/Nadj\/N/
+relabel x /Nadj\/N/
 
 % Insert dgr to "more + noun": won (more noun) --> won ((dgr more) noun)
 
@@ -628,51 +914,70 @@ move z >2 s
 excise y y
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% deletion
-% ex. Bob is a taller boy than Harry is.
-
 % from: John is ((a (taller boy)) (than Bob is)).
 % to: John is (a ((taller boy) (than Bob is))).
+% ex. John has a taller boys than Bob has.
 
-/^NP[a-z]*$/=x <1 (/^NP[a-z]*$/=z <1 /^NPnb\/N;DT;O$/=y <2 N) <2 (/^NP\\NP$/=w <1 (/^<NP\\NP>\/Sdcl;[A-Z;-]+$/=q <: /^than$|^as$/) <2 (/^Sdcl$/=b < (/NP/=c <: /^N;[A-Z;-]+$/=d) < (/^Sdcl\\NP;[A-Z;-]+$/=e <: /^is$|^are$|^was$|^were$/)))
+/^NP[a-z]*$/=x <1 (/^NP[a-z]*$/=z <1 /^NPnb\/N;DT;O$/=y <2 N) <2 (/^NP\\NP$/=w <1 (/^<NP\\NP>\/S[a-z]*;[A-Z;-]+$/=q <: /^than$|^as$/) <2 (/^S[a-z]*$/=b < (/NP/=c <: /^N;[A-Z;-]+$/=d) < /^S[a-z]*\\NP;[A-Z;-]+$/))
 
 move y >1 x
 move w >2 z
 relabel w /N\\Nadj/
-relabel q /<NP\\NP>\/Sdcl/<N\\Nadj>\/<Sdcl\/NP>/
+%relabel q /<NP\\NP>\/Sdcl/<N\\Nadj>\/<Sdcl\/NP>/
+relabel q /<NP\\NP>\/S/<N\\Nadj>\/S/
 relabel z N
-relabel b /<Sdcl\/NP>/
-adjoinF (NP @) d
-relabel c /NP/Sdcl\/<Sdcl\\NP>/
-relabel e /Sdcl\\NP/<Sdcl\\NP>\/NP/
 
 % from: They are ((NP (N taller boys)) (than Bob are)).
 % to: They are (NP (N (N taller boys) (N\N than Bob are))).
 
-/^NP[a-z]*$/=x <1 (/^NP[a-z]*$/=z <: N) <2 (/^NP\\NP$/=w <1 (/^<NP\\NP>\/Sdcl;[A-Z;-]+$/=q <: /^than$/) <2 (/^Sdcl$/=b <1 (/NP/=c <: /^N;[A-Z;-]+$/=d) <2 (/^Sdcl\\NP;[A-Z;-]+$/=e <: /^is$|^are$|^was$|^were$/)))
+/^NP[a-z]*$/=x <1 (/^NP[a-z]*$/=z <: N) <2 (/^NP\\NP$/=w <1 (/^<NP\\NP>\/S[a-z]*;[A-Z;-]+$/=q <: /^than$/) <2 (/^S[a-z]*$/=b <1 (/NP/=c <: /^N;[A-Z;-]+$/=d) <2 /^S[a-z]*\\NP;[A-Z;-]+$/))
 
 move w >2 z
 relabel w /N\\Nadj/
-relabel q /<NP\\NP>\/Sdcl/<N\\Nadj>\/<Sdcl\/NP>/
+%relabel q /<NP\\NP>\/Sdcl/<N\\Nadj>\/<Sdcl\/NP>/
+relabel q /<NP\\NP>\/S/<N\\Nadj>\/S/
 relabel z N
-relabel b /<Sdcl\/NP>/
-adjoinF (NP @) d
-relabel c /NP/Sdcl\/<Sdcl\\NP>/
-relabel e /Sdcl\\NP/<Sdcl\\NP>\/NP/
 
-% ex. John is taller than Bob is large 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% deletion
 
-/^<Sadj\\NP>\\<Sadj\\NP>$/ <1 (/^<<Sadj\\NP>\\<Sadj\\NP>>\/Sdcl;[A-Z;-]+$/=x <: /^than$|^as$/) <2 (/^Sdcl$/=y <1 (/NP/=z <: /^N;[A-Z;-]+$/=q) <2 (/^Sdcl\\NP;[A-Z;-]+$/=w <: /^is$|^are$|^was$|^were$/))
+% (/^NP\\NPadj$|^N\\Nadj$/=w <1 (/^<NP\\NPadj>\/Sdcl|<N\\Nadj>\/Sdcl;[A-Z;-]+$/=q <: /^than$/) <2 (/^S[a-z]*$/=b <1 /NP/=c <2 /^Sdcl\\NP;[A-Z;-]+$/=e))
+(/^NP\\NPadj$|^N\\Nadj$/=w <1 (/^<NP\\NPadj>\/Sdcl|<N\\Nadj>\/Sdcl;[A-Z;-]+$/=q <: /^than$/) <2 (/^S[a-z]*$/=b <1 /NP/=c <2 (/^(.+);(.+);(.+)$/#1\%cat#2\%pos#3\%ent=e !== /\/NP/)))
 
-relabel x /<<Sadj\\NP>\\<Sadj\\NP>>\/Sdcl/<<Sadj\\NP>\\<Sadj\\NP>>\/<Sdcl\/<Sdcl\\NP>>/
-relabel y /Sdcl\/<Sdcl\\NP>/
-adjoinF (NP @) q
-relabel z /NP/Sdcl\/<Sdcl\\NP>/
-relabel w /Sdcl\\NP/<Sdcl\\NP>\/<Sdcl\\NP>/
+relabel b /<S\/NP>/
+% adjoinF (NP @) d
+% relabel c /NP/Sdcl\/<Sdcl\\NP>/
+adjoinF (S\/<S\\NP> @) c
+% relabel e /Sdcl\\NP/<Sdcl\\NP>\/NP/
+relabel e /^.*$/<\%{cat}>\/NP;\%{pos};\%{ent}/
+relabel q /Sdcl/<S\/NP>/
 
-% ex. John won many/pos more cars than Bob lost.
+% (/^NP\\NPadj$|^N\\Nadj$/=w <1 (/^<NP\\NPadj>\/Sdcl|<N\\Nadj>\/Sdcl;[A-Z;-]+$/=q <: /^than$/) <2 (/^S[a-z]*$/=b <1 /NP/=c <2 (/^Sdcl\\NP$/=e1 << /^Sb\\NP;[A-Z;-]+$/=e2)))
+(/^NP\\NPadj$|^N\\Nadj$/=w <1 (/^<NP\\NPadj>\/Sdcl|<N\\Nadj>\/Sdcl;[A-Z;-]+$/=q <: /^than$/) <2 (/^S[a-z]*$/=b <1 /NP/=c <2 ((/^(.+)$/#1\%cat=e1 !== /\/NP/) << (/^(.+);(.+);(.+)$/#1\%cat#2\%pos#3\%ent=e2 !== /\/NP/))))
 
-NP <: (N <1 (N=x <1 (/^N\/N$/=y <1 /^<N\/N>\/<N\/N>$|^<N\/N>\/<N\/N>;[A-Z;-]+$/=h <2 (/^N\/N$|^N\/N;[A-Z;-]+$/=i < /^more$/)) <2 /^N$|^N;[A-Z;-]+$/) <2 (/^N\\Nadj$/=w <1 (/^<N\\Nadj>\/<Sdcl\/NP>;[A-Z;-]+$/=t <: /^than$/)))
+relabel b /<S\/NP>/
+adjoinF (S\/<S\\NP> @) c
+% relabel e1 /Sdcl\\NP/<Sdcl\\NP>\/NP/
+relabel e1 /^.*$/<\%{cat}>\/NP/
+% relabel e2 /Sb\\NP/<Sb\\NP>\/NP/
+relabel e2 /^.*$/<\%{cat}>\/NP;\%{pos};\%{ent}/
+relabel q /Sdcl/<S\/NP>/
+
+% ex. John is taller than Bob is.
+
+% /^<Sadj\\NP>\\<Sadj\\NP>$/ <1 (/^<<Sadj\\NP>\\<Sadj\\NP>>\/Sdcl;[A-Z;-]+$/=x <: /^than$|^as$/) <2 (/^S[a-z]*$/=y <1 /NP/=z <2 (/^Sdcl\\NP;[A-Z;-]+$/=w <: /^is$|^are$|^was$|^were$/))
+/^<Sadj\\NP>\\<Sadj\\NP>$/ <1 (/^<<Sadj\\NP>\\<Sadj\\NP>>\/Sdcl;[A-Z;-]+$/=x <: /^than$|^as$/) <2 (/^S[a-z]*$/=y <1 /NP/=z <2 ((/^(.+);(.+);(.+)$/#1\%cat#2\%pos#3\%ent=w !== /<\%cat>\/<\%cat>/) <: /^is$|^are$|^was$|^were$/))
+
+relabel x /<<Sadj\\NP>\\<Sadj\\NP>>\/Sdcl/<<Sadj\\NP>\\<Sadj\\NP>>\/<S\/<S\\NP>>/
+relabel y /S\/<S\\NP>/
+% adjoinF (NP @) q
+% relabel z /NP/Sdcl\/<Sdcl\\NP>/
+adjoinF (S\/<S\\NP> @) z 
+relabel w /^.*$/<\%{cat}>\/<\%{cat}>;\%{pos};\%{ent}/
+
+% ex. John won many more cars than Bob lost.
+
+NP <: (N <1 (N=x <1 (/^N\/N$/=y <1 /^<N\/N>\/<N\/N>$|^<N\/N>\/<N\/N>;[A-Z;-]+$/=h <2 (/^N\/N$|^N\/N;[A-Z;-]+$/=i < /^more$/)) <2 /^N$|^N;[A-Z;-]+$/) <2 (/^N\\Nadj$/=w <1 (/^<N\\Nadj>\/<S[a-z]*\/NP>;[A-Z;-]+$/=t <: /^than$/)))
 
 relabel x Nadj
 relabel y /Nadj\/N/
@@ -681,7 +986,7 @@ relabel h /<Nadj\/N>\/<Nadj\/N>/
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % ex. John is a (much taller) boy than Bob.
 
-NP <1 /^NPnb\/N;DT;[A-Z-]+$/=b <2 (N=z <1 (N <1 (/^N\/N$/=c <1 /^<N\/N>\/<N\/N>$|^<N\/N>\/<N\/N>;RB;[A-Z-]+$/=y <2 (/^N\/N;JJR;(POS$|NEG$|POS-INT$|NEG-INT)$/=x)) <2 /^N$|^N;[A-Z;-]+$/) <2 (/^N\\Nadj$/ <1 (/^<N\\Nadj>\/NP;[A-Z;-]+$|^<N\\Nadj>\/<Sdcl\\NP>;[A-Z;-]+$/ <: /^than$/)))
+NP <1 /^NPnb\/N;DT;[A-Z-]+$/=b <2 (N=z <1 (N <1 (/^N\/N$/=c <1 /^<N\/N>\/<N\/N>$|^<N\/N>\/<N\/N>;RB;[A-Z-]+$/=y <2 (/^N\/N;JJR;(POS$|NEG$|POS-INT$|NEG-INT)$/=x)) <2 /^N$|^N;[A-Z;-]+$/) <2 (/^N\\Nadj$/ <1 (/^<N\\Nadj>\/NP;[A-Z;-]+$|^<N\\Nadj>\/<S[a-z]*\\NP>;[A-Z;-]+$/ <: /^than$/)))
 
 relabel x /N\/N/Nadj\/N/
 relabel y /<Nadj\/N>\/<Nadj\/N>/
@@ -689,7 +994,7 @@ relabel c /Nadj\/N/
 
 % ex. John is a many (more important) politician than Bill .
 
-NP <1 /^NPnb\/N;DT;[A-Z-]+$/=b <2 (N=z <1 (N <1 (/^N\/N$/=c <1 /^<N\/N>\/<N\/N>$|^<N\/N>\/<N\/N>;RB;[A-Z-]+$/=y <2 (/^N\/N$/=x <1 (/^<N\/N>\/<N\/N>;[A-Z;-]+$/=p <: /^more$/) <2 /^N\/N;JJ;(POS$|NEG$|POS-INT$|NEG-INT)$/=t)) <2 /^N$|^N;[A-Z;-]+$/) <2 (/^N\\Nadj$/ <1 (/^<N\\Nadj>\/NP;[A-Z;-]+$|^<N\\Nadj>\/<Sdcl\\NP>;[A-Z;-]+$/ <: /^than$/)))
+NP <1 /^NPnb\/N;DT;[A-Z-]+$/=b <2 (N=z <1 (N <1 (/^N\/N$/=c <1 /^<N\/N>\/<N\/N>$|^<N\/N>\/<N\/N>;RB;[A-Z-]+$/=y <2 (/^N\/N$/=x <1 (/^<N\/N>\/<N\/N>;[A-Z;-]+$/=p <: /^more$/) <2 /^N\/N;JJ;(POS$|NEG$|POS-INT$|NEG-INT)$/=t)) <2 /^N$|^N;[A-Z;-]+$/) <2 (/^N\\Nadj$/ <1 (/^<N\\Nadj>\/NP;[A-Z;-]+$|^<N\\Nadj>\/<S[a-z]*\\NP>;[A-Z;-]+$/ <: /^than$/)))
 
 relabel x /N\/N/Nadj\/N/
 relabel y /<N\/N>\/<N\/N>/<Nadj\/N>\/<Nadj\/N>/
@@ -704,9 +1009,42 @@ relabel p /<N\/N>\/<N\/N>/<Nadj\/N>\/<Nadj\/N>/
 relabel x /N\/N/Nadj\/N/
 relabel y /<N\/N>\/<Nadj\/N>/
 
-% ex. They are very tall boys .
+% ex. Exactly forty students smiled. (cad-122)
 
-NP <: (N=x <1 (/^N\/N$/=y <1 /^<N\/N>\/<N\/N>$|^<N\/N>\/<N\/N>;[A-Z;-]+$/=h <2 /^N\/N$|^N\/N;JJ;[A-Z-]+$/=i) <2 /^N$|^N;[A-Z;-]+$/)
+NP <: (N=x <1 (/^N\/N$/=y <1 (/^N\/N;[A-Z;-]+$/=h <: /^[E|e]xactly$|^[J|j]ust$|^[O|o]nly$/) <2 /^N\/N$|^N\/N;CD;[A-Z-]+$/=i) <2 /^N$|^N;[A-Z;-]+$/)
+
+relabel h /N\/N/<N\/N>\/<N\/N>/
+
+% ex. exactly 3000 computers (cad-047)
+% bug for candc & easyccg
+
+NP <: (N=z <1 (/^N\/N;[A-Z;-]+$/=h <: /^[E|e]xactly$|^[J|j]ust$|^[O|o]nly$/) <2 (N=x <1 /^N\/N$|^N\/N;CD;[A-Z-]+$/ <2 /^N$|^N;[A-Z;-]+$/=y))
+
+relabel h /N\/N/<N\/N>\/<N\/N>/
+relabel x /N\/N/
+move h >1 x
+move y >2 z
+
+% ex. There are exactly 5 boys . (non-monotonic)
+
+NP <: (N=x <1 (/^N\/N$/=y <1 (/^<N\/N>\/<N\/N>;[A-Z;-]+$/=h <: /^[E|e]xactly$|^[J|j]ust$|^[O|o]nly$/) <2 /^N\/N$|^N\/N;CD;[A-Z-]+$/=i) <2 /^N$|^N;[A-Z;-]+$/)
+
+relabel h /<N\/N>\/<N\/N>/<Nnm\/N>\/<N\/N>/
+relabel y /Nnm\/N/
+relabel x /Nnm/
+
+% % ex. John is a exactly 6 feet tall boy. (non-monotonic)
+
+% NP <1 /^NPnb\/N;DT;[A-Z-]+$/=b <2 (N=x <1 (/^N\/N$/=y <1 (/^<N\/N>\/<Nadj\/N>$/=h <1 (/^<<N\/N>\/<N\/N>>\/<<N\/N>\/<N\/N>>$/ << /^[E|e]xactly$/) <2 /^<N\/N>\/<N\/N>;[A-Z;-]+$/) <2 /^Nadj\/N;JJ;[A-Z-]+$/) <2 /^N$|^N;[A-Z;-]+$/)
+
+% relabel x /Nnm/
+% relabel y /Nnm\/N/
+% relabel h /<Nnm\/N>\/<Nadj\/N>/
+
+% ex. They are very/2 cm tall boys .
+
+% NP <: (N=x <1 (/^N\/N$/=y <1 /^<N\/N>\/<N\/N>$|^<N\/N>\/<N\/N>;[A-Z;-]+$/=h <2 /^N\/N$|^N\/N;JJ;[A-Z-]+$/=i) <2 /^N$|^N;[A-Z;-]+$/) 
+NP <: (N=x <1 (/^N\/N$/=y <1 /^<N\/N>\/<N\/N>$|^<N\/N>\/<N\/N>;[A-Z;-]+$/=h <2 /^N\/N;JJ;[A-Z-]+$/=i) <2 /^N$|^N;[A-Z;-]+$/)
 
 relabel h /<N\/N>\/<N\/N>/<N\/N>\/<Nadj\/N>/
 relabel i /N\/N/Nadj\/N/
@@ -718,3 +1056,216 @@ relabel x Nadj
 /^N\/N$/=x <1 /^<Nadj\/N>\/<Nadj\/N>$/ <2 /^Nadj\/N;[A-Z;-]+$/
 
 relabel x /Nadj\/N/
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% ex. They are very/pos few/little (downward) boys .
+
+NP <: (N=x <1 (/^N\/N$/=y <1 /^<N\/N>\/<Nadj\/N>$|^<N\/N>\/<Nadj\/N>;[A-Z;-]+$/=h <2 (/^Nadj\/N;JJ;[A-Z-]+$/ <: /^[F|f]ew$|^[L|l]ittle$/)) <2 /^N$|^N;[A-Z;-]+$/)
+
+relabel h /<N\/N>\/<Nadj\/N>/<Ndown\/N>\/<Nadj\/N>/
+relabel y /Ndown\/N/
+relabel x /Ndown/
+
+N=y <1 (/^N\/N$/=z <1 (/^<N\/N>\/<Nadj\/N>;RB;[A-Z-]+$/=x <: /^[N|n]ot$/) <2 /^Nadj\/N;JJ;[A-Z-]+$/) <2 /^N$|^N;[A-Z;-]+$/
+
+relabel x /<N\/N>\/<Nadj\/N>/<Ndown\/N>\/<Nadj\/N>/
+relabel y Ndown
+relabel z /Ndown\/N/
+
+% not many of nouns (med_1080_gq)
+
+/^NP\/NP$/ <: (/^N\/N$/=x <1 (/^<N\/N>\/<Nadj\/N>;RB;[A-Z-]+$/=y <: /^[N|n]ot$/) <2 (/^Nadj\/N;JJ;POS$/ <: /^many$/))
+
+relabel x /Ndown\/N/
+relabel y /<Ndown\/N>\/<Nadj\/N>/
+
+% very/pos/not few/little of nouns (med_1096_gq)
+
+/^NP\/NP$/ <: (/^N\/N$/=x <1 /^<N\/N>\/<Nadj\/N>$|^<N\/N>\/<Nadj\/N>;[A-Z;-]+$/=y <2 (/^Nadj\/N;JJ;[A-Z-]+$/ <: /^[F|f]ew$|^[L|l]ittle$/))
+
+relabel x /Ndown\/N/
+relabel y /<Ndown\/N>\/<Nadj\/N>/
+
+% very/dgr less/fewer than five of nouns (downward)
+% med_1072
+
+/^NP\/NP$/ <: (/^N\/N$/=x <1 (/^<N\/N>\/<N\/N>$/=y <1 (/^Sadj\\NP$/ <1 /^<Sadj\\NP>\/<Sadj\\NP>$|^<Sadj\\NP>\/<Sadj\\NP>;RB;[A-Z-]+$/ <2 (/^Sadj\\NP;JJR;[A-Z-]+$/ <: /^[L|l]ess$|^[F|f]ewer$/)) <2 /^<<N\/N>\/<N\/N>>\\<Sadj\\NP>;[A-Z;-]+$/=z) <2 /^N\/N;CD;[A-Z-]+$/)
+
+relabel x /Ndown\/N/
+relabel y /<Ndown\/N>\/<N\/N>/
+relabel z /<<Ndown\/N>\/<N\/N>>\\<Sadj\\NP>/
+
+% med_914
+% none of nouns
+
+/^NP\/NP$/ <: (/^N\/N;[A-Z;-]+$/=x <: /^[N|n]one$/)
+
+relabel x /N\/N/Ndown\/N/
+
+% med_1132_gq
+% no/the less/fewer than 5 nouns (downward)
+
+/^NP[a-z]*$/ <1 /^NPnb\/N;DT;[A-Z-]+$/ <2 (N=w <1 (/^N\/N$/=z <1 (/^<N\/N>\/<N\/N>$/=y <1 (/^Sadj\\NP$/ <1 /^<Sadj\\NP>\/<Sadj\\NP>$|^<Sadj\\NP>\/<Sadj\\NP>;/ <2 (/^Sadj\\NP;JJR;NEG$/ <: /^[L|l]ess$|^[F|f]ewer$/)) <2 (/^<<N\/N>\/<N\/N>>\\<Sadj\\NP>;[A-Z;-]+$/=x <: /^than$/)) <2 /^N\/N;CD;[A-Z-]+$/) <2 /^N$|^N;/)
+
+relabel x /<<N\/N>\/<N\/N>>\\<Sadj\\NP>/<<Ndown\/N>\/<N\/N>>\\<Sadj\\NP>/
+relabel y /<Ndown\/N>\/<N\/N>/
+relabel z /Ndown\/N/
+relabel w /Ndown/
+
+% med_1068_gq
+% very/dgr less/fewer than 5 nouns (downward)
+
+NP <: (N=w <1 (/^N\/N$/=z <1 (/^<N\/N>\/<N\/N>$/=y <1 (/^Sadj\\NP$/ <1 /^<Sadj\\NP>\/<Sadj\\NP>$|^<Sadj\\NP>\/<Sadj\\NP>;RB;[A-Z-]+$/ <2 (/^Sadj\\NP;JJR;[A-Z-]+$/ <: /^[L|l]ess$|^[F|f]ewer$/)) <2 (/^<<N\/N>\/<N\/N>>\\<Sadj\\NP>;[A-Z;-]+$/=x <: /^than$/)) <2 /^N\/N;CD;[A-Z-]+$/) <2 (/^N$|^N;/ !< /^MIPS$|^feet$/))
+
+relabel x /<<N\/N>\/<N\/N>>\\<Sadj\\NP>/<<Ndown\/N>\/<N\/N>>\\<Sadj\\NP>/
+relabel y /<Ndown\/N>\/<N\/N>/
+relabel z /Ndown\/N/
+relabel w /Ndown/
+
+% ex. The few boys left.
+
+/^NP[a-z]*$/ <1 (/^NPnb\/N;DT;[A-Z-]+$/ <: /^[T|t]he$/) <2 (N=z <1 (/^N\/N$/=y <1 (/^<N\/N>\/<Nadj\/N>$/=x <: /^pos$/) <2 (/^Nadj\/N;JJ;NEG$/ <: /^few$/)) <2 /^N$|^N;/)
+
+relabel x /<Ndown\/N>\/<Nadj\/N>/
+relabel y /Ndown\/N/
+relabel z Ndown
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Adverbs
+% The car runs 5 MPH fast.
+
+% /^S[a-z]*\\NP$/ <1 (/^S[a-z]*\\NP$/=c <1 /^<Sdcl\\NP>\/NP;VB[A-Z;-]+$/=v <2 (NP=x <: (N=y <1 /^N\/N;CD;[A-Z-]+$/=n <2 (/^N;[A-Z;-]+$/=t <: /^MPH$/)))) <2 /^<S\\NP>\\<S\\NP>;RB;(POS$|NEG$|POS-INT$|NEG-INT)$/=r
+/^S[a-z]*\\NP$/ <1 (/^S[a-z]*\\NP$/=c <1 (/^<(.+)>\/NP;(.+);(.+)$/#1\%cat#2\%pos#3\%ent=v == /\/NP/ == /VB/) <2 (NP=x <: (N=y <1 /^N\/N;CD;[A-Z-]+$/=n <2 (/^N;[A-Z;-]+$/=t <: /^MPH$/)))) <2 /^<S\\NP>\\<S\\NP>;RB;(POS$|NEG$|POS-INT$|NEG-INT)$/=r
+
+excise x x
+relabel y /<<S\\NP>\\<S\\NP>>\/<<S\\NP>\\<S\\NP>>/
+adjoinF (<S\\NP>\\<S\\NP>=d @) r
+move y >1 d
+% relabel v /<Sdcl\\NP>\/NP/Sdcl\\NP/
+relabel v /^.*$/\%{cat};\%{pos};\%{ent}/
+excise c c
+relabel n /N\/N/<<<S\\NP>\\<S\\NP>>\/<<S\\NP>\\<S\\NP>>>\/<<<S\\NP>\\<S\\NP>>\/<<S\\NP>\\<S\\NP>>>/
+relabel t /^N;/<<S\\NP>\\<S\\NP>>\/<<S\\NP>\\<S\\NP>>;/
+
+% The car runs 5 MPH faster than my car.
+
+/^<S\\NP>\\<S\\NP>$/ <1 (NP=x <: (N=y <1 /^N\/N;CD;[A-Z-]+$/=n <2 (/^N;[A-Z;-]+$/=t <: /^MPH$/))) <2 /^<<S\\NP>\\<S\\NP>>\\NP;RBR;[A-Z-]+$/=z
+
+excise x x
+relabel y /<<S\\NP>\\<S\\NP>>\/<<S\\NP>\\<S\\NP>>/
+relabel z /<<S\\NP>\\<S\\NP>>\\NP/<S\\NP>\\<S\\NP>/
+relabel n /N\/N/<<<S\\NP>\\<S\\NP>>\/<<S\\NP>\\<S\\NP>>>\/<<<S\\NP>\\<S\\NP>>\/<<S\\NP>\\<S\\NP>>>/
+relabel t /^N;/<<S\\NP>\\<S\\NP>>\/<<S\\NP>\\<S\\NP>>;/
+
+% The car runs 5 MPH more slowly than my car.
+
+/^S[a-z]*\\NP$/ <1 (/^S[a-z]*\\NP$/=m <1 (/^<(.+)>\/NP;(.+);(.+)$/#1\%cat#2\%pos#3\%ent=z == /\/NP/ == /VB/) <2 (NP=x <: (N=y <1 /^N\/N;CD;[A-Z-]+$/=n <2 (/^N;[A-Z;-]+$/=t <: /^MPH$/)))) <2 (/^<S\\NP>\\<S\\NP>$/ <1 (/^<S\\NP>\\<S\\NP>$/=p <1 (/^<<S\\NP>\\<S\\NP>>\/<<S\\NP>\\<S\\NP>>;[A-Z;-]+$/ <: /^more$/) <2 /^<S\\NP>\\<S\\NP>;RB;(POS$|NEG$|POS-INT$|NEG-INT)$/))
+
+adjoinF (<S\\NP>\\<S\\NP>=r @) p
+move x >1 r
+excise x x
+relabel y /<<S\\NP>\\<S\\NP>>\/<<S\\NP>\\<S\\NP>>/
+relabel n /N\/N/<<<S\\NP>\\<S\\NP>>\/<<S\\NP>\\<S\\NP>>>\/<<<S\\NP>\\<S\\NP>>\/<<S\\NP>\\<S\\NP>>>/
+relabel t /^N;/<<S\\NP>\\<S\\NP>>\/<<S\\NP>\\<S\\NP>>;/
+% relabel z /<Sdcl\\NP>\/NP/Sdcl\\NP/
+relabel z /^.*$/\%{cat};\%{pos};\%{ent}/
+excise m m
+
+% John runs as fast as Bob.
+
+/^S[a-z]*\\NP$/=c <1 /^S[a-z]*\\NP;VB[A-Z;-]+$|^S[a-z]*\\NP$/=v << (/^<S\\NP>\\<S\\NP>$/ <1 (/^<<S\\NP>\\<S\\NP>>\/PP$/=x <1 (/^<<S\\NP>\\<S\\NP>>\/<<S\\NP>\\<S\\NP>>;[A-Z;-]+$/ <: /^as$/) <2 /^<<S\\NP>\\<S\\NP>>\/PP;RB;O$/=y) <2 (PP=z <1 (/^PP\/NP;[A-Z;-]+$/=f <: /^as$/) <2 /^NP$|^NP;/))
+
+relabel x /<S\\NP>\\<S\\NP>/
+relabel y /<<S\\NP>\\<S\\NP>>\/PP/<S\\NP>\\<S\\NP>/
+relabel z /<<S\\NP>\\<S\\NP>>\\<<S\\NP>\\<S\\NP>>/
+relabel f /PP\/NP/<<<S\\NP>\\<S\\NP>>\\<<S\\NP>\\<S\\NP>>>\/NP/
+
+% John runs twice as fast as Bob.
+
+/^S[a-z]*\\NP$/ <1 /^S[a-z]*\\NP;VB[A-Z;-]+$|^S[a-z]*\\NP$/ <2 (/^<S\\NP>\\<S\\NP>$/=v <1 /^<<S\\NP>\\<S\\NP>>\/<<S\\NP>\\<S\\NP>>;RB;[A-Z-]+$/=x <2 (/^<S\\NP>\\<S\\NP>$/=y <1 (/^<S\\NP>\\<S\\NP>$/ <1 (/^<<S\\NP>\\<S\\NP>>\/<<S\\NP>\\<S\\NP>>;[A-Z;-]+$/ <: /^as$/) <2 /^<S\\NP>\\<S\\NP>;RB;[A-Z-]+$/) <2 (/^<<S\\NP>\\<S\\NP>>\\<<S\\NP>\\<S\\NP>>$/=z <1 (/^<<<S\\NP>\\<S\\NP>>\\<<S\\NP>\\<S\\NP>>>\/NP;[A-Z;-]+$/ <: /^as$/))))
+
+move x >1 y
+move z >2 v
+
+% Empty categories
+
+% from: John runs fast.
+% to: John runs pos fast.
+
+/^S[a-z]*\\NP$/ <1 /^S[a-z]*\\NP$|^S[a-z]*\\NP;VB[A-Z;-]+$/ <2 /^<S\\NP>\\<S\\NP>;RB;(POS$|NEG$|POS-INT$|NEG-INT)$/=x
+
+adjoinF (<S\\NP>\\<S\\NP>=y @) x
+insert (<<S\\NP>\\<S\\NP>>\/<<S\\NP>\\<S\\NP>> pos) >1 y
+
+% from: John runs faster than Bob.
+% to: John runs dgr faster than Bob.
+
+/^<S\\NP>\\<S\\NP>;RBR;(POS$|NEG$|POS-INT$|NEG-INT)$/=x !$, /<<S\\NP>\\<S\\NP>>\/<<S\\NP>\\<S\\NP>>/ !< /^<<S\\NP>\\<S\\NP>>\/<<S\\NP>\\<S\\NP>>$/
+
+adjoinF (<S\\NP>\\<S\\NP>=y @) x
+insert (<<S\\NP>\\<S\\NP>>\/<<S\\NP>\\<S\\NP>> dgr) >1 y
+
+% from: John runs more slowly than Bob.
+% to: John runs dgr more slowly than Bob.
+
+/^<S\\NP>\\<S\\NP>$/=x <1 (/^<<S\\NP>\\<S\\NP>>\/<<S\\NP>\\<S\\NP>>;RBR;O$/ <: /^more$|^less$/) <2 /^<S\\NP>\\<S\\NP>;RB;(POS$|NEG$|POS-INT$|NEG-INT)$/ !> (/^<S\\NP>\\<S\\NP>$/ > /^<S\\NP>\\<S\\NP>$/) !$, /^<<S\\NP>\\<S\\NP>>\/<<S\\NP>\\<S\\NP>>$/
+
+adjoinF (<S\\NP>\\<S\\NP> @) x
+insert (<<S\\NP>\\<S\\NP>>\/<<S\\NP>\\<S\\NP>> dgr) $+ x
+
+% from: John runs as slowly as Bob.
+% to: John runs dgr2 as slowly as Bob.
+
+/^<S\\NP>\\<S\\NP>$/=x <1 (/^<<S\\NP>\\<S\\NP>>\/<<S\\NP>\\<S\\NP>>;(RB|IN);O$/ <: /^as$/) <2 /^<S\\NP>\\<S\\NP>;RB;[A-Z-]+$/ !> (/^<S\\NP>\\<S\\NP>$/ > /^<S\\NP>\\<S\\NP>$/) !$, /^<<S\\NP>\\<S\\NP>>\/<<S\\NP>\\<S\\NP>>$/
+
+adjoinF (<S\\NP>\\<S\\NP> @) x
+insert (<<S\\NP>\\<S\\NP>>\/<<S\\NP>\\<S\\NP>> dgr2) $+ x
+
+% Syntactic features
+% (S\NP)\(S\NP) --> (S[adv]\NP)\(S[adv]\NP)
+
+% ex. John runs pos/very/5 MPH fast.
+
+/^S[a-z]*\\NP$/ <1 /^S[a-z]*\\NP;VB[A-Z;-]+$|^S[a-z]*\\NP$/ <2 (/^<S\\NP>\\<S\\NP>$/ <1 /^<<S\\NP>\\<S\\NP>>\/<<S\\NP>\\<S\\NP>>;[A-Z;-]+$|^<<S\\NP>\\<S\\NP>>\/<<S\\NP>\\<S\\NP>>$/=y <2 /^<S\\NP>\\<S\\NP>;RB;(POS$|NEG$|POS-INT$|NEG-INT)$/=x)
+
+relabel x /<S\\NP>\\<S\\NP>/<Sadv\\NP>\\<Sadv\\NP>/
+relabel y /<<S\\NP>\\<S\\NP>>\/<<S\\NP>\\<S\\NP>>/<<S\\NP>\\<S\\NP>>\/<<Sadv\\NP>\\<Sadv\\NP>>/ 
+
+% ex. John runs dgr/much faster than Bob.
+
+/^S[a-z]*\\NP$/ <1 /^S[a-z]*\\NP;VB[A-Z;-]+$|^S[a-z]*\\NP$/ <2 (/^<S\\NP>\\<S\\NP>$/ <1 (/^<S\\NP>\\<S\\NP>$/=z <1 /^<<S\\NP>\\<S\\NP>>\/<<S\\NP>\\<S\\NP>>;[A-Z;-]+$|^<<S\\NP>\\<S\\NP>>\/<<S\\NP>\\<S\\NP>>$/=y <2 /^<S\\NP>\\<S\\NP>;RBR;[A-Z-]+$/=x) <2 (/^<<S\\NP>\\<S\\NP>>\\<<S\\NP>\\<S\\NP>>$/=u <1 (/^(<<<S\\NP>\\<S\\NP>>\\<<S\\NP>\\<S\\NP>>>\/NP|<<<S\\NP>\\<S\\NP>>\\<<S\\NP>\\<S\\NP>>>\/S[a-z]*);[A-Z;-]+$/=v <: /^than$/) <2 /^NP|S[a-z]*$/))
+
+relabel x /<S\\NP>\\<S\\NP>/<Sadv\\NP>\\<Sadv\\NP>/
+relabel y /<<S\\NP>\\<S\\NP>>\/<<S\\NP>\\<S\\NP>>/<<Sadv\\NP>\\<Sadv\\NP>>\/<<Sadv\\NP>\\<Sadv\\NP>>/
+relabel z /<S\\NP>\\<S\\NP>/<Sadv\\NP>\\<Sadv\\NP>/
+relabel u /<<S\\NP>\\<S\\NP>>\\<<S\\NP>\\<S\\NP>>/<<S\\NP>\\<S\\NP>>\\<<Sadv\\NP>\\<Sadv\\NP>>/
+relabel v /<<<S\\NP>\\<S\\NP>>\\<<S\\NP>\\<S\\NP>>>\/NP/<<<S\\NP>\\<S\\NP>>\\<<Sadv\\NP>\\<Sadv\\NP>>>\/NP/
+
+% ex. John runs dgr/much more/less slowly than Bob.
+% ex. John runs dgr2/much as slowly as Bob.
+
+/^S[a-z]*\\NP$/ <1 /^S[a-z]*\\NP;VB[A-Z;-]+$|^S[a-z]*\\NP$/ <2 (/^<S\\NP>\\<S\\NP>$/ <1 (/^<S\\NP>\\<S\\NP>$/=z <1 /^<<S\\NP>\\<S\\NP>>\/<<S\\NP>\\<S\\NP>>;[A-Z;-]+$|^<<S\\NP>\\<S\\NP>>\/<<S\\NP>\\<S\\NP>>$/=y <2 (/^<S\\NP>\\<S\\NP>$/=p <1 (/^<<S\\NP>\\<S\\NP>>\/<<S\\NP>\\<S\\NP>>;[A-Z;-]+$/=o <: /^more$|^less$|^as$/) <2 /^<S\\NP>\\<S\\NP>;RB;[A-Z-]+$/=x)) <2 (/^<<S\\NP>\\<S\\NP>>\\<<S\\NP>\\<S\\NP>>$/=u <1 (/^(<<<S\\NP>\\<S\\NP>>\\<<S\\NP>\\<S\\NP>>>\/NP|<<<S\\NP>\\<S\\NP>>\\<<S\\NP>\\<S\\NP>>>\/S[a-z]*);[A-Z;-]+$/=v <: /^than$|^as$/) <2 /^NP|S[a-z]*$/))
+
+relabel x /<S\\NP>\\<S\\NP>/<Sadv\\NP>\\<Sadv\\NP>/
+relabel y /<<S\\NP>\\<S\\NP>>\/<<S\\NP>\\<S\\NP>>/<<Sadv\\NP>\\<Sadv\\NP>>\/<<Sadv\\NP>\\<Sadv\\NP>>/
+relabel z /<S\\NP>\\<S\\NP>/<Sadv\\NP>\\<Sadv\\NP>/
+relabel u /<<S\\NP>\\<S\\NP>>\\<<S\\NP>\\<S\\NP>>/<<S\\NP>\\<S\\NP>>\\<<Sadv\\NP>\\<Sadv\\NP>>/
+relabel v /<<<S\\NP>\\<S\\NP>>\\<<S\\NP>\\<S\\NP>>>\//<<<S\\NP>\\<S\\NP>>\\<<Sadv\\NP>\\<Sadv\\NP>>>\//
+relabel o /<<S\\NP>\\<S\\NP>>\/<<S\\NP>\\<S\\NP>>/<<Sadv\\NP>\\<Sadv\\NP>>\/<<Sadv\\NP>\\<Sadv\\NP>>/
+relabel p /<Sadv\\NP>\\<Sadv\\NP>/
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% than + measure phrase
+% comparatives for nominal adjective
+
+/^N\\Nadj$/ <1 (/^<N\\Nadj>\/NP;[A-Z;-]+$/=y <: /^than$/) <2 (NP=x <: (N <1 /^N\/N;CD;[A-Z-]+$/ <2 (/^N;[A-Z;-]+$/ <: /^feet$|^MIPS$/)))
+
+relabel x /NPdeg/
+relabel y /<N\\Nadj>\/NP/<N\\Nadj>\/NPdeg/
+
+% comparatives for adverb
+
+/^<<S\\NP>\\<S\\NP>>\\<<Sadv\\NP>\\<Sadv\\NP>>$/ <1 (/^<<<S\\NP>\\<S\\NP>>\\<<Sadv\\NP>\\<Sadv\\NP>>>\/NP;[A-Z;-]+$/=y <: /^than$|^as$/) <2 (NP=x <: (N <1 /^N\/N;CD;[A-Z-]+$/ <2 (/^N;[A-Z;-]+$/ <: /^MPH$/)))
+
+relabel x /NPdeg/
+relabel y /<<<S\\NP>\\<S\\NP>>\\<<Sadv\\NP>\\<Sadv\\NP>>>\/NP/<<<S\\NP>\\<S\\NP>>\\<<Sadv\\NP>\\<Sadv\\NP>>>\/NPdeg/

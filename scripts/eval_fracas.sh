@@ -23,10 +23,15 @@
 #  9    Attitudes         334      13      4 %       9
 #
 #  10   cad-Adjectives
-#  11   cad-Comparatives
+#  11   cad-Adverbs
+#  12   cad-Comparatives
 #
-#  12   med-gq
-#  13   med-gqlex
+#  13   med-gq
+#  14   med-gqlex
+#
+#  15   hans-lexical_overlap
+#  16   hans-subsequence
+#  17   hans-constituent
 
 
 # Set nbest
@@ -51,6 +56,7 @@ fi
 ls -v ${plain_dir}/fracas_*.txt > ${plain_dir}/fracas.files
 ls -v ${plain_dir}/cad_*.txt >> ${plain_dir}/fracas.files
 ls -v ${plain_dir}/med_*.txt >> ${plain_dir}/fracas.files
+ls -v ${plain_dir}/hans_*.txt >> ${plain_dir}/fracas.files
 
 rm -f ${plain_dir}/fracas.sec.files
 
@@ -86,13 +92,25 @@ for section_number in ${@:4}; do
     cat ${plain_dir}/fracas.files | grep cad | grep adjective >> ${plain_dir}/fracas.sec.files
   fi
   if [ ${section_number} -eq 11 ]; then
-    cat ${plain_dir}/fracas.files | grep cad | grep comparative >> ${plain_dir}/fracas.sec.files
+    cat ${plain_dir}/fracas.files | grep cad | grep adverb >> ${plain_dir}/fracas.sec.files
   fi
   if [ ${section_number} -eq 12 ]; then
-    cat ${plain_dir}/fracas.files | grep med | grep gq | grep -v gqlex >> ${plain_dir}/fracas.sec.files
+    cat ${plain_dir}/fracas.files | grep cad | grep comparative >> ${plain_dir}/fracas.sec.files
   fi
   if [ ${section_number} -eq 13 ]; then
+    cat ${plain_dir}/fracas.files | grep med | grep gq | grep -v gqlex >> ${plain_dir}/fracas.sec.files
+  fi
+  if [ ${section_number} -eq 14 ]; then
     cat ${plain_dir}/fracas.files | grep med | grep gqlex >> ${plain_dir}/fracas.sec.files
+  fi
+  if [ ${section_number} -eq 15 ]; then
+    cat ${plain_dir}/fracas.files | grep hans | grep lexical >> ${plain_dir}/fracas.sec.files
+  fi
+  if [ ${section_number} -eq 16 ]; then
+    cat ${plain_dir}/fracas.files | grep hans | grep subsequence >> ${plain_dir}/fracas.sec.files
+  fi
+  if [ ${section_number} -eq 17 ]; then
+    cat ${plain_dir}/fracas.files | grep hans | grep constituent >> ${plain_dir}/fracas.sec.files
   fi
 done
 
@@ -104,7 +122,8 @@ split -l $fracas_lines_per_split ${plain_dir}/fracas.sec.files ${plain_dir}/frac
 
 for ff in ${plain_dir}/fracas.files_??; do
   for f in `cat ${ff}`; do
-    ./scripts/rte.sh $f $templates $nbest;
+    # ./scripts/rte.sh $f $templates $nbest;
+    ./scripts/rte_neg.sh $f $templates $nbest;
   done &
 done
 
@@ -138,6 +157,7 @@ echo "<!doctype html>
   <td>gold answer</td>
   <td>system answer</td>
   <td>C&C</td>
+  <td>EasyCCG</td>
   <td>depccg</td>
 </tr>" > ${results_dir}/main_section${sec}.html
 
@@ -156,7 +176,7 @@ function display() {
     <td>'${base_filename/.answer/}'</td>
     <td>'${sentences}'</td>
     <td>'$gold_answer'</td>' >> ${results_dir}/main_section${sec}.html
-    for parser in "" "candc." "depccg."; do
+    for parser in "" "candc." "easyccg." "depccg."; do
       res=${results_dir}/${base_filename/.answer/.txt}.${parser}answer
       if [ -e "$res" -a -s "$res" ]; then
         system_answer=`cat ${results_dir}/${base_filename/.answer/.txt}.${parser}answer`
@@ -195,12 +215,12 @@ function calculate_score() {
     gold_answer=`cat ${plain_dir}/${base_filename}.answer`
     system_answer=`cat ${results_dir}/${base_filename}.txt.answer`
     candc_answer=`cat ${results_dir}/${base_filename}.txt.candc.answer`
-    # easyccg_answer=`cat ${results_dir}/${base_filename}.txt.easyccg.answer`
+    easyccg_answer=`cat ${results_dir}/${base_filename}.txt.easyccg.answer`
     depccg_answer=`cat ${results_dir}/${base_filename}.txt.depccg.answer`
     echo $base_filename $premises $gold_answer >> gold.results
     echo $base_filename $premises $system_answer >> system.results
     echo $base_filename $premises $candc_answer >> candc.results
-    # echo $base_filename $premises $easyccg_answer >> easyccg.results
+    echo $base_filename $premises $easyccg_answer >> easyccg.results
     echo $base_filename $premises $depccg_answer >> depccg.results
   done
 }
@@ -243,13 +263,25 @@ for section_number in ${@:4}; do
     evaluate "cad_*_adjective"
   fi
   if [ ${section_number} -eq 11 ]; then
-    evaluate "cad_*_comparative"
+    evaluate "cad_*_adverb"
   fi
   if [ ${section_number} -eq 12 ]; then
-    evaluate "med_*_gq"
+    evaluate "cad_*_comparative"
   fi
   if [ ${section_number} -eq 13 ]; then
+    evaluate "med_*_gq"
+  fi
+  if [ ${section_number} -eq 14 ]; then
     evaluate "med_*_gqlex"
+  fi
+  if [ ${section_number} -eq 15 ]; then
+    evaluate "hans_*_lexical_overlap"
+  fi
+  if [ ${section_number} -eq 16 ]; then
+    evaluate "hans_*_subsequence"
+  fi
+  if [ ${section_number} -eq 17 ]; then
+    evaluate "hans_*_constituent"
   fi
 done
 
@@ -271,14 +303,13 @@ echo -e "C&C:" >> $score
 python scripts/report_results.py gold.results candc.results >> $score
 echo "----------------------------------------------------------------------------" \
  >> $score
-# echo -e "EasyCCG:" >> $score
-# python scripts/report_results.py gold.results easyccg.results >> $score
-# echo "----------------------------------------------------------------------------" \
-#  >> $score
+echo -e "EasyCCG:" >> $score
+python scripts/report_results.py gold.results easyccg.results >> $score
+echo "----------------------------------------------------------------------------" \
+ >> $score
 echo -e "depccg:" >> $score
 python scripts/report_results.py gold.results depccg.results >> $score
 
 cat $score
 
-# rm -f gold.results system.results candc.results easyccg.results depccg.results
-rm -f gold.results system.results candc.results depccg.results
+rm -f gold.results system.results candc.results easyccg.results depccg.results

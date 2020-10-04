@@ -10,14 +10,14 @@ import sys
 import textwrap
 import time
 from multiprocessing import Queue, Process
-# import re
+import re
 
 lexpr = Expression.fromstring
 
 # from axiom_prover9 import prover9_axioms
-from axiom_vampire import vampire_axioms
+from axiom_vampire_event import vampire_axioms
 from change_tags import get_types
-# from abduction import get_axioms
+from abduction_event import get_axioms
 
 from os.path import expanduser
 HOME = expanduser("~")
@@ -32,7 +32,7 @@ sys.path.append("./scripts")
 
 
 from nltk2tptp import convert_to_tptp_proof, convert_to_tptp
-from nltk2normal import get_atomic_formulas
+from nltk2normal import get_atomic_formulas, rename_degree_variable
 
 
 def get_formulas_from_xml(doc):
@@ -40,14 +40,11 @@ def get_formulas_from_xml(doc):
         './sentences/sentence/semantics[1]/span[1]')]
     return formulas
 
-# ant_dic = {'tall': 'short', 'large': 'small', 'clever': 'stupid', 'fast': 'slow', 'many': 'few'}
-
-
 non_Sub = ['former', 'true', 'false']
 
 clause = ['before']
 
-Atts = ['know', 'manage', 'fail']
+datasets = ['med', 'hans']
 
 
 def get_antonyms(adjdic, antonyms):
@@ -106,39 +103,41 @@ def get_antonyms(adjdic, antonyms):
 #     return result
 
 
-def prove_vampire(premises, conclusion, predicates, lst, axioms):
-    adjdic, adjlst, objlst, numlst \
+def prove_vampire(premises, conclusion, predicates, lst, axioms, mode):
+    adjdic, adjlst, objlst, numlst, tverblst, iverblst \
         = get_types(ARGS.sem.strip(".sem.xml") + '.jigg.xml')
     antonyms = []
     if adjlst != []:
         antonyms = get_antonyms(adjdic, antonyms)
     # add axioms from comp
-    axioms2 = vampire_axioms(adjdic, antonyms, objlst, predicates, lst)
+    axioms2 = vampire_axioms(adjdic, antonyms, objlst, tverblst, iverblst, predicates, lst)
     axioms += axioms2
     axioms = set(axioms)
     axioms = list(axioms)
 
-    tptp_axioms = [convert_to_tptp(axiom) for axiom in axioms]
-    premises = tptp_axioms + premises
+    # tptp_axioms = [convert_to_tptp(axiom) for axiom in axioms]
+    premises = axioms + premises
     premises.append(conclusion)
     fols = convert_to_tptp_proof(premises)
+    # print(fols)
 
     type_f = []
+    type_f_adj = []
     Flag = False
 
     for adj in adjlst:
         adj_type = 'tff(' + adj + '_type, type , ' + adj + ' : $i * $int > $o).'
-        type_f.append(adj_type)
-
-    # for h in highv2:
-    #     h_type = 'tff(' + h + '_type, type , ' + h + ' : $i * $o > $o).'
-    #     type_f.append(h_type)
-
-    # for h in highv1:
-    #     h_type = 'tff(' + h + '_type, type , ' + h + ' : $o > $o).'
-    #     type_f.append(h_type)
+        type_f_adj.append(adj_type)
+        
     if len(numlst) >= 2:
-        Flag = True
+        # Flag = True
+        numlst.sort()
+        for i in range(len(numlst) - 1):
+            lem = '$less(' + str(numlst[i]) + ',' + str(numlst[i + 1]) + ')'
+            f = lexpr(lem)
+            lemma = convert_to_tptp(f)
+            fols.insert(-1, 'tff(p' + str(i + 1) + ',lemma,{0}).'.format(lemma))
+        Flag = False
     for pred in predicates:
         # print(pred[0])
         # print(pred[0].strip('_'))
@@ -150,19 +149,24 @@ def prove_vampire(premises, conclusion, predicates, lst, axioms):
 
         if pred[0] == 'many' or pred[0] == 'much' or pred[0] == 'few':
             adj_type = 'tff(' + pred[0] + '_type, type , ' + pred[0] + ' : $i * $int > $o).'
-            type_f.append(adj_type)
+            type_f_adj.append(adj_type)
+            qu_lem = lexpr('all x y.(exists d.(' + pred[0] + '(x,d) & -' + pred[0] + '(y,d)) -> all d.(' + pred[0] + '(y,d) -> ' + pred[0] + '(x,d)))')
+            qu_lem = convert_to_tptp(qu_lem)
+            lem = 'tff(p0,lemma,{0}).'.format(qu_lem)
+            if lem not in fols:
+                fols.insert(-1, lem)
             # if Flag:
                 # f = lexpr('all d1.-exists d2.($less(d1,d2) & $less(d2,$sum(d1,1)))')
                 # lemma = convert_to_tptp(f)
                 # fols.insert(-1, 'tff(p1,lemma,{0}).'.format(lemma))
-            if Flag:
-                numlst.sort()
-                for i in range(len(numlst) - 1):
-                    lem = '$less(' + str(numlst[i]) + ',' + str(numlst[i + 1])  + ')'
-                    f = lexpr(lem)
-                    lemma = convert_to_tptp(f)
-                    fols.insert(-1, 'tff(p' + str(i + 1) + ',lemma,{0}).'.format(lemma))
-                Flag = False
+            # if Flag:
+            #     numlst.sort()
+            #     for i in range(len(numlst) - 1):
+            #         lem = '$less(' + str(numlst[i]) + ',' + str(numlst[i + 1])  + ')'
+            #         f = lexpr(lem)
+            #         lemma = convert_to_tptp(f)
+            #         fols.insert(-1, 'tff(p' + str(i + 1) + ',lemma,{0}).'.format(lemma))
+            #     Flag = False
         elif pred[0] == 'year' or pred[0] == 'num':
             type_f.append('tff(' + pred[0] + '_type, type , ' + pred[0] + ' : $int * $i > $o).')
         
@@ -171,10 +175,13 @@ def prove_vampire(premises, conclusion, predicates, lst, axioms):
                 naf_type = 'tff(' + naf + '_type, type , ' + naf + ' : $o > $o).'
                 type_f.append(naf_type)
 
-        for v in Atts:
-            if pred[0] == v:
-                v_type = 'tff(' + v + '_type, type , ' + v + ' : $i * $o > $o).'
-                type_f.append(v_type)
+        # for v in Atts:
+        #     if pred[0] == v:
+        #         v_type = 'tff(' + v + '_type, type , ' + v + ' : $i * $o > $o).'
+        #         type_f.append(v_type)
+        v_type = 'tff(acci_type, type , acci : $i * $o > $o).'
+        type_f.append(v_type)
+        
 
         for c in clause:
             if pred[0] == c:
@@ -193,7 +200,7 @@ def prove_vampire(premises, conclusion, predicates, lst, axioms):
         #         type_f.append(h_type)
 
         type_f.append('tff(th_type, type , th : $i > $int).')
-        type_f.append('tff(e_type, type , e : $int).')
+        type_f.append('tff(d0_type, type , d0 : $int).')
         
         # if (len(pred[1]) == 2) and ('_th' in (pred[1])[1]):
         #     type_f.append('tff(th_type, type , th : $i > $int).')
@@ -202,11 +209,16 @@ def prove_vampire(premises, conclusion, predicates, lst, axioms):
             
     type_f = set(type_f)
     type_f = list(type_f)
+    type_f_adj = set(type_f_adj)
+    type_f_adj = list(type_f_adj)
+    # fols = set(fols)
+    # fols = list(fols)
 
     # print(type_f)
-        
-    fols = type_f + fols
-     
+    # print(type_f_adj)
+
+    fols = type_f + type_f_adj + fols
+
     # if ('many' in fols) or ('few' in fols):
     #     f = lexpr('all d1.-exists d2.($less(d1,d2) & $less(d2,$sum(d1,1)))')
     #     lemma = convert_to_tptp(f)
@@ -225,8 +237,12 @@ def prove_vampire(premises, conclusion, predicates, lst, axioms):
     tptp_script = ' '.join(fols)
     ps = subprocess.Popen(('echo', tptp_script), stdout=subprocess.PIPE)
     try:
+        if mode == 'casc_sat':
+            timeout = '1'
+        else:
+            timeout = '4'
         output = subprocess.check_output(
-              (vampire_dir + '/vampire', '-t', '3', '--mode', 'casc'),
+              (vampire_dir + '/vampire', '-t', timeout, '--mode', mode),
               stdin=ps.stdout,
               stderr=subprocess.STDOUT)
     except subprocess.CalledProcessError as e:
@@ -252,30 +268,36 @@ def is_theorem_in_vampire(output_lines):
         return False
 
     
-def theorem_proving(prove_fun, premises, conclusion, predicates, lst, axioms):
-    res = prove_fun(premises, conclusion, predicates, lst, axioms)
+def theorem_proving(prove_fun, premises, conclusion, predicates, lst, axioms,
+                    mode, data):
+    res = prove_fun(premises, conclusion, predicates, lst, axioms, mode)
     if res:
         prediction = 'yes'
     else:
-        negated_conclusion = NegatedExpression(conclusion)
-        res = prove_fun(premises, negated_conclusion, predicates, lst, axioms)
-        if res:
-            prediction = 'no'
+        if data not in datasets:
+            negated_conclusion = NegatedExpression(conclusion)
+            res = prove_fun(premises, negated_conclusion, predicates, lst,
+                            axioms, mode)
+            if res:
+                prediction = 'no'
+            else:
+                prediction = 'unknown'
         else:
             prediction = 'unknown'
     return prediction
 
 
 def multi_theorem_proving(prove_fun, premises, conclusion, predicates, lst,
-                          axioms):
+                          axioms, mode, data):
     def prove_positive(queue):
-        res = prove_fun(premises, conclusion, predicates, lst, axioms)
+        res = prove_fun(premises, conclusion, predicates, lst, axioms, mode)
         is_prover = True
         queue.put((is_prover, res))
 
     def prove_negative(queue):
         negated_conclusion = NegatedExpression(conclusion)
-        res = prove_fun(premises, negated_conclusion, predicates, lst, axioms)
+        res = prove_fun(premises, negated_conclusion, predicates, lst, axioms,
+                        mode)
         is_prover = False
         queue.put((is_prover, res))
 
@@ -332,81 +354,89 @@ def main(args = None):
     parser.add_argument("--prover", nargs='?', type=str, default="vampire",
                         choices=["vampire"],
                         help="Prover (default: vampire).")
-     
     ARGS = parser.parse_args()
 
     if not os.path.exists(ARGS.sem):
         print('File does not exist: {0}'.format(ARGS.sem), file=sys.stderr)
         parser.print_help(file=sys.stderr)
         sys.exit(1)
-    
+
     parser = etree.XMLParser(remove_blank_text=True)
     root = etree.parse(ARGS.sem, parser)
-    
+
     DOCS = root.findall('.//document')
     doc = DOCS[0]
     formulas = get_formulas_from_xml(doc)
 
     # add axioms from WordNet
-    # sentences = doc.xpath('//sentence')
-    # axioms = get_axioms(formulas, sentences)
-    
-    if (formulas == ['\\O.O']):
-        print('dammy')
+    sentences = doc.xpath('//sentence')
+    axioms = get_axioms(formulas, sentences)
 
+    lst = []
+    predicates = []
+    new_formulas = []
+    for formula in formulas:
+        if '--' in formula:
+            formula = formula.replace('--', '')
+        formula = rename_degree_variable(lexpr(formula))
+        new_formulas.append(str(formula))
+    for formula in new_formulas:
+        if ('all' in formula) and ('->' in formula) \
+           and ('_th(' in formula):
+            lst.append(formula)
+        preds = get_predicate(formula)
+        for pred in preds:
+            if pred not in predicates:
+                predicates.append(pred)
+    # print(predicates)
+
+    # formulas2 = []
+    # for formula in formu:
+    #     if '--' in formula:
+    #         formula = formula.replace('--', '')
+    #     formulas2.append(formula)
+
+    # if ARGS.prover == "prover9":
+    #     formulas = [lexpr(formula) for formula in formulas2]
+    #     conclusion = formulas[-1]
+    #     premises = formulas[:-1]
+    #     start = time.time()
+    #     prediction = theorem_proving(prove_prover9mace, premises,
+    #                                  conclusion, predicates, lst, [],
+    #                                  mode)
+    #     # if prediction == 'unknown':
+    #     #     prediction = theorem_proving(prove_vampire, premises,
+    #     #                                  conclusion, predicates,
+    #     #                                  lst, axioms)
+    #     end = time.time() - start
+    #     # print('{0},{1:.4f}'.format(prediction, end))
+    #     # print(prediction)
+
+    p = re.compile(r'(\w+)/(\w+)_(\w+)_(\w+)')
+    a = p.search(ARGS.sem)
+    if a is not None:
+        cache, data, num, other = a.groups()
     else:
-        lst = []
-        predicates = []
-        for formula in formulas:
-            if ('all' in formula) and ('->' in formula) \
-               and ('_th(' in formula):
-                lst.append(formula)
-            preds = get_predicate(formula)
-            for pred in preds:
-                if pred not in predicates:
-                    predicates.append(pred)
-        
-        # print(predicates)
+        data = 'None'
 
-        formulas2 = []
-        for formula in formulas:
-            if '--' in formula:
-                formula = formula.replace('--', '')
-            formulas2.append(formula)
-        
-        # if ARGS.prover == "prover9":
-        #     formulas = [lexpr(formula) for formula in formulas2]
-        #     conclusion = formulas[-1]
-        #     premises = formulas[:-1]
-        #     start = time.time()
-        #     prediction = theorem_proving(prove_prover9mace, premises,
-        #                                  conclusion, predicates, lst, [])
-        #     # if prediction == 'unknown':
-        #     #     prediction = theorem_proving(prove_vampire, premises,
-        #     #                                  conclusion, predicates,
-        #     #                                  lst, axioms)
-        #     end = time.time() - start
-        #     # print('{0},{1:.4f}'.format(prediction, end))
-        #     # print(prediction)
-
-        if ARGS.prover == "vampire":
-            formulas = [lexpr(formula) for formula in formulas2]
-            premises = formulas[:-1]
-            conclusion = formulas[-1]
-            start = time.time()
-            # prediction = multi_theorem_proving(prove_vampire,
-            # premises, conclusion, predicates)
+    if ARGS.prover == "vampire":
+        formulas = [lexpr(formula) for formula in new_formulas]
+        premises = formulas[:-1]
+        conclusion = formulas[-1]
+        start = time.time()
+        # prediction = multi_theorem_proving(prove_vampire,
+        # premises, conclusion, predicates)
+        prediction = theorem_proving(prove_vampire, premises, conclusion,
+                                     predicates, lst, axioms, 'casc', data)
+        end = time.time() - start
+        if prediction == 'unknown' and end >= 8:
             prediction = theorem_proving(prove_vampire, premises,
-                                         conclusion, predicates, lst, [])
-            # if prediction == 'unknown':
-            #     prediction = theorem_proving(prove_vampire, premises,
-            #                                  conclusion, predicates,
-            #                                  lst, axioms)
-            end = time.time() - start
-            # print('{0},{1:.4f}'.format(prediction, end))
-            print(prediction)
+                                         conclusion, predicates,
+                                         lst, axioms, 'casc_sat', data)
+        # print('{0},{1:.4f}'.format(prediction, end))
+        print(prediction)
 
-            
+
 if __name__ == '__main__':
     main()
 

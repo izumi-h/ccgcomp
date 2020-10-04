@@ -25,7 +25,7 @@ def get_fracas_info(problem_id):
     it returns the fracas number "001" and the section name
     "generalized_quantifiers".
     """
-    info = re.findall(r'(fracas|cad|med)_(\d+)_(.+)', problem_id)
+    info = re.findall(r'(fracas|cad|med|hans)_(\d+)_(.+)', problem_id)
     assert info, 'Correct Fracas ID information could not be retrieved for {0}' \
       .format(problem_id)
     dataset, num, section = info[0]
@@ -166,9 +166,13 @@ def main(args = None):
                      'verbs',
                      'attitudes',
                      'adjective',
+                     'adverb',
                      'comparative',
                      'gq',
                      'gqlex',
+                     'lexical',
+                     'subsequence',
+                     'constituent',
                      'total']
 
     system_accuracies = compare_answers(gold_answers, system_answers, section_names)

@@ -56,37 +56,34 @@ def get_init_tags(filename):
     tree = ET.parse(filename)
     root = tree.getroot()
 
-    lst, res = [], []
+    lst = []
     for token in root.iter('token'):
         dic = {'word': token.attrib['surf'], 'pos': token.attrib['pos'],
-               'entity': token.attrib['entity'], 'lemma': token.attrib['base']}
+               'entity': token.attrib['entity'],
+               'lemma': token.attrib['base']}
         lst.append(dic)
-        if token.attrib['surf'] == '.':
-            res.append(lst)
-            lst = []
-    return res
+    return lst
 
 
 def add_tags(filename, doc):
-    # [[{}, {}, ..., {.}], [{}, {}, ..., {.}]]
+    # lst = [{}, {}, ..., {.}, {}, {}, ..., {.}]
     lst = get_init_tags(filename)
     empty = ['pos', 'dgr', 'dgr2']
-    compound = [['a~few', 'a~lot~of', 'at~most'],
-                ['more~than', 'less~than', 'fewer~than', 'as~many'],
+    compound = [['a~few', 'the~few', 'a~lot~of', 'at~most'],
+                ['more~than', 'less~than', 'fewer~than', 'as~many',
+                 'more~and~more', 'more~or~less'],
                 ['law_lecturer', 'legal_authority', 'stock_market',
                  'Ancient_Greek'],
-                ['in-front-of']]
+                ['in-front-of', 'whether~or~not', 'in~case']]
     res = []
     for i in range(len(doc)):
         tokens = []
-        # dic = [{}, {}, ..., {.}]
-        dic = lst[i]
         # ex. d = {'word': 'The', 'pos': 'DT',
         #          'entity': 'O', 'lemma': 'the'}
         for token in doc[i]:
             token = str(token)
             Flag = True
-            for d in dic:
+            for d in lst:
                 if token == d['word']:
                     tokens.append(
                         Token(word=token,
@@ -94,6 +91,7 @@ def add_tags(filename, doc):
                               entity=d['entity'],
                               lemma=d['lemma'],
                               chunk='XX'))
+                    lst.remove(d)
                     Flag = False
                     break
             if Flag:
@@ -133,6 +131,7 @@ def add_tags(filename, doc):
                                   lemma=token,
                                   chunk='XX'))
         res.append(tokens)
+    # print(res)
     return res
 
 
