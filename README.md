@@ -211,7 +211,7 @@ The code is divided into the following:
     ```
 3. `./scripts` - main scripts including semantic templates (`scripts/semantic_templates.yaml`), Tsurgeon script (`scripts/transform.tsgn`) and the COMP axioms.
 4. `./tools` - tools for setup
-5. `cad_2020-10-04.xml` - a new dataset which focuses on comparatives and numerical constructions
+5. `CAD/cad_2020-10-04.xml` - a new dataset which focuses on comparatives and numerical constructions
 
 ## Citation
 * Izumi Haruta, Koji Mineshima, Daisuke Bekki. Combining Event Semantics and Degree Semantics for Natural Language Inference. Proceedings of  the 28nd International Conference on Computational Linguistics (COLING), Online, December, 2020.
