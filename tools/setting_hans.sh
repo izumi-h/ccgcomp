@@ -15,6 +15,7 @@ fi
 # Set test data from HANS dataset, removing the header line.
 if [ ! -d ${plain_dir} ]; then
     mkdir -p ${plain_dir}
+    echo "Extracting problems from the HANS test file."
     cat $hans | \
 	awk 'NR > 1' | \
 	tr -d '\r' | \
