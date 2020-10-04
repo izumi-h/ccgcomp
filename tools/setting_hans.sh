@@ -33,3 +33,9 @@ if [ ! -d ${plain_dir} ]; then
 	      printf "%s\n", judgement > tdir"/hans_"id"_"tag".answer";
 	      }'
 fi
+
+# Copy all files to fracas_plain (for evaluation by eval_fracas.sh)
+# cp hans_plain/* fracas_plain/
+cp hans_plain/*lexical_overlap* fracas_plain/
+cp hans_plain/*subsequence* fracas_plain/
+cp hans_plain/*constituent* fracas_plain/
