@@ -1,13 +1,17 @@
-# Logical Inferences with Comparatives and Generalized Quantifiers
-This repository contains code for our paper Logical Inferences with Comparatives and Generalized Quantifiers
-* Izumi Haruta, Koji Mineshima and Daisuke Bekki. 2020. [Logical Inferences with Comparatives and Generalized Quantifiers](https://arxiv.org/abs/2005.07954). In *Proceedings of the 2020 ACL Student Research Workshop (ACL-SRW)*
+# Combining Event Semantics and Degree Semantics for Natural Language Inference
+This repository contains code for our paper: 
+* Izumi Haruta, Koji Mineshima and Daisuke Bekki. 2020. Combining Event Semantics and Degree Semantics for Natural Language Inference. In *Proceedings of the 2020 Conference on COLING*.
+* Izumi Haruta, Koji Mineshima and Daisuke Bekki. 2020. [Logical Inferences with Comparatives and Generalized Quantifiers](https://arxiv.org/abs/2005.07954). In *Proceedings of the 2020 ACL Student Research Workshop (ACL-SRW)*.
 
 ## Requirements
 * Python 3.6.5+
-* [Vampire](https://github.com/vprover/vampire) 4.3.0
+* [Vampire](https://github.com/vprover/vampire) 4.4.0
 * [Tsurgeon](https://nlp.stanford.edu/software/tregex.html) 3.9.2
 * [spaCy](https://github.com/explosion/spaCy) 2.1.8
 * [word2number](https://github.com/akshaynagpal/w2n) 1.1+
+
+### tag: `acl-srw2020`
+* [Vampire](https://github.com/vprover/vampire) 4.3.0
 ## Setup
 The system uses scripts available from [ccg2lambda](https://github.com/mynlp/ccg2lambda). It is necessary to install **python3** (3.6.5 or later), **nltk**, **lxml**, **simplejson** and **pyyaml** python libraries. 
 If python3 and pip are already installed, you can install these packages with pip:
@@ -33,11 +37,11 @@ $ git clone https://github.com/izumi-h/ccgcomp.git
     $ cd ccgcomp
     $ ./tools/install_tools.sh
     ```
-2. This command downloads Vampire (version 4.3.0) to `ccgcomp/vampire-4.3.0` and Tsurgeon (version 3.9.2) to `ccgcomp/stanford-tregex-2018-10-16`. You can change the location of Vampire and Tsurgeon by editing `scripts/vampire_dir.txt` and `scripts/tregex_location.txt`.
+2. This command downloads Vampire (version 4.4.0) to `ccgcomp/vampire-4.4` and Tsurgeon (version 3.9.2) to `ccgcomp/stanford-tregex-2018-10-16`. You can change the location of Vampire and Tsurgeon by editing `scripts/vampire_dir.txt` and `scripts/tregex_location.txt`.
 
     ```
     $ cat scripts/vampire_dir.txt
-    /Users/izumi/ccgcomp/vampire-4.3.0
+    /Users/izumi/ccgcomp/vampire-4.4
     $ cat scripts/tregex_location.txt
     /Users/izumi/ccgcomp/stanford-tregex-2018-10-16
     ```
@@ -56,10 +60,11 @@ In the paper, our system is experimented by using two parsers, C&C and depccg. I
     ```
     $ ./tools/install_parsers.sh linux
     ```
-This command downloads C&C to `ccgcomp/candc-1.00` and depccg to `ccgcomp/depccg`. You can change the location of C&C by editing  `scripts/parser_location.txt`.
+This command downloads C&C to `ccgcomp/candc-1.00`, EasyCCG to `ccgcomp/easyccg`, and depccg to `ccgcomp/depccg`. You can change the location of C&C by editing  `scripts/parser_location.txt`.
 ```
 $ cat scripts/parser_location.txt
 candc:/Users/izumi/ccgcomp/candc-1.00
+easyccg:/Users/izumi/ccgcomp/easyccg
 depccg:
 ```
 
@@ -80,7 +85,8 @@ depccg:
     ```
     
 ## Running the system on several datasets
-You can use the [FraCaS](https://nlp.stanford.edu/~wcmac/downloads/fracas.xml), [MED](https://github.com/verypluming/MED) and CAD test sets.
+ 
+You can use the [FraCaS](https://nlp.stanford.edu/~wcmac/downloads/fracas.xml), [MED](https://github.com/verypluming/MED), CAD, and [HANS](https://github.com/tommccoy1/hans) test sets.
 
 ### Usage:
 ```
@@ -123,6 +129,13 @@ MED
 ------------------------------------------------------
 12    gq
 13    gqlex
+
+------------------------------------------------------
+HANS
+------------------------------------------------------
+15   hans-lexical_overlap
+16   hans-subsequence
+17   hans-constituent
 ```
 The outputs are shown as:
 
@@ -145,12 +158,26 @@ adjective                 |      ----      |      ----      |      ----
 comparative               |      ----      |      ----      |      ----     
 gq                        |      ----      |      ----      |      ----     
 gqlex                     |      ----      |      ----      |      ----     
-total                     |     0.9206     |     0.8933     |     0.9608
+lexical_overlap           |      ----      |      ----      |      ----     
+subsequence               |      ----      |      ----      |      ----     
+constituent               |      ----      |      ----      |      ----     total                     |     0.9206     |     0.8933     |     0.9608
 ----------------------------------------------------------------------------
 C&C:
                               all premi.          single           multi
 ・・・     
 ```
+
+In addition, you can use the following for [SICK](http://alt.qcri.org/semeval2014) dataset:
+### Usage:
+```
+./scripts/eval_sick.sh <ncores> <split> <templates.yaml>
+```
+### Example:
+```
+./scripts/eval_sick.sh 10 train scripts/semantic_templates_event.yaml
+```
+- `<split>`:`trial` (500 questions), `train` (5000 questions) and `test` (4500 questions).
+
 
 By default, created files are to be stored in the three directories (`cache`, `en_results`, `tptp`).
 * `cache/*.sem.xml` -- CCG derivation tress in XML format
@@ -162,8 +189,9 @@ By default, created files are to be stored in the three directories (`cache`, `e
 
 You can also run the system on each inference in FraCaS. For example, the following tried to prove the inference with ID FraCaS-243:
 ```
-./scripts/rte.sh fracas_plain/fracas_243_comparatives.txt scripts/semantic_template.yaml
+./scripts/rte_neg.sh fracas_plain/fracas_243_comparatives.txt scripts/semantic_template.yaml
 ```
+
 
 ## Code Structure
 The code is divided into the following:
@@ -183,9 +211,10 @@ The code is divided into the following:
     ```
 3. `./scripts` - main scripts including semantic templates (`scripts/semantic_templates.yaml`), Tsurgeon script (`scripts/transform.tsgn`) and the COMP axioms.
 4. `./tools` - tools for setup
-5. `cad_2020-03-07.xml` - a new dataset which focuses on comparatives and numerical constructions
+5. `cad_2020-10-04.xml` - a new dataset which focuses on comparatives and numerical constructions
 
 ## Citation
+* Izumi Haruta, Koji Mineshima, Daisuke Bekki. Combining Event Semantics and Degree Semantics for Natural Language Inference. Proceedings of  the 28nd International Conference on Computational Linguistics (COLING), Online, December, 2020.
 * Izumi Haruta, Koji Mineshima, Daisuke Bekki. Logical Inferences with Comparatives and Generalized Quantifiers. Proceedings of the 58th Annual Meeting of the Association for Computational Linguistics: Student Research Workshop (ACL-SRW), pages 263--270, Online, july, 2020. [pdf](https://www.aclweb.org/anthology/2020.acl-srw.35.pdf)
 ```
 @inproceedings{haruta-etal-2020-logical,
