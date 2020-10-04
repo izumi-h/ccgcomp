@@ -1,0 +1,2 @@
+Ann runs as fast as Luis.
+Luis runs as slowly as Ann.

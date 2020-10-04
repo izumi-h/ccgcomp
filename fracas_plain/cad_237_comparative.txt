@@ -1,0 +1,2 @@
+Tom is faster than John.
+John is fast.
