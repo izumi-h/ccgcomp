@@ -1,0 +1,3 @@
+Mary sings softly.
+John sings loudly.
+Mary sings more softly than John.

@@ -1,0 +1,2 @@
+Bob saw exactly seven students.
+There are at least five students Bob saw.

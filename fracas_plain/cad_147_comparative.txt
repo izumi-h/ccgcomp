@@ -1,0 +1,2 @@
+Ken runs 8 MPH faster than Tom.
+Tom runs faster than Ken.

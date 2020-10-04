@@ -1,0 +1,4 @@
+Daniel studied English harder than Ken.
+Ken studied English harder than John.
+John studied English very hard.
+Daniel studied English hard.

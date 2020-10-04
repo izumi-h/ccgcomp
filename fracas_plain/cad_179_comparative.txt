@@ -1,0 +1,2 @@
+John arrived earlier than Ken.
+Ken arrived earlier than John.

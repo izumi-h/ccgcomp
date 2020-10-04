@@ -1,0 +1,3 @@
+Ken studied English very hard.
+Daniel studied English very hard.
+Daniel studied English harder than Ken.

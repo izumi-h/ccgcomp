@@ -1,0 +1,2 @@
+John runs less fast than Bob.
+John runs faster than Bob.

@@ -1,0 +1,2 @@
+The car runs faster than 5 MPH.
+The car runs fast.

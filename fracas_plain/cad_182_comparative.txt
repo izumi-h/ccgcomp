@@ -1,0 +1,3 @@
+John arrived earlier than Ken.
+Ken arrived late.
+John arrived early.

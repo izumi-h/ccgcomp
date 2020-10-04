@@ -1,0 +1,2 @@
+At least seven children play soccer.
+At most three children play soccer.

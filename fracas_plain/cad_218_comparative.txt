@@ -1,0 +1,3 @@
+Tom runs 7 MPH more slowly than Ken.
+Tom runs 53 MPH fast.
+Ken runs more slowly than 53 MPH.

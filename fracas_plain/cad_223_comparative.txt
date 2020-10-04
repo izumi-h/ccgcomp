@@ -1,0 +1,3 @@
+John doesn't run faster than Ken.
+Ken runs more slowly than 35 MPH.
+John runs more slowly than 35 MPH.

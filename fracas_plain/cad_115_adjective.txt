@@ -1,0 +1,2 @@
+Exactly seven students smiled.
+At most nine students smiled.

@@ -1,0 +1,2 @@
+John interviewed exactly four students.
+John interviewed more than ten students.

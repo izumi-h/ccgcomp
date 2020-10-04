@@ -1,0 +1,2 @@
+John runs slowly.
+John runs very slowly.

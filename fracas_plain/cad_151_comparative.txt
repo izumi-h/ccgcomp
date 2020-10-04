@@ -1,0 +1,3 @@
+Ken runs faster than any dog.
+Taro is a dog.
+Ken runs faster than Taro.

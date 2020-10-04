@@ -1,0 +1,3 @@
+Jim plays more noisily than Ken.
+Ken plays noisily.
+Jim plays noisily.

@@ -1,0 +1,2 @@
+John is less cool than Bob.
+John isn't as cool as Bob.
