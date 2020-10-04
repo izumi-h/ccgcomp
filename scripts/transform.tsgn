@@ -524,7 +524,7 @@ delete d
 % relabel m /more~than/
 relabel n /Sadj\\NP/<<<Sadj\\NP>\/<Sadj\\NP>>\/<<Sadj\\NP>\/<Sadj\\NP>>>\/<<<Sadj\\NP>\/<Sadj\\NP>>\/<<Sadj\\NP>\/<Sadj\\NP>>>/
 
-/^<<Sadj\\NP>\/<Sadj\\NP>>\/<<Sadj\\NP>\/<Sadj\\NP>>$/ <1 (/^<<<Sadj\\NP>\/<Sadj\\NP>>\/<<Sadj\\NP>\/<Sadj\\NP>>>\/<<<Sadj\\NP>\/<Sadj\\NP>>\/<<Sadj\\NP>\/<Sadj\\NP>>>;[A-Z;-]+$/ <: /^more$|^fewer$|^less$/#1\%word=x) <2 /^<<Sadj\\NP>\/<Sadj\\NP>>\/<<Sadj\\NP>\/<Sadj\\NP>>;[A-Z;-]+$/
+/^<<Sadj\\NP>\/<Sadj\\NP>>\/<<Sadj\\NP>\/<Sadj\\NP>>$/ <1 (/^<<<Sadj\\NP>\/<Sadj\\NP>>\/<<Sadj\\NP>\/<Sadj\\NP>>>\/<<<Sadj\\NP>\/<Sadj\\NP>>\/<<Sadj\\NP>\/<Sadj\\NP>>>;[A-Z;-]+$/ <: (/^[Mm]ore$|^[Ff]ewer$|^[Ll]ess$/ == /^(.+)$/#1\%word=x)) <2 /^<<Sadj\\NP>\/<Sadj\\NP>>\/<<Sadj\\NP>\/<Sadj\\NP>>;[A-Z;-]+$/
 
 % relabel x /more~than/
 relabel x /^.*$/\%{word}~than/
