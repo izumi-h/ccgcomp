@@ -5,13 +5,17 @@
 # ./eval_med_gq.sh
 #
 
+# if [ ! -d MED ]; then
+#   git clone https://github.com/verypluming/MED.git
+#   cd MED
+#   git checkout 981440277c6b1c148c917cf813607b4bfdd0a892
+#   cd ..
+#   # echo "cd MED"
+#   # echo "cp MED.tsv <parsing_comp directory>"
+# fi
+
 if [ ! -d MED ]; then
   git clone https://github.com/verypluming/MED.git
-  cd MED
-  git checkout 981440277c6b1c148c917cf813607b4bfdd0a892
-  cd ..
-  # echo "cd MED"
-  # echo "cp MED.tsv <parsing_comp directory>"
 fi
 
 # Create med_gq.tsv
@@ -21,17 +25,17 @@ cat MED/MED.tsv | grep paper \
                 | grep -v crowd \
                 > med_gq.tsv
 
-sick="med_gq.tsv"
+med="med_gq.tsv"
 
 plain_dir="med_plain"
 
-# Extract training and test data from SICK dataset, removing the header line.
+# Extract training and test data from MED dataset, removing the header line.
 if [ ! -d ${plain_dir} ]; then
   mkdir -p ${plain_dir}
 fi
 
 echo "Extracting problems from the MED file."
-cat $sick | \
+cat $med | \
 tr -d '\r' | \
 awk -F'\t' -v tdir=${plain_dir} \
   '{pair_id=$1;

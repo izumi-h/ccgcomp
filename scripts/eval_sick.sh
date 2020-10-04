@@ -6,11 +6,12 @@
 #
 # Example:
 #
-# ./eval_sick.sh 10 train en/semantic_templates_en_event.yaml
+# ./eval_sick.sh 10 train scripts/semantic_templates_event.yaml
 #
 
-ccg2lambda=$(cat ccg2lambda_dir.txt)
-sick=${ccg2lambda}/en/SICK.semeval.txt
+# ccg2lambda=$(cat ccg2lambda_dir.txt)
+ccg2lambda="ccg2lambda"
+sick=${ccg2lambda}/SICK.semeval.txt
 
 # How many processes in parallel you want to run.
 # The maximum number should be inferior to the number of cores in your machine.
@@ -192,13 +193,13 @@ for f in ${plain_dir}/sick_${dataset}*.txt; do
 done
 
 echo -e "Multi-parsers:" > ${results_dir}/score.txt
-python ${ccg2lambda}/en/report_results_sick.py gold.results system.results >> ${results_dir}/score.txt
+python ${ccg2lambda}/report_results_sick.py gold.results system.results >> ${results_dir}/score.txt
 echo -e "C&C:" >> ${results_dir}/score.txt
-python ${ccg2lambda}/en/report_results_sick.py gold.results candc.results >> ${results_dir}/score.txt
+python ${ccg2lambda}/report_results_sick.py gold.results candc.results >> ${results_dir}/score.txt
 echo -e "EasyCCG:" >> ${results_dir}/score.txt
-python ${ccg2lambda}/en/report_results_sick.py gold.results easyccg.results >> ${results_dir}/score.txt
+python ${ccg2lambda}/report_results_sick.py gold.results easyccg.results >> ${results_dir}/score.txt
 echo -e "depccg:" >> ${results_dir}/score.txt
-python ${ccg2lambda}/en/report_results_sick.py gold.results depccg.results >> ${results_dir}/score.txt
+python ${ccg2lambda}/report_results_sick.py gold.results depccg.results >> ${results_dir}/score.txt
 
 cat ${results_dir}/score.txt
 
