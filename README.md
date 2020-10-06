@@ -123,7 +123,7 @@ You can use the [FraCaS](https://nlp.stanford.edu/~wcmac/downloads/fracas.xml), 
 
 ### Example:
 ```
-./scripts/eval_fracas.sh 1 2 scripts/semantic_templates.yaml 5 6
+./scripts/eval_fracas.sh 1 2 scripts/semantic_template_event.yaml 5 6
 ```
 - `<nbest>`: the number of output patterns of derivation trees
 - `<ncore>`: the number of core
@@ -204,7 +204,7 @@ In addition, you can use the following for SICK dataset:
 ```
 ### Example:
 ```
-./scripts/eval_sick.sh 10 train scripts/semantic_templates_event.yaml
+./scripts/eval_sick.sh 10 train scripts/semantic_template_event.yaml
 ```
 - `<split>`:`trial` (500 questions), `train` (5000 questions) and `test` (4500 questions).
 
