@@ -104,7 +104,7 @@ for section_number in ${@:4}; do
     cat ${plain_dir}/fracas.files | grep med | grep gqlex >> ${plain_dir}/fracas.sec.files
   fi
   if [ ${section_number} -eq 15 ]; then
-    cat ${plain_dir}/fracas.files | grep hans | grep lexical >> ${plain_dir}/fracas.sec.files
+    cat ${plain_dir}/fracas.files | grep hans | grep lexical_overlap >> ${plain_dir}/fracas.sec.files
   fi
   if [ ${section_number} -eq 16 ]; then
     cat ${plain_dir}/fracas.files | grep hans | grep subsequence >> ${plain_dir}/fracas.sec.files

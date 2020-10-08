@@ -331,7 +331,7 @@ def main():
 
     # Fpos = ['fast', 'genuine', 'great', 'ambitious', 'many', 'indispensable']
     # adj = []
-    # word = []
+    # surf = []
     # lemma = ['hundred', 'more', 'less', 'half']
     # org = []
 

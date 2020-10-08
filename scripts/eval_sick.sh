@@ -6,7 +6,7 @@
 #
 # Example:
 #
-# ./eval_sick.sh 10 train scripts/semantic_templates_event.yaml
+# ./eval_sick.sh 10 train scripts/semantic_template_event.yaml
 #
 
 # ccg2lambda=$(cat ccg2lambda_dir.txt)

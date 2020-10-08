@@ -170,7 +170,7 @@ def main(args = None):
                      'comparative',
                      'gq',
                      'gqlex',
-                     'lexical',
+                     'lexical_overlap',
                      'subsequence',
                      'constituent',
                      'total']

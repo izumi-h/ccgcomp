@@ -25,7 +25,7 @@ if [ ! -d ${plain_dir} ]; then
 	      conclusion=toupper(substr($7,0,1))substr($7,2,length($7));
 	      tag=$9;
 	      if($1 == "non-entailment") {
-	      	    judgement="no";
+	      	    judgement="unknown";
 	      } else if ($1 == "entailment") {
 	      	    judgement="yes";
 	      }
