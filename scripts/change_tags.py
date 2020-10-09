@@ -1,5 +1,6 @@
 import xml.etree.ElementTree as ET
 import sys
+import re
 from word2number import w2n
 from nltk.corpus import sentiwordnet as swn
 from nltk.corpus import wordnet as wn
@@ -68,11 +69,24 @@ def add_adj_handtags(token, Fpos, Fneg, Fpre, Fnsub, Fin):
                 pass
 
 
-def change_tags(root, Fpre, Fin, adj, surf, lemma, org, Fpos, Fneg, Fnsub, adv):
+def orgs(token):
+    token.attrib['surf'] = re.sub('_', '', token.attrib['surf'])
+    token.attrib['entity'] = "B-ORG"
+    token.attrib['pos'] = "NNP"
+
+
+def change_tags(root, Fpre, Fin, adj, surf, lemma, Fpos, Fneg, Fnsub, adv):
     for token in root.iter('token'):
-        if token.attrib['surf'] in org:
-            token.attrib['entity'] = "B-ORG"
-            token.attrib['pos'] = "NNP"
+        # if token.attrib['surf'] in org:
+        #     token.attrib['entity'] = "B-ORG"
+        #     token.attrib['pos'] = "NNP"
+        if '_' in token.attrib['surf'] and token.attrib['surf'][0].isupper():
+            index = token.attrib['id'].index('_')
+            num = int(token.attrib['id'][index+1:])
+            Search = token.attrib['id'][:index+1] + str(num-1)
+            a = root.find(".//token[@id='{}']".format(Search))
+            if a.attrib['base'] == 'the':
+                orgs(token)
 
         elif token.attrib['surf'] in adj:
             if token.attrib['surf'] == 'cleverer':
@@ -327,20 +341,19 @@ def main():
     surf = ['Aldo', 'singing', 'drunk', 'Japanese', 'likely', 'Jones']
     lemma = ['hundred', 'more', 'less', 'irishman', 'half', 'garlic', 'kick',
              'squirt', 'pasta', 'okra', 'europeans', 'alien']
-    org = ['PC_6082', 'ITEL_XZ', 'ITEL_ZX', 'ITEL_ZY']
+    # org = ['PC_6082', 'ITEL_XZ', 'ITEL_ZX', 'ITEL_ZY']
 
     # Fpos = ['fast', 'genuine', 'great', 'ambitious', 'many', 'indispensable']
     # adj = []
     # surf = []
     # lemma = ['hundred', 'more', 'less', 'half']
-    # org = []
 
     adv = ['lately', 'nearly', 'highly', 'rarely']
 
     tree = ET.parse(filename)
     root = tree.getroot()
 
-    change_tags(root, Fpre, Fin, adj, surf, lemma, org, Fpos, Fneg, Fnsub, adv)
+    change_tags(root, Fpre, Fin, adj, surf, lemma, Fpos, Fneg, Fnsub, adv)
 
     tree.write(filename, 'utf-8', True)
 
