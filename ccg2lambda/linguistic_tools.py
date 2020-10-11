@@ -238,7 +238,7 @@ def is_derivation(word1, word2):
 
 # Load VerbOcean dictionary.
 try:
-    with open('en/verbocean.json', 'r') as fin:
+    with open('ccg2lambda/verbocean.json', 'r') as fin:
         verbocean = json.load(fin)
 except:
     verbocean = {}
