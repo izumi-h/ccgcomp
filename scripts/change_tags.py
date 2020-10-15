@@ -132,7 +132,7 @@ def change_tags(root, Fpre, Fin, adj, surf, lemma, Fpos, Fneg, Fnsub, adv):
 
             elif token.attrib['surf'] == 'singing':
                 token.attrib['base'] = "sing"
-            
+
             else:
                 pass
 
@@ -141,8 +141,10 @@ def change_tags(root, Fpre, Fin, adj, surf, lemma, Fpos, Fneg, Fnsub, adv):
                 token.attrib['base'] = "100"
             elif token.attrib['base'] == 'more':
                 token.attrib['base'] = "many"
-            elif token.attrib['surf'] == 'less':
+            elif token.attrib['base'] == 'less':
                 token.attrib['base'] = "little"
+            elif token.attrib['base'] == 'people':
+                token.attrib['base'] = "person"
                 
             elif token.attrib['base'] == 'half':
                 token.attrib['pos'] = "CD"
@@ -329,7 +331,7 @@ def main():
 
     Fpos = ['fast', 'genuine', 'great', 'ambitious', 'many', 'indispensable',
             'noisy', 'early']
-    Fneg = ['short', 'slow', 'few', 'little']
+    Fneg = ['short', 'slow', 'few', 'little', 'young']
     Fpre = ['four_legged', 'major', 'several', 'law', 'leading', 'true',
             'false', 'sci-fi', 'other', 'hooded', 'colored']
     Fnsub = ['former']
@@ -340,13 +342,13 @@ def main():
            'elder']
     surf = ['Aldo', 'singing', 'drunk', 'Japanese', 'likely', 'Jones']
     lemma = ['hundred', 'more', 'less', 'irishman', 'half', 'garlic', 'kick',
-             'squirt', 'pasta', 'okra', 'europeans', 'alien']
+             'squirt', 'pasta', 'okra', 'europeans', 'alien', 'people']
     # org = ['PC_6082', 'ITEL_XZ', 'ITEL_ZX', 'ITEL_ZY']
 
     # Fpos = ['fast', 'genuine', 'great', 'ambitious', 'many', 'indispensable']
     # adj = []
     # surf = []
-    # lemma = ['hundred', 'more', 'less', 'half']
+    # lemma = ['hundred', 'more', 'less', 'half', 'people']
 
     adv = ['lately', 'nearly', 'highly', 'rarely']
 
