@@ -120,7 +120,7 @@ function parse_easyccg() {
     --nbest "${nbest}" \
     > ${parsed_dir}/${base_fname}.easyccg.auto \
     2> ${parsed_dir}/${base_fname}.easyccg.log
-  python ${c2l_dir}/en/easyccg2jigg.py \
+  python ${c2l_dir}/easyccg2jigg.py \
     ${parsed_dir}/${base_fname}.easyccg.auto \
     ${parsed_dir}/${base_fname}.easyccg.init.jigg.xml \
     2> ${parsed_dir}/${base_fname}.easyccg.xml.log
