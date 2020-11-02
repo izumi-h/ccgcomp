@@ -2294,13 +2294,13 @@
   language="jp" phenomena="comparative, adverb">
     <description></description>
     <p idx="1">
-      <script>Jone drives more carefully today than yesterday.</script>
+      <script>Jones drives more carefully today than yesterday.</script>
     </p>
     <p idx="2">
-      <script>Elic drives carelessly today.</script>
+      <script>Daniel drives carelessly today.</script>
     </p>
     <h>
-      <script>Elic drives carefully yesterday.</script>
+      <script>Daniel drives carefully yesterday.</script>
     </h>
     <note></note>
   </problem>
@@ -2308,13 +2308,13 @@
   language="jp" phenomena="comparative, adverb">
     <description></description>
     <p idx="1">
-      <script>Elic drives carefully today.</script>
+      <script>Daniel drives carefully today.</script>
     </p>
     <p idx="2">
-      <script>Elic drives carelessly yesterday.</script>
+      <script>Daniel drives carelessly yesterday.</script>
     </p>
     <h>
-      <script>Elic drives more carelessly today than yesterday.</script>
+      <script>Daniel drives more carelessly today than yesterday.</script>
     </h>
     <note></note>
   </problem>
