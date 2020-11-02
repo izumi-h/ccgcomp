@@ -1,3 +1,3 @@
-Elic drives carefully today.
-Elic drives carelessly yesterday.
-Elic drives more carelessly today than yesterday.
+Daniel drives carefully today.
+Daniel drives carelessly yesterday.
+Daniel drives more carelessly today than yesterday.
