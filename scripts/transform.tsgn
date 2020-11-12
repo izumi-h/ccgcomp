@@ -371,7 +371,6 @@ relabel e /^.*$/<\%{cat}>\/NP;\%{pos};\%{ent}/
 % to: (NP (NP/N Most) (N _))
 % fracas-010
 
-% /NP/ < (N=x < (/^N\/N;[A-Z;-]+$/=y <: /^[M|m]ost$/) < /N/)
 /NP/ <: (N=x <1 (/^N\/N;[A-Z;-]+$/=y <: /^[M|m]ost$/) <2 /N/)
 
 excise x x
