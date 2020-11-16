@@ -2,6 +2,9 @@
 #
 # Download C&C parsers
 #
+# Usage:
+# ./tools/install_candc.sh <OS (linux/mac)>
+
 candc_url_linux="https://drive.google.com/uc?id=1MAqE0RmAC1sOW6A9ErpQcFmFbzD66i7x"
 candc_url_mac="https://drive.google.com/uc?id=1vl9rwQDqhy5dmt8D8EnEPTGw9zqK0KSz"
 
