@@ -2,6 +2,8 @@
 #
 # Download depccg parsers
 #
+# Usage
+# ./tools/install_depccg.sh
 
 depccg_url="https://github.com/masashi-y/depccg.git"
 

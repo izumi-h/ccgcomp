@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Usage
-# ./rte_neg.sh <sentences.txt> <semantic_templates.yaml> <nbest>
+USAGE="Usage: ./rte_neg.sh <sentences.txt> <semantic_templates.yaml> <nbest>"
 
 # Set the number of nbest parses (Default: 1)
 nbest=${3:-1}
@@ -276,11 +276,11 @@ for parser in `cat scripts/parser_location.txt`; do
 	    #   | sed 's/\.\./\./g' \
 	    #   > ${parsed_dir}/${sentences_basename}.${parser_name}.tsgn.mod.ptb
 	cat ${parsed_dir}/${sentences_basename}.${parser_name}.tsgn.ptb \
-	    | sed -e 's/\((\|\\\|\/\|<\|>\)\(S\|N\|NP\|PP\)\([a-zX,=]\+\)/\1\2[\3]/g' \
-    	    | sed -e 's/\(\/\)\(S\|N\|NP\|PP\)\(\[\)\([a-zX,=]\+\)\(\]\)\()\)/\1\2\4\6/g' \
-	    | sed 's/</(/g' | sed 's/>/)/g' \
-    	    | sed 's/[:\|;];/\.;/g' \
-    	    | sed -e 's/;[.,\$_A-Z-]\+\$*//g' \
+	    | gsed -e 's/\((\|\\\|\/\|<\|>\)\(S\|N\|NP\|PP\)\([a-zX,=]\+\)/\1\2[\3]/g' \
+    	    | gsed -e 's/\(\/\)\(S\|N\|NP\|PP\)\(\[\)\([a-zX,=]\+\)\(\]\)\()\)/\1\2\4\6/g' \
+	    | gsed 's/</(/g' | gsed 's/>/)/g' \
+    	    | gsed 's/[:\|;];/\.;/g' \
+    	    | gsed -e 's/;[.,\$_A-Z-]\+\$*//g' \
     		   > ${parsed_dir}/${sentences_basename}.${parser_name}.tsgn.mod.ptb
 	python -m scripts.tagger --format jigg_xml ${parsed_dir}/${sentences_basename}.${parser_name}.tsgn.mod.ptb \
 	       > ${parsed_dir}/${sentences_basename}.${parser_name}.jigg.xml

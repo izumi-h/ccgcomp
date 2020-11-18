@@ -2,6 +2,8 @@
 #
 # Download EasyCCG parser
 #
+# Usage
+# ./tools/install_easyccg.sh
 
 easyccg_url="https://github.com/mikelewis0/easyccg.git"
 

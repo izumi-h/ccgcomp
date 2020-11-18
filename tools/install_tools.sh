@@ -3,7 +3,7 @@
 # Download Vampire (Version 4.3.0) from https://github.com/vprover/vampire
 #
 # Usage:
-# ./tools/install_tools.sh <OS (linux/mac)>
+# ./tools/install_tools.sh
 
 # if [ ! -d vampire-4.3.0 ]; then
 #   # curl -LO $vampire_url

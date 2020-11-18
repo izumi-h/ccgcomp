@@ -2,6 +2,7 @@
 
 # Usage
 # ./scripts/rte.sh <sentences.txt> <semantic_templates.yaml> <nbest>
+USAGE="Usage: ./scripts/rte.sh <sentences.txt> <semantic_templates.yaml> <nbest>"
 
 # Set the number of nbest parses (Default: 1)
 nbest=${3:-1}
