@@ -244,7 +244,7 @@ The code is divided into the following:
 5. `CAD/cad_2020-10-04.xml` - a new dataset which focuses on comparatives and numerical constructions
 
 ## Citation
-* Izumi Haruta, Koji Mineshima, Daisuke Bekki. Combining Event Semantics and Degree Semantics for Natural Language Inference. Proceedings of  the 28nd International Conference on Computational Linguistics (COLING), Online, December, 2020. [pdf](https://www.aclweb.org/anthology/2020.coling-main.156.pdf)
+* Izumi Haruta, Koji Mineshima, Daisuke Bekki. Combining Event Semantics and Degree Semantics for Natural Language Inference. Proceedings of  the 28nd International Conference on Computational Linguistics (COLING), pages 1758--1764, Online, December, 2020. [pdf](https://www.aclweb.org/anthology/2020.coling-main.156.pdf)
 ```
 @inproceedings{haruta-etal-2020-combining,
     title = "Combining Event Semantics and Degree Semantics for Natural Language Inference",
