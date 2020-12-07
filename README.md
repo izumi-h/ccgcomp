@@ -1,7 +1,7 @@
 # Combining Event Semantics and Degree Semantics for Natural Language Inference
 This repository contains code for our paper: 
-* Izumi Haruta, Koji Mineshima and Daisuke Bekki. 2020. Combining Event Semantics and Degree Semantics for Natural Language Inference. In *Proceedings of the 2020 Conference on COLING*.
-* Izumi Haruta, Koji Mineshima and Daisuke Bekki. 2020. [Logical Inferences with Comparatives and Generalized Quantifiers](https://arxiv.org/abs/2005.07954). In *Proceedings of the 2020 ACL Student Research Workshop (ACL-SRW)*.
+* Izumi Haruta, Koji Mineshima and Daisuke Bekki. 2020. [Combining Event Semantics and Degree Semantics for Natural Language Inference](https://www.aclweb.org/anthology/2020.coling-main.156.pdf). In *Proceedings of the 2020 Conference on COLING*.
+* Izumi Haruta, Koji Mineshima and Daisuke Bekki. 2020. [Logical Inferences with Comparatives and Generalized Quantifiers](https://www.aclweb.org/anthology/2020.acl-srw.35.pdf). In *Proceedings of the 2020 ACL Student Research Workshop (ACL-SRW)*.
 
 ## Requirements
 * Python 3.6.5+
@@ -244,7 +244,22 @@ The code is divided into the following:
 5. `CAD/cad_2020-10-04.xml` - a new dataset which focuses on comparatives and numerical constructions
 
 ## Citation
-* Izumi Haruta, Koji Mineshima, Daisuke Bekki. Combining Event Semantics and Degree Semantics for Natural Language Inference. Proceedings of  the 28nd International Conference on Computational Linguistics (COLING), Online, December, 2020.
+* Izumi Haruta, Koji Mineshima, Daisuke Bekki. Combining Event Semantics and Degree Semantics for Natural Language Inference. Proceedings of  the 28nd International Conference on Computational Linguistics (COLING), Online, December, 2020. [pdf](https://www.aclweb.org/anthology/2020.coling-main.156.pdf)
+```
+@inproceedings{haruta-etal-2020-combining,
+    title = "Combining Event Semantics and Degree Semantics for Natural Language Inference",
+    author = "Haruta, Izumi  and
+      Mineshima, Koji  and
+      Bekki, Daisuke",
+    booktitle = "Proceedings of the 28th International Conference on Computational Linguistics",
+    month = dec,
+    year = "2020",
+    address = "Barcelona, Spain (Online)",
+    publisher = "International Committee on Computational Linguistics",
+    url = "https://www.aclweb.org/anthology/2020.coling-main.156",
+    pages = "1758--1764",
+}
+```
 * Izumi Haruta, Koji Mineshima, Daisuke Bekki. Logical Inferences with Comparatives and Generalized Quantifiers. Proceedings of the 58th Annual Meeting of the Association for Computational Linguistics: Student Research Workshop (ACL-SRW), pages 263--270, Online, july, 2020. [pdf](https://www.aclweb.org/anthology/2020.acl-srw.35.pdf)
 ```
 @inproceedings{haruta-etal-2020-logical,
@@ -253,7 +268,7 @@ The code is divided into the following:
       Mineshima, Koji  and
       Bekki, Daisuke",
     booktitle = "Proceedings of the 58th Annual Meeting of the Association for Computational Linguistics: Student Research Workshop (ACL-SRW)",
-    month = july,
+    month = jul,
     year = "2020",
     address = "Online",
     publisher = "Association for Computational Linguistics",
