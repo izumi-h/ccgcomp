@@ -39,7 +39,7 @@
 # N[down]  \F x.exists d1 c.(N(x) & _many(x,d1) & $less(d1,_d0))
 # N[nm]    \N1 I. I(\F x.N1(\Q.F(Q,d),x), d)
 # NP       \F1 F2. exists x.(E(x) & F1(x) & F2(x)) : (E -> Prop) -> (E -> Prop) -> Prop (= NP*)
-# NP[drg]  \F.F(E)
+# NP[dgr]  \F.F(E)
 # NP[npi]  \F2 F3.exists x.(N(x) & F2(x) & F3(x))
 # NP[adj]  \V d1 d2 I c Q K.exists d1 c.V(\F1 F2 y.F2(y),\F1 F2.Q(F1,\z2 z1.(exists x.(F2(z1,x) & N(x) & _many(x,d1)) & -exists y.(F2(z2,y) & N(y) & _many(y,d1)))),\e.True)
 # S|NP     \Q K. Q(\x.True, \x.exists e.(E(e) & (Nom(e) = x) & K(e))) : NP* -> S*
@@ -181,10 +181,10 @@
   semantics: \V Q F1 F2. Q(\x.(V(\G1 G2.G2(x), \e.True) & F1(x)), F2)
   child0_category: S|NP
 
-## S[adj]|NP => NP|NP; S[dcl]|NP => NP|NP
+## S[adj]|NP => NP|NP
 - category: NP|NP
   rule: lex
-  semantics: \A Q F1. Q(\x.(A(d1,d2,d3,H,I,J,\F2 F3.F3(x),\e.True) & F1(x)))
+  semantics: \A Q F1 F2. Q(\x.(A(d1,d2,d3,H,I,J,\F2 F3.F3(x),\e.True) & F1(x)), F2)
   child0_category: S[adj=true]|NP
 
 ## (S|NP)|NP => NP|NP
@@ -285,7 +285,7 @@
 
 # No less than ...
 - category: NP
-  semantics: \L R. \F2 F3.-L(R,F2,F3)
+  semantics: \L R F2 F3.-L(R,F2,F3)
   child1_category: N[down=true]
   child0_category: NP[nb=true]/N
 
@@ -1894,7 +1894,7 @@
 
 - category: (N|PP)|(S|NP) 
   # semantics: \E V K x. (E(x) & exists y. (Rel(x,y) & V(\G1 G2.G2(y),\w.True) & exists e.((Subj(e) = x) & K(e))))
-  semantics: \E V K x. (E(x) & F(E) & exists y. (Rel(x,y) & V(\G1 G2.G2(y),\w.True) & exists e.((Subj(e) = x) & K(e))))
+  semantics: \E V K F x. (E(x) & F(E) & exists y. (Rel(x,y) & V(\G1 G2.G2(y),\w.True) & exists e.((Subj(e) = x) & K(e))))
 
 - category: (N|N)|(S|NP)
   # semantics: \E V F x. (V(\G1 G2.G2(x),\w.True) & F(x))
