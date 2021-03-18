@@ -1,4 +1,4 @@
-# Combining Event Semantics and Degree Semantics for Natural Language Inference
+# Comparatives for Natural Language Inference
 This repository contains code for our paper: 
 * Izumi Haruta, Koji Mineshima and Daisuke Bekki. 2020. [Combining Event Semantics and Degree Semantics for Natural Language Inference](https://www.aclweb.org/anthology/2020.coling-main.156.pdf). In *Proceedings of the 2020 Conference on COLING*.
 * Izumi Haruta, Koji Mineshima and Daisuke Bekki. 2020. [Logical Inferences with Comparatives and Generalized Quantifiers](https://www.aclweb.org/anthology/2020.acl-srw.35.pdf). In *Proceedings of the 2020 ACL Student Research Workshop (ACL-SRW)*.
@@ -114,14 +114,15 @@ $ ls ./sick_plain/*
     
 ## Running the system on several datasets
  
+### Evaluation on FraCaS, MED, CAD, and HANS
 You can use the [FraCaS](https://nlp.stanford.edu/~wcmac/downloads/fracas.xml), MED, CAD, and HANS test sets.
 
-### Usage:
+#### Usage:
 ```
  ./scripts/eval_fracas.sh <nbest> <ncore> <templates> <list of section numbers>
 ```
 
-### Example:
+#### Example:
 ```
 ./scripts/eval_fracas.sh 1 2 scripts/semantic_template_event.yaml 5 6
 ```
@@ -197,14 +198,15 @@ C&C:
 ・・・     
 ```
 
+### Evaluation on SICK
 In addition, you can use the following for SICK dataset:
-### Usage:
+#### Usage:
 ```
-./scripts/eval_sick.sh <ncores> <split> <templates.yaml>
+./scripts/eval_sick.sh <ncores> <split> <templates>
 ```
-### Example:
+#### Example:
 ```
-./scripts/eval_sick.sh 10 train scripts/semantic_template_event.yaml
+./scripts/eval_sick.sh 10 test scripts/semantic_template_event.yaml
 ```
 - `<split>`:`trial` (500 questions), `train` (5000 questions) and `test` (4500 questions).
 
@@ -221,7 +223,35 @@ You can also run the system on each inference in FraCaS. For example, the follow
 ```
 ./scripts/rte_neg.sh fracas_plain/fracas_243_comparatives.txt scripts/semantic_template.yaml
 ```
+Or, you can do the experiment for each component here, as described in [Ablation experiment](https://github.com/izumi-h/ccgcomp#ablation-experiment):
+```
+./scripts/rte_neg_ablation.sh fracas_plain/fracas_243_comparatives.txt scripts/semantic_template.yaml 4
+```
 
+### Ablation experiment
+To gain insights into the impact of each component, we performed an ablation experiment on overall performance.
+
+#### Usage:
+* FraCaS, MED, CAD, and HANS
+```
+./scripts/eval_fracas_ablation.sh <nbest> <ncore> <templates> <option> <list of section numbers>
+```
+* SICK
+```
+./scripts/eval_sick_ablation.sh <ncores> <option> <split> <templates>
+```
+* `<option>`: Set the option of ablation experiment
+    - `normal`: 1, `+tsurgeon`: 2, `+abduction`: 3, `+rule`: 4, `+implicature`: 5
+    
+#### Example:
+* FraCaS, MED, CAD, and HANS
+```
+./scripts/eval_fracas_ablation.sh 1 3 ./scripts/eval_sick.sh scripts/semantic_template_event.yaml
+```
+* SICK
+```
+./scripts/eval_sick_ablation.sh 10 tsurgeon test scripts/semantic_template_event.yaml
+```
 
 ## Code Structure
 The code is divided into the following:
@@ -241,7 +271,7 @@ The code is divided into the following:
     ```
 3. `./scripts` - main scripts including semantic templates (`scripts/semantic_templates.yaml`), Tsurgeon script (`scripts/transform.tsgn`) and the COMP axioms.
 4. `./tools` - tools for setup
-5. `CAD/cad_2020-10-04.xml` - a new dataset which focuses on comparatives and numerical constructions
+5. `./CAD` - CAD dataset which focuses on comparatives and numerical constructions
 
 ## Citation
 * Izumi Haruta, Koji Mineshima, Daisuke Bekki. Combining Event Semantics and Degree Semantics for Natural Language Inference. Proceedings of  the 28nd International Conference on Computational Linguistics (COLING), pages 1758--1764, Online, December, 2020. [pdf](https://www.aclweb.org/anthology/2020.coling-main.156.pdf)
