@@ -99,7 +99,7 @@ split -l $trial_lines_per_split ${plain_dir}/sick_trial.files ${plain_dir}/sick_
 # Run pipeline for each entailment problem.
 for ff in ${plain_dir}/sick_${dataset}.files_??; do
   for f in `cat ${ff}`; do
-    ./scripts/rte2.sh $f $templates;
+    # ./scripts/rte.sh $f $templates;
     ./scripts/rte_neg_ablation.sh $f $templates $op;
   done &
 done
