@@ -1,3 +1,3 @@
-Ken runs 8 MPH faster than Taro.
-Taro runs 50 MPH fast.
+Ken runs 8 MPH faster than Tom.
+Tom runs 50 MPH fast.
 Ken runs 58 MPH fast.

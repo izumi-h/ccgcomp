@@ -1,2 +1,2 @@
-John walks slowly and runs.
+John walks slowly and runs .
 John runs slowly.
