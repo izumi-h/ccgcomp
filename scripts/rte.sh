@@ -180,6 +180,36 @@ function proving() {
   echo $proving_time > ${results_dir}/${sentences_basename}.time
 }
 
+function select_fname() {
+  ans=$1
+  for fname in ${results_dir}/${sentences_basename}.*{candc,easyccg,depccg}.answer; do
+    fname_answer=`cat ${fname}`
+    if [ "${fname_answer}" = "${ans}" ]; then
+      prediction_fname=`echo ${fname##*/} | sed 's/.answer//g'`
+    fi
+  done
+  echo $prediction_fname
+}
+
+function predict_answer() {
+  yes=$1
+  no=$2
+  unk=$3
+  if [ ${yes} -gt ${no} ]; then
+    prediction_fname=$(select_fname "yes")
+  elif [ ${no} -gt ${yes} ]; then
+    prediction_fname=$(select_fname "no")
+  else
+    prediction_fname=$(select_fname "unknown")
+  fi
+  if [ ! -z "${prediction_fname}" ]; then
+    cp ${parsed_dir}/${prediction_fname}.jigg.xml ${parsed_dir}/${sentences_basename}.xml
+    cp ${parsed_dir}/${prediction_fname}.sem.xml ${parsed_dir}/${sentences_basename}.sem.xml
+    cp ${results_dir}/${prediction_fname}.answer ${results_dir}/${sentences_basename}.answer
+    cp ${results_dir}/${prediction_fname}.html ${results_dir}/${sentences_basename}.html
+  fi
+}
+
 function select_answer() {
   parser=$1
   fname=${results_dir}/${sentences_basename}.${parser}.answer
@@ -239,6 +269,10 @@ function add_feature_brackets(){
 current_answer="unknown"
 prediction_fname="${sentences_basename}.candc"
 
+yes=0
+no=0
+unk=0
+
 # CCG parsing, semantic parsing and theorem proving
 for parser in `cat scripts/parser_location.txt`; do
   parser_name=`echo $parser | awk -F':' '{print $1}'`
@@ -279,6 +313,16 @@ for parser in `cat scripts/parser_location.txt`; do
   # fi
   # if [ ! -e ${results_dir}/${sentences_basename}.${parser_name}.answer ]; then;
     proving $parser_name $sentences_basename
-    select_answer ${parser_name}
-  # fi
+    # Count yes/no/unk with each parser
+    fname=${results_dir}/${sentences_basename}.${parser_name}.answer
+    fname_answer=`cat ${fname}`
+    if [ "$fname_answer" = "yes" ]; then
+      yes=$((yes += 1))
+    elif [ "$fname_answer" = "no" ]; then
+      no=$((no += 1))
+    else
+      unk=$((unk += 1))
+    fi
 done
+
+predict_answer $yes $no $unk
