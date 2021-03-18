@@ -1,0 +1,2 @@
+Most students take the class.
+None of the students take the class.

@@ -1,0 +1,2 @@
+At most half of the students take the class.
+Less than half of the students take the class.
