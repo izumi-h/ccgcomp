@@ -601,17 +601,17 @@ relabel p /<N\/N>\/<N\/N>/<<<Sadj\\NP>\/<Sadj\\NP>>\/<<Sadj\\NP>\/<Sadj\\NP>>>\/
 relabel q /N\/N/<<Sadj\\NP>\/<Sadj\\NP>>\/<<Sadj\\NP>\/<Sadj\\NP>>/
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% compound nouns
-% fracas-214,215
-% legal_authority, law_lecturer, Ancient_Greek
+% % compound nouns
+% % fracas-214,215
+% % legal_authority, law_lecturer, Ancient_Greek
 
-N=y <1 (/^N\/N;[A-Z;-]+$/=z <: /^legal$|^law$|^Ancient$/) <2 (/^N;[A-Z;-]+$/ <: /^authorities$|^lecturers$|^Greek$/=x)
+% N=y <1 (/^N\/N;[A-Z;-]+$/=z <: /^legal$|^law$|^Ancient$/) <2 (/^N;[A-Z;-]+$/ <: /^authorities$|^lecturers$|^Greek$/=x)
 
-excise y y
-relabel x /authorities/legal_authority/
-relabel x /lecturers/law_lecturer/
-% relabel x /Greek/Ancient_Greek/
-delete z
+% excise y y
+% relabel x /authorities/legal_authority/
+% relabel x /lecturers/law_lecturer/
+% % relabel x /Greek/Ancient_Greek/
+% delete z
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % from: (a ((2 cm) (tall boy)))
@@ -991,7 +991,7 @@ relabel h /<Nadj\/N>\/<Nadj\/N>/
 % from: (NP (NP/N a) (Nadj taller boy))
 % to: (NPadj (NPadj/Nadj a) (Nadj taller boy))
 
-/^NP[a-z]*$/=x <1 (/^NP[a-z]*\/N;DT;O$/=y <: /^a$|^an$|^the$/) <2 N $. (/^NP\\NP$/=z <1 (/(^<NP\\NP>\/NP|^<NP\\NP>\/S[a-z]*|^<NP\\NP>\/<S\/NP>);[A-Z;-]+$/=t <: than))
+NP=x <1 (/^NP[a-z]*\/N;DT;O$/=y <: /^a$|^an$|^the$/) <2 N $. (/^NP\\NP$/=z <1 (/(^<NP\\NP>\/NP|^<NP\\NP>\/S[a-z]*|^<NP\\NP>\/<S\/NP>);[A-Z;-]+$/=t <: than))
 
 relabel x NPadj
 relabel y /NPadj\/Nadj;DT;O/

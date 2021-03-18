@@ -70,7 +70,7 @@ def add_adj_handtags(token, Fpos, Fneg, Fpre, Fnsub, Fin):
 
 
 def orgs(token):
-    token.attrib['surf'] = re.sub('[-_]', '', token.attrib['surf'])
+    token.attrib['surf'] = re.sub('_', '', token.attrib['surf'])
     token.attrib['entity'] = "B-ORG"
     token.attrib['pos'] = "NNP"
 
@@ -80,8 +80,7 @@ def change_tags(root, Fpre, Fin, adj, surf, lemma, Fpos, Fneg, Fnsub, adv):
         # if token.attrib['surf'] in org:
         #     token.attrib['entity'] = "B-ORG"
         #     token.attrib['pos'] = "NNP"
-        if ('-' in token.attrib['surf'] or '_' in token.attrib['surf']) \
-           and token.attrib['surf'][0].isupper():
+        if '_' in token.attrib['surf'] and token.attrib['surf'][0].isupper():
             index = token.attrib['id'].index('_')
             num = int(token.attrib['id'][index+1:])
             Search = token.attrib['id'][:index+1] + str(num-1)
@@ -330,8 +329,8 @@ def main():
     args = sys.argv
     filename = args[1]
 
-    Fpos = ['fast', 'genuine', 'great', 'ambitious', 'many', 'indispensable',
-            'noisy', 'early', 'hard']
+    # Fpos = ['fast', 'genuine', 'great', 'ambitious', 'many', 'indispensable',
+    #         'noisy', 'early']
     Fneg = ['short', 'slow', 'few', 'little', 'young']
     Fpre = ['four_legged', 'major', 'several', 'law', 'leading', 'true',
             'false', 'sci-fi', 'other', 'hooded', 'colored']
@@ -339,17 +338,17 @@ def main():
     Fin = ['clever', 'successful', 'important', 'genuine', 'competent',
            'stupid', 'great', 'modest', 'popular', 'poor', 'indispensable',
            'excellent', 'interest', 'ambitious']
-    adj = ['cleverer', 'four_legged', 'light', 'tan', 'sci-fi', 'colored',
-           'elder']
-    surf = ['Aldo', 'singing', 'drunk', 'Japanese', 'likely', 'Jones']
-    lemma = ['hundred', 'more', 'less', 'irishman', 'half', 'garlic', 'kick',
-             'squirt', 'pasta', 'okra', 'europeans', 'alien', 'people']
+    # adj = ['cleverer', 'four_legged', 'light', 'tan', 'sci-fi', 'colored',
+    #        'elder']
+    # surf = ['Aldo', 'singing', 'drunk', 'Japanese', 'likely', 'Jones']
+    # lemma = ['hundred', 'more', 'less', 'irishman', 'half', 'garlic', 'kick',
+    #          'squirt', 'pasta', 'okra', 'europeans', 'alien', 'people']
     # org = ['PC_6082', 'ITEL_XZ', 'ITEL_ZX', 'ITEL_ZY']
 
-    # Fpos = ['fast', 'genuine', 'great', 'ambitious', 'many', 'indispensable']
-    # adj = []
-    # surf = []
-    # lemma = ['hundred', 'more', 'less', 'half', 'people']
+    Fpos = ['fast', 'genuine', 'great', 'ambitious', 'many', 'indispensable']
+    adj = []
+    surf = []
+    lemma = ['hundred', 'more', 'less', 'half', 'people']
 
     adv = ['lately', 'nearly', 'highly', 'rarely']
 

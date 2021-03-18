@@ -12,7 +12,7 @@ lexpr = Expression.fromstring
 from nltk.sem.logic import *
 
 from os.path import expanduser
-HOME = expanduser("~")
+# HOME = expanduser("~")
 # c2l = HOME + "/ccg2lambda/scripts"
 # sys.path.append(c2l)
 sys.path.append("./ccg2lambda")
@@ -22,7 +22,6 @@ from normalization import denormalize_token, normalize_token
 from linguistic_tools import linguistic_relationship
 from linguistic_tools import get_wordnet_cascade
 from nltk2normal import get_atomic_formulas
-from knowledge import get_lexical_relations_from_preds
 
 
 def get_formulas_from_xml(doc):
@@ -45,15 +44,10 @@ def create_antonym_axioms(relations_to_pairs, adjs, pred_args):
                 # axiom = 'Axiom ax_{0}_{1}_{2} : forall F x y,
                 # _{1} x -> _{2} y -> F (Subj x) -> F (Subj y) -> False.'\
                 #     .format(relation, t1, t2)
-                axiom1 = lexpr('all x. ({0}(x) -> -{1}(x))'.format(t1, t2))
-                # axiom2 = lexpr('all x. ({1}(x) -> -{0}(x))'.format(t1, t2))
+                axiom = lexpr('all x. ({0}(x) -> -{1}(x))'.format(t1, t2))
             else:
-                axiom1 = lexpr('all x y. ({0}(x,y) -> -{1}(x,y))'
-                               .format(t1, t2))
-                # axiom2 = lexpr('all x y. ({1}(x,y) -> -{0}(x,y))'
-                #                .format(t1, t2))
-            # axioms.extend([axiom1, axiom2])
-            axioms.append(axiom1)
+                axiom = lexpr('all x y. ({0}(x,y) -> -{1}(x,y))'.format(t1, t2))
+            axioms.append(axiom)
     return axioms
 
 
@@ -102,7 +96,6 @@ def create_reverse_entail_axioms(relations_to_pairs, adjs, pred_args,
 
 
 def get_lexical_relations(premise_preds, conclusion_pred, adjs, pred_args):
-    # print(get_lexical_relations_from_preds(premise_preds, conclusion_pred))
     src_preds = [denormalize_token(p) for p in premise_preds]
 
     trg_pred = denormalize_token(conclusion_pred)

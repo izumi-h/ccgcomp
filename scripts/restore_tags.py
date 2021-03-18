@@ -69,7 +69,7 @@ def add_tags(filename, doc):
     # lst = [{}, {}, ..., {.}, {}, {}, ..., {.}]
     lst = get_init_tags(filename)
     empty = ['pos', 'dgr', 'dgr2']
-    compound = [['a~few', 'the~few', 'a~lot~of', 'at~most'],
+    compound = [['a~few', 'the~few', 'a~lot~of', 'at~most', 'at~least'],
                 ['more~than', 'less~than', 'fewer~than', 'as~many',
                  'more~and~more', 'more~or~less'],
                 ['law_lecturer', 'legal_authority', 'stock_market',

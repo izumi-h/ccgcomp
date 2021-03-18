@@ -40,10 +40,10 @@ def get_formulas_from_xml(doc):
         './sentences/sentence/semantics[1]/span[1]')]
     return formulas
 
+
+# types of predicates
 non_Sub = ['former', 'true', 'false']
-
 clause = ['before']
-
 datasets = ['med', 'hans']
 
 
@@ -110,7 +110,8 @@ def prove_vampire(premises, conclusion, predicates, lst, axioms, mode):
     if adjlst != []:
         antonyms = get_antonyms(adjdic, antonyms)
     # add axioms from comp
-    axioms2 = vampire_axioms(adjdic, antonyms, objlst, tverblst, iverblst, predicates, lst)
+    types, axioms2 = vampire_axioms(adjdic, antonyms, objlst, tverblst,
+                                    iverblst, predicates, lst)
     axioms += axioms2
     axioms = set(axioms)
     axioms = list(axioms)
@@ -123,90 +124,73 @@ def prove_vampire(premises, conclusion, predicates, lst, axioms, mode):
 
     type_f = []
     type_f_adj = []
-    Flag = False
+    type_f_adj.extend(types)
+    lems = []
 
     for adj in adjlst:
-        adj_type = 'tff(' + adj + '_type, type , ' + adj + ' : $i * $int > $o).'
+        adj_type = 'tff(' + adj + '_type, type , ' + adj + \
+                   ' : $i * $int > $o).'
         type_f_adj.append(adj_type)
-        
+
     if len(numlst) >= 2:
-        # Flag = True
         numlst.sort()
         for i in range(len(numlst) - 1):
             lem = '$less(' + str(numlst[i]) + ',' + str(numlst[i + 1]) + ')'
             f = lexpr(lem)
             lemma = convert_to_tptp(f)
-            fols.insert(-1, 'tff(p' + str(i + 1) + ',lemma,{0}).'.format(lemma))
-        Flag = False
+            lems.append(lemma)
     for pred in predicates:
-        # print(pred[0])
-        # print(pred[0].strip('_'))
-        # for adj in F:
-        #     if pred[0].strip('_') == adj:
-        #         # adj = adj.strip('_')
-        #         adj_type = 'tff(' + adj + '_type, type , ' + adj + ' : $i * $int > $o).'
-        #         type_f.append(adj_type)
-
-        if pred[0] == 'many' or pred[0] == 'much' or pred[0] == 'few':
-            adj_type = 'tff(' + pred[0] + '_type, type , ' + pred[0] + ' : $i * $int > $o).'
+        if pred[0] == 'much' or pred[0] == 'many' or pred[0] == 'few':
+            adj_type = 'tff(' + pred[0] + '_type, type , ' + pred[0] + \
+                       ' : $i * $int > $o).'
             type_f_adj.append(adj_type)
-            qu_lem = lexpr('all x y.(exists d.(' + pred[0] + '(x,d) & -' + pred[0] + '(y,d)) -> all d.(' + pred[0] + '(y,d) -> ' + pred[0] + '(x,d)))')
+            if pred[0] == 'many':
+                adj_type = 'tff(few_type, type , few : $i * $int > $o).'
+                type_f_adj.append(adj_type)
+            elif pred[0] == 'few':
+                adj_type = 'tff(many_type, type , many : $i * $int > $o).'
+                type_f_adj.append(adj_type)
+            else:
+                pass
+            qu_lem = lexpr('all x y.(exists d.(' + pred[0] + '(x,d) & -'
+                           + pred[0] + '(y,d)) -> all d.(' + pred[0] +
+                           '(y,d) -> ' + pred[0] + '(x,d)))')
             qu_lem = convert_to_tptp(qu_lem)
-            lem = 'tff(p0,lemma,{0}).'.format(qu_lem)
-            if lem not in fols:
-                fols.insert(-1, lem)
-            # if Flag:
-                # f = lexpr('all d1.-exists d2.($less(d1,d2) & $less(d2,$sum(d1,1)))')
-                # lemma = convert_to_tptp(f)
-                # fols.insert(-1, 'tff(p1,lemma,{0}).'.format(lemma))
-            # if Flag:
-            #     numlst.sort()
-            #     for i in range(len(numlst) - 1):
-            #         lem = '$less(' + str(numlst[i]) + ',' + str(numlst[i + 1])  + ')'
-            #         f = lexpr(lem)
-            #         lemma = convert_to_tptp(f)
-            #         fols.insert(-1, 'tff(p' + str(i + 1) + ',lemma,{0}).'.format(lemma))
-            #     Flag = False
+            if qu_lem not in lems:
+                lems.append(qu_lem)
+
         elif pred[0] == 'year' or pred[0] == 'num':
             type_f.append('tff(' + pred[0] + '_type, type , ' + pred[0] + ' : $int * $i > $o).')
-        
+
         for naf in non_Sub:
             if pred[0] == naf:
-                naf_type = 'tff(' + naf + '_type, type , ' + naf + ' : $o > $o).'
+                naf_type = 'tff(' + naf + '_type, type , ' + naf + \
+                           ' : $o > $o).'
                 type_f.append(naf_type)
 
-        # for v in Atts:
-        #     if pred[0] == v:
-        #         v_type = 'tff(' + v + '_type, type , ' + v + ' : $i * $o > $o).'
-        #         type_f.append(v_type)
         v_type = 'tff(acci_type, type , acci : $i * $o > $o).'
         type_f.append(v_type)
-        
 
         for c in clause:
             if pred[0] == c:
-                c_type = 'tff(' + c + '_type, type , ' + c + ' : $o * $o > $o).'
+                c_type = 'tff(' + c + '_type, type , ' + c + \
+                         ' : $o * $o > $o).'
                 type_f.append(c_type)
 
         for obj in objlst:
             if (pred[0] == obj) or (obj in pred[1][0]):
-                obj_type = 'tff(' + obj + '_type, type , ' + obj + ' : $i > $o).'
+                obj_type = 'tff(' + obj + '_type, type , ' + obj + \
+                           ' : $i > $o).'
                 type_f.append(obj_type)
-
-        # for h in highv:
-        #     if pred[0].strip('_') == h:
-        #         # h = h.strip('_')
-        #         h_type = 'tff(' + h + '_type, type , ' + h + ' : $i * $o > $o).'
-        #         type_f.append(h_type)
 
         type_f.append('tff(th_type, type , th : $i > $int).')
         type_f.append('tff(d0_type, type , d0 : $int).')
-        
+
         # if (len(pred[1]) == 2) and ('_th' in (pred[1])[1]):
         #     type_f.append('tff(th_type, type , th : $i > $int).')
         if (len(pred[1]) == 2) and ('_np' in (pred[1])[1]):
             type_f.append('tff(np_type, type , np : $i * $int > $int).')
-            
+
     type_f = set(type_f)
     type_f = list(type_f)
     type_f_adj = set(type_f_adj)
@@ -216,6 +200,9 @@ def prove_vampire(premises, conclusion, predicates, lst, axioms, mode):
 
     # print(type_f)
     # print(type_f_adj)
+
+    for i in range(len(lems)):
+        fols.insert(-1, 'tff(p{0},lemma,{1}).'.format(i, lems[i]))
 
     fols = type_f + type_f_adj + fols
 
@@ -229,8 +216,8 @@ def prove_vampire(premises, conclusion, predicates, lst, axioms, mode):
     # arg = ARGS.sem.strip("./results")
     # arg = arg.strip(".sem.xml")
     # arg = ARGS.sem.strip(".sem.xml")
-    arg = ARGS.sem.replace('cache/','')
-    arg = arg.replace('.sem.xml','')
+    arg = ARGS.sem.replace('cache/', '')
+    arg = arg.replace('.sem.xml', '')
     with open("tptp/" + arg + ".tptp", "w", encoding="utf-8") as z:
         for f in fols:
             z.write(f + "\n")
@@ -240,18 +227,19 @@ def prove_vampire(premises, conclusion, predicates, lst, axioms, mode):
         if mode == 'casc_sat':
             timeout = '1'
         else:
-            timeout = '4'
+            timeout = '7'
         output = subprocess.check_output(
               (vampire_dir + '/vampire', '-t', timeout, '--mode', mode),
               stdin=ps.stdout,
               stderr=subprocess.STDOUT)
-    except subprocess.CalledProcessError as e:
+    except subprocess.CalledProcessError:
         return False
     ps.wait()
     output_lines = [
         str(line).strip() for line in output.decode('utf-8').split('\n')]
     res = is_theorem_in_vampire(output_lines)
     return res
+
 
 def is_theorem_in_vampire(output_lines):
     if output_lines:
@@ -341,9 +329,10 @@ def get_predicate(formula):
 def main(args = None):
     global ARGS
     global DOCS
-    DESCRIPTION=textwrap.dedent("""\
-            The input file sem should contain the parsed sentences. All CCG trees correspond
-            to the premises, except the last one, which is the hypothesis.
+    DESCRIPTION = textwrap.dedent("""
+            The input file sem should contain the parsed sentences. '\
+            'All CCG trees correspond to the premises, '\
+            'except the last one, which is the hypothesis.
       """)
 
     parser = argparse.ArgumentParser(
@@ -354,6 +343,11 @@ def main(args = None):
     parser.add_argument("--prover", nargs='?', type=str, default="vampire",
                         choices=["vampire"],
                         help="Prover (default: vampire).")
+
+    parser.add_argument("--abduction", nargs='?', type=str, default="lex",
+                        choices=["lex", "nolex"],
+                        help="Abduction (default: lex).")
+
     ARGS = parser.parse_args()
 
     if not os.path.exists(ARGS.sem):
@@ -369,8 +363,11 @@ def main(args = None):
     formulas = get_formulas_from_xml(doc)
 
     # add axioms from WordNet
-    sentences = doc.xpath('//sentence')
-    axioms = get_axioms(formulas, sentences)
+    if ARGS.abduction == "lex":
+        sentences = doc.xpath('//sentence')
+        axioms = get_axioms(formulas, sentences)
+    else:
+        axioms = []
 
     lst = []
     predicates = []
@@ -441,12 +438,12 @@ if __name__ == '__main__':
     main()
 
 
-## Test formulas
+# Test formulas
 f1 = lexpr('exists x. (boy(x) & tall(x))')
 f2 = lexpr('exists x. (boy(x))')
 f3 = lexpr('forall x. (boy(x) -> -tall(x))')
 f4 = lexpr('tall(john)')
 f5 = lexpr('-boy(john)')
-inf1 = [f1,f2]
-inf2 = [f2,f1]
-inf3 = [f3,f4,f5]
+inf1 = [f1, f2]
+inf2 = [f2, f1]
+inf3 = [f3, f4, f5]

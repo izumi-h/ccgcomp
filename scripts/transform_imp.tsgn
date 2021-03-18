@@ -1,0 +1,145 @@
+% Tsugeson script for implicature
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% clause, factive verbs, negation
+
+% pos
+
+/^S[a-z]*$/ << (/^Sadj\\NP$/ <1 (/^<Sadj\\NP>\/<Sadj\\NP>$/ <1 /^<<Sadj\\NP>\/<Sadj\\NP>>\/<<Sadj\\NP>\/<Sadj\\NP>>;CD;[A-Z-]+$/=x <2 /^<Sadj\\NP>\/<Sadj\\NP>;[A-Z-]+;(I-QUANTITY$|I-DATE)$/) <2 /^Sadj\\NP;JJ;[A-Z-]+$/) !<< /^Sdcl$/ !$, (/^<S\/S>\/S[a-z]*;[A-Z;-]+$/ <: /^[I|i]f$|^[B|b]efore$/) !$, (/^<<S\\NP>\/<S\\NP>>\/S[a-z]*;[A-Z;-]+$/ <: /^[I|i]f$|^[B|b]efore$/) !$, /^Sem\/S[a-z]*;[A-Z;-]+$/ !<< /^[F|f]ew|^[N|n]o$|^n't$|^[N|n]ot$|^[N|n]obody$|^[L|l]ess$|^without$/ !<< (NP << /^[E|e]very/ <2 (/^NP\\NP$/ <1 (/^<NP\\NP>\/<S[a-z]*\\NP>;[A-Z;-]+$/ <: /^who$/) << (/^Sadj\\NP$/ <1 (/^<Sadj\\NP>\/<Sadj\\NP>$/ <1 /^<<Sadj\\NP>\/<Sadj\\NP>>\/<<Sadj\\NP>\/<Sadj\\NP>>;CD;[A-Z-]+$/ <2 /^<Sadj\\NP>\/<Sadj\\NP>;[A-Z-]+;(I-QUANTITY$|I-DATE)$/) <2 /^Sadj\\NP;JJ;[A-Z-]+$/)))
+
+adjoinF (<<Sadj\\NP>\/<Sadj\\NP>>\/<<Sadj\\NP>\/<Sadj\\NP>>=y @) x
+insert (<<<Sadj\\NP>\/<Sadj\\NP>>\/<<Sadj\\NP>\/<Sadj\\NP>>>\/<<<Sadj\\NP>\/<Sadj\\NP>>\/<<Sadj\\NP>\/<Sadj\\NP>>> pos) >1 y
+
+/^S[a-z]*$/ << (N <1 (/^N\/N$/ <1 (/^<N\/N>\/<Nadj\/N>$/ <1 /^<<N\/N>\/<N\/N>>\/<<N\/N>\/<N\/N>>;CD;[A-Z-]+$/=x <2 /^<N\/N>\/<N\/N>;[A-Z-]+;I-QUANTITY$/) <2 /^Nadj\/N;JJ;[A-Z-]+$/) <2 /^N$|^N;[A-Z;-]+$/) !<< /^Sdcl$/ !$, (/^<S\/S>\/S[a-z]*;[A-Z;-]+$/ <: /^[I|i]f$|^[B|b]efore$/) !$, (/^<<S\\NP>\/<S\\NP>>\/S[a-z]*;[A-Z;-]+$/ <: /^[I|i]f$|^[B|b]efore$/) !$, /^Sem\/S[a-z]*;[A-Z;-]+$/ !<< /^[F|f]ew|^[N|n]o$|^n't$|^[N|n]ot$|^[N|n]obody$|^[L|l]ess$|^without$/ !<< (NP << /^[E|e]very/ <2 (/^NP\\NP$/ <1 (/^<NP\\NP>\/<S[a-z]*\\NP>;[A-Z;-]+$/ <: /^who$/) << (N <1 (/^N\/N$/ <1 (/^<N\/N>\/<Nadj\/N>$/ <1 /^<<N\/N>\/<N\/N>>\/<<N\/N>\/<N\/N>>;CD;[A-Z-]+$/ <2 /^<N\/N>\/<N\/N>;[A-Z-]+;I-QUANTITY$/) <2 /^Nadj\/N;JJ;[A-Z-]+$/) <2 /^N$|^N;[A-Z;-]+$/)))
+
+adjoinF (<<N\/N>\/<N\/N>>\/<<N\/N>\/<N\/N>>=y @) x
+insert (<<<N\/N>\/<N\/N>>\/<<N\/N>\/<N\/N>>>\/<<<N\/N>\/<N\/N>>\/<<N\/N>\/<N\/N>>> pos) >1 y
+
+/^S[a-z]*$/ << (NP <: (N=z <1 /^N\/N;CD;[A-Z-]+$/=x <2 /^N$|^N;[A-Z;-]+$/)) !<< /^Sdcl$/ !$, (/^<S\/S>\/S[a-z]*;[A-Z;-]+$/ <: /^[I|i]f$|^[B|b]efore$/) !$, (/^<<S\\NP>\/<S\\NP>>\/S[a-z]*;[A-Z;-]+$/ <: /^[I|i]f$|^[B|b]efore$/) !$, /^Sem\/S[a-z]*;[A-Z;-]+$/ !<< /^[F|f]ew|^[N|n]o$|^n't$|^[N|n]ot$|^[N|n]obody$|^[L|l]ess$|^without$/ !<< (NP << /^[E|e]very/ <2 (/^NP\\NP$/ <1 (/^<NP\\NP>\/<S[a-z]*\\NP>;[A-Z;-]+$/ <: /^who$/) << (NP <: (N <1 /^N\/N;CD;[A-Z-]+$/ <2 /^N$|^N;[A-Z;-]+$/))))
+
+adjoinF (Nnm\/N=y @) x
+insert (<Nnm\/N>\/<N\/N> pos) >1 y
+relabel z Nnm
+
+/^S[a-z]*$/ << (/^<S\\NP>\\<S\\NP>$/ <1 (/^<<S\\NP>\\<S\\NP>>\/<<Sadv\\NP>\\<Sadv\\NP>>$/ <1 /^<<<S\\NP>\\<S\\NP>>\/<<S\\NP>\\<S\\NP>>>\/<<<S\\NP>\\<S\\NP>>\/<<S\\NP>\\<S\\NP>>>;CD;[A-Z-]+$/=x <2 /^<<S\\NP>\\<S\\NP>>\/<<S\\NP>\\<S\\NP>>;[A-Z;-]+$/) <2 /^<Sadv\\NP>\\<Sadv\\NP>;RB;[A-Z-]+$/) !<< /^Sdcl$/ !$, (/^<S\/S>\/S[a-z]*;[A-Z;-]+$/ <: /^[I|i]f$|^[B|b]efore$/) !$, (/^<<S\\NP>\/<S\\NP>>\/S[a-z]*;[A-Z;-]+$/ <: /^[I|i]f$|^[B|b]efore$/) !$, /^Sem\/S[a-z]*;[A-Z;-]+$/ !<< /^[F|f]ew|^[N|n]o$|^n't$|^[N|n]ot$|^[N|n]obody$|^[L|l]ess$|^without$/ !<< (NP << /^[E|e]very/ <2 (/^NP\\NP$/ <1 (/^<NP\\NP>\/<S[a-z]*\\NP>;[A-Z;-]+$/ <: /^who$/) << (/^<S\\NP>\\<S\\NP>$/ <1 (/^<<S\\NP>\\<S\\NP>>\/<<Sadv\\NP>\\<Sadv\\NP>>$/ <1 /^<<<S\\NP>\\<S\\NP>>\/<<S\\NP>\\<S\\NP>>>\/<<<S\\NP>\\<S\\NP>>\/<<S\\NP>\\<S\\NP>>>;CD;[A-Z-]+$/ <2 /^<<S\\NP>\\<S\\NP>>\/<<S\\NP>\\<S\\NP>>;[A-Z;-]+$/) <2 /^<Sadv\\NP>\\<Sadv\\NP>;RB;[A-Z-]+$/)))
+
+adjoinF (<<<S\\NP>\\<S\\NP>>\/<<S\\NP>\\<S\\NP>>>\/<<<S\\NP>\\<S\\NP>>\/<<S\\NP>\\<S\\NP>>>=y @) x
+insert (<<<<S\\NP>\\<S\\NP>>\/<<S\\NP>\\<S\\NP>>>\/<<<S\\NP>\\<S\\NP>>\/<<S\\NP>\\<S\\NP>>>>\/<<<<S\\NP>\\<S\\NP>>\/<<S\\NP>\\<S\\NP>>>\/<<<S\\NP>\\<S\\NP>>\/<<S\\NP>\\<S\\NP>>>> pos) >1 y
+
+% dgr
+
+/^S[a-z]*$/ << (/^Sadj\\NP$/ <1 (/^<Sadj\\NP>\/<Sadj\\NP>$/ <1 /^<<Sadj\\NP>\/<Sadj\\NP>>\/<<Sadj\\NP>\/<Sadj\\NP>>;CD;[A-Z-]+$/=x <2 /^<Sadj\\NP>\/<Sadj\\NP>;[A-Z-]+;(I-QUANTITY$|I-DATE)$/) <2 /^Sadj\\NP;JJR;[A-Z-]+$/) !<< /^Sdcl$/ !$, (/^<S\/S>\/S[a-z]*;[A-Z;-]+$/ <: /^[I|i]f$|^[B|b]efore$/) !$, (/^<<S\\NP>\/<S\\NP>>\/S[a-z]*;[A-Z;-]+$/ <: /^[I|i]f$|^[B|b]efore$/) !$, /^Sem\/S[a-z]*;[A-Z;-]+$/ !<< /^[F|f]ew|^[N|n]o$|^n't$|^[N|n]ot$|^[N|n]obody$|^[L|l]ess$|^without$/ !<< (NP << /^[E|e]very/ <2 (/^NP\\NP$/ <1 (/^<NP\\NP>\/<S[a-z]*\\NP>;[A-Z;-]+$/ <: /^who$/) << (/^Sadj\\NP$/ <1 (/^<Sadj\\NP>\/<Sadj\\NP>$/ <1 /^<<Sadj\\NP>\/<Sadj\\NP>>\/<<Sadj\\NP>\/<Sadj\\NP>>;CD;[A-Z-]+$/ <2 /^<Sadj\\NP>\/<Sadj\\NP>;[A-Z-]+;(I-QUANTITY$|I-DATE)$/) <2 /^Sadj\\NP;JJR;[A-Z-]+$/)))
+
+adjoinF (<<Sadj\\NP>\/<Sadj\\NP>>\/<<Sadj\\NP>\/<Sadj\\NP>>=y @) x
+insert (<<<Sadj\\NP>\/<Sadj\\NP>>\/<<Sadj\\NP>\/<Sadj\\NP>>>\/<<<Sadj\\NP>\/<Sadj\\NP>>\/<<Sadj\\NP>\/<Sadj\\NP>>> dgr) >1 y
+
+/^S[a-z]*$/ << (/^Sadj\\NP$/ <1 (/^<Sadj\\NP>\/<Sadj\\NP>$/ <1 /^<<Sadj\\NP>\/<Sadj\\NP>>\/<<Sadj\\NP>\/<Sadj\\NP>>;CD;[A-Z-]+$/=x <2 /^<Sadj\\NP>\/<Sadj\\NP>;[A-Z-]+;(I-QUANTITY$|I-DATE)$/) <2 (/^Sadj\\NP$/ <1 (/^<Sadj\\NP>\/<Sadj\\NP>;[A-Z;-]+$/ <: /^more$/) <2 /^Sadj\\NP;JJ;[A-Z-]+$/)) !<< /^Sdcl$/ !$, (/^<S\/S>\/S[a-z]*;[A-Z;-]+$/ <: /^[I|i]f$|^[B|b]efore$/) !$, (/^<<S\\NP>\/<S\\NP>>\/S[a-z]*;[A-Z;-]+$/ <: /^[I|i]f$|^[B|b]efore$/) !$, /^Sem\/S[a-z]*;[A-Z;-]+$/ !<< /^[F|f]ew|^[N|n]o$|^n't$|^[N|n]ot$|^[N|n]obody$|^[L|l]ess$|^without$/ !<< (NP << /^[E|e]very/ <2 (/^NP\\NP$/ <1 (/^<NP\\NP>\/<S[a-z]*\\NP>;[A-Z;-]+$/ <: /^who$/) << (/^Sadj\\NP$/ <1 (/^<Sadj\\NP>\/<Sadj\\NP>$/ <1 /^<<Sadj\\NP>\/<Sadj\\NP>>\/<<Sadj\\NP>\/<Sadj\\NP>>;CD;[A-Z-]+$/ <2 /^<Sadj\\NP>\/<Sadj\\NP>;[A-Z-]+;(I-QUANTITY$|I-DATE)$/) <2 (/^Sadj\\NP$/ <1 (/^<Sadj\\NP>\/<Sadj\\NP>;[A-Z;-]+$/ <: /^more$/) <2 /^Sadj\\NP;JJ;[A-Z-]+$/))))
+
+adjoinF (<<Sadj\\NP>\/<Sadj\\NP>>\/<<Sadj\\NP>\/<Sadj\\NP>>=y @) x
+insert (<<<Sadj\\NP>\/<Sadj\\NP>>\/<<Sadj\\NP>\/<Sadj\\NP>>>\/<<<Sadj\\NP>\/<Sadj\\NP>>\/<<Sadj\\NP>\/<Sadj\\NP>>> dgr) >1 y
+
+/^S[a-z]*$/ << (/^Nadj$/ <1 (/^Nadj\/N$/ <1 (/^<Nadj\/N>\/<Nadj\/N>$/ <1 /^<<N\/N>\/<N\/N>>\/<<N\/N>\/<N\/N>>;CD;[A-Z-]+$/=x <2 /^<N\/N>\/<N\/N>;[A-Z-]+;I-QUANTITY$/) <2 /^Nadj\/N;JJR;[A-Z-]+$/) <2 /^N$|^N;[A-Z;-]+$/) !<< /^Sdcl$/ !$, (/^<S\/S>\/S[a-z]*;[A-Z;-]+$/ <: /^[I|i]f$|^[B|b]efore$/) !$, (/^<<S\\NP>\/<S\\NP>>\/S[a-z]*;[A-Z;-]+$/ <: /^[I|i]f$|^[B|b]efore$/) !$, /^Sem\/S[a-z]*;[A-Z;-]+$/ !<< /^[F|f]ew|^[N|n]o$|^n't$|^[N|n]ot$|^[N|n]obody$|^[L|l]ess$|^without$/ !<< (NP << /^[E|e]very/ <2 (/^NP\\NP$/ <1 (/^<NP\\NP>\/<S[a-z]*\\NP>;[A-Z;-]+$/ <: /^who$/) << (/^Nadj$/ <1 (/^Nadj\/N$/ <1 (/^<Nadj\/N>\/<Nadj\/N>$/ <1 /^<<N\/N>\/<N\/N>>\/<<N\/N>\/<N\/N>>;CD;[A-Z-]+$/ <2 /^<N\/N>\/<N\/N>;[A-Z-]+;I-QUANTITY$/) <2 /^Nadj\/N;JJR;[A-Z-]+$/) <2 /^N$|^N;[A-Z;-]+$/)))
+
+adjoinF (<<N\/N>\/<N\/N>>\/<<N\/N>\/<N\/N>>=y @) x
+insert (<<<N\/N>\/<N\/N>>\/<<N\/N>\/<N\/N>>>\/<<<N\/N>\/<N\/N>>\/<<N\/N>\/<N\/N>>> dgr) >1 y
+
+/^S[a-z]*$/ << (/^Nadj$/ <1 (/^Nadj\/N$/ <1 (/^<Nadj\/N>\/<Nadj\/N>$/ <1 /^<<N\/N>\/<N\/N>>\/<<N\/N>\/<N\/N>>;CD;[A-Z-]+$/=x <2 /^<N\/N>\/<N\/N>;[A-Z-]+;I-QUANTITY$/) <2 (/^Nadj\/N$/ <1 (/^<Nadj\/N>\/<Nadj\/N>;[A-Z;-]+$/ <: /^more$/) <2 /^Nadj\/N;JJ;[A-Z-]+$/)) <2 /^N$|^N;[A-Z;-]+$/) !<< /^Sdcl$/ !$, (/^<S\/S>\/S[a-z]*;[A-Z;-]+$/ <: /^[I|i]f$|^[B|b]efore$/) !$, (/^<<S\\NP>\/<S\\NP>>\/S[a-z]*;[A-Z;-]+$/ <: /^[I|i]f$|^[B|b]efore$/) !$, /^Sem\/S[a-z]*;[A-Z;-]+$/ !<< /^[F|f]ew|^[N|n]o$|^n't$|^[N|n]ot$|^[N|n]obody$|^[L|l]ess$|^without$/ !<< (NP << /^[E|e]very/ <2 (/^NP\\NP$/ <1 (/^<NP\\NP>\/<S[a-z]*\\NP>;[A-Z;-]+$/ <: /^who$/) << (/^Nadj$/ <1 (/^Nadj\/N$/ <1 (/^<Nadj\/N>\/<Nadj\/N>$/ <1 /^<<N\/N>\/<N\/N>>\/<<N\/N>\/<N\/N>>;CD;[A-Z-]+$/ <2 /^<N\/N>\/<N\/N>;[A-Z-]+;I-QUANTITY$/) <2 (/^Nadj\/N$/ <1 (/^<Nadj\/N>\/<Nadj\/N>;[A-Z;-]+$/ <: /^more$/) <2 /^Nadj\/N;JJ;[A-Z-]+$/)) <2 /^N$|^N;[A-Z;-]+$/)))
+
+adjoinF (<<N\/N>\/<N\/N>>\/<<N\/N>\/<N\/N>>=y @) x
+insert (<<<N\/N>\/<N\/N>>\/<<N\/N>\/<N\/N>>>\/<<<N\/N>\/<N\/N>>\/<<N\/N>\/<N\/N>>> dgr) >1 y
+
+/^S[a-z]*$/ << (/^NPadj$/ <1 (/^NPadj\/N$/ <1 /^<NPadj\/N>\/<NPadj\/N>;CD;[A-Z-]+$/=x <2 /^NPadj\/N;JJR;[A-Z-]+$/) <2 /^N$|^N;[A-Z;-]+$/) !<< /^Sdcl$/ !$, (/^<S\/S>\/S[a-z]*;[A-Z;-]+$/ <: /^[I|i]f$|^[B|b]efore$/) !$, (/^<<S\\NP>\/<S\\NP>>\/S[a-z]*;[A-Z;-]+$/ <: /^[I|i]f$|^[B|b]efore$/) !$, /^Sem\/S[a-z]*;[A-Z;-]+$/ !<< /^[F|f]ew|^[N|n]o$|^n't$|^[N|n]ot$|^[N|n]obody$|^[L|l]ess$|^without$/ !<< (NP << /^[E|e]very/ <2 (/^NP\\NP$/ <1 (/^<NP\\NP>\/<S[a-z]*\\NP>;[A-Z;-]+$/ <: /^who$/) << (/^NPadj$/ <1 (/^NPadj\/N$/ <1 /^<NPadj\/N>\/<NPadj\/N>;CD;[A-Z-]+$/ <2 /^NPadj\/N;JJR;[A-Z-]+$/) <2 /^N$|^N;[A-Z;-]+$/)))
+
+adjoinF (<NPadj\/N>\/<NPadj\/N>=y @) x
+insert (<<NPadj\/N>\/<NPadj\/N>>\/<<NPadj\/N>\/<NPadj\/N>> dgr) >1 y
+
+/^S[a-z]*$/ << (/^<Sadv\\NP>\\<Sadv\\NP>$/ <1 (/^<<Sadv\\NP>\\<Sadv\\NP>>\/<<Sadv\\NP>\\<Sadv\\NP>>$/ <1 /^<<<S\\NP>\\<S\\NP>>\/<<S\\NP>\\<S\\NP>>>\/<<<S\\NP>\\<S\\NP>>\/<<S\\NP>\\<S\\NP>>>;CD;[A-Z-]+$/=x <2 /^<<S\\NP>\\<S\\NP>>\/<<S\\NP>\\<S\\NP>>;[A-Z;-]+$/) <2 /^<Sadv\\NP>\\<Sadv\\NP>;RBR;[A-Z-]+$/) !<< /^Sdcl$/ !$, (/^<S\/S>\/S[a-z]*;[A-Z;-]+$/ <: /^[I|i]f$|^[B|b]efore$/) !$, (/^<<S\\NP>\/<S\\NP>>\/S[a-z]*;[A-Z;-]+$/ <: /^[I|i]f$|^[B|b]efore$/) !$, /^Sem\/S[a-z]*;[A-Z;-]+$/ !<< /^[F|f]ew|^[N|n]o$|^n't$|^[N|n]ot$|^[N|n]obody$|^[L|l]ess$|^without$/ !<< (NP << /^[E|e]very/ <2 (/^NP\\NP$/ <1 (/^<NP\\NP>\/<S[a-z]*\\NP>;[A-Z;-]+$/ <: /^who$/) << (/^<Sadv\\NP>\\<Sadv\\NP>$/ <1 (/^<<Sadv\\NP>\\<Sadv\\NP>>\/<<Sadv\\NP>\\<Sadv\\NP>>$/ <1 /^<<<S\\NP>\\<S\\NP>>\/<<S\\NP>\\<S\\NP>>>\/<<<S\\NP>\\<S\\NP>>\/<<S\\NP>\\<S\\NP>>>;CD;[A-Z-]+$/ <2 /^<<S\\NP>\\<S\\NP>>\/<<S\\NP>\\<S\\NP>>;[A-Z;-]+$/) <2 /^<Sadv\\NP>\\<Sadv\\NP>;RBR;[A-Z-]+$/)))
+
+adjoinF (<<<S\\NP>\\<S\\NP>>\/<<S\\NP>\\<S\\NP>>>\/<<<S\\NP>\\<S\\NP>>\/<<S\\NP>\\<S\\NP>>>=y @) x
+insert (<<<<S\\NP>\\<S\\NP>>\/<<S\\NP>\\<S\\NP>>>\/<<<S\\NP>\\<S\\NP>>\/<<S\\NP>\\<S\\NP>>>>\/<<<<S\\NP>\\<S\\NP>>\/<<S\\NP>\\<S\\NP>>>\/<<<S\\NP>\\<S\\NP>>\/<<S\\NP>\\<S\\NP>>>> dgr) >1 y
+
+/^S[a-z]*$/ << (/^<Sadv\\NP>\\<Sadv\\NP>$/ <1 (/^<<Sadv\\NP>\\<Sadv\\NP>>\/<<Sadv\\NP>\\<Sadv\\NP>>$/ <1 /^<<<S\\NP>\\<S\\NP>>\/<<S\\NP>\\<S\\NP>>>\/<<<S\\NP>\\<S\\NP>>\/<<S\\NP>\\<S\\NP>>>;CD;[A-Z-]+$/=x <2 /^<<S\\NP>\\<S\\NP>>\/<<S\\NP>\\<S\\NP>>;[A-Z;-]+$/) <2 (/^<Sadv\\NP>\\<Sadv\\NP>$/ <1 (/^<<Sadv\\NP>\\<Sadv\\NP>>\/<<Sadv\\NP>\\<Sadv\\NP>>;[A-Z;-]+$/ <: /^more$/) <2 /^<Sadv\\NP>\\<Sadv\\NP>;RB;[A-Z-]+$/)) !<< /^Sdcl$/ !$, (/^<S\/S>\/S[a-z]*;[A-Z;-]+$/ <: /^[I|i]f$|^[B|b]efore$/) !$, (/^<<S\\NP>\/<S\\NP>>\/S[a-z]*;[A-Z;-]+$/ <: /^[I|i]f$|^[B|b]efore$/) !$, /^Sem\/S[a-z]*;[A-Z;-]+$/ !<< /^[F|f]ew|^[N|n]o$|^n't$|^[N|n]ot$|^[N|n]obody$|^[L|l]ess$|^without$/ !<< (NP << /^[E|e]very/ <2 (/^NP\\NP$/ <1 (/^<NP\\NP>\/<S[a-z]*\\NP>;[A-Z;-]+$/ <: /^who$/) << (/^<Sadv\\NP>\\<Sadv\\NP>$/ <1 (/^<<Sadv\\NP>\\<Sadv\\NP>>\/<<Sadv\\NP>\\<Sadv\\NP>>$/ <1 /^<<<S\\NP>\\<S\\NP>>\/<<S\\NP>\\<S\\NP>>>\/<<<S\\NP>\\<S\\NP>>\/<<S\\NP>\\<S\\NP>>>;CD;[A-Z-]+$/ <2 /^<<S\\NP>\\<S\\NP>>\/<<S\\NP>\\<S\\NP>>;[A-Z;-]+$/) <2 (/^<Sadv\\NP>\\<Sadv\\NP>$/ <1 (/^<<Sadv\\NP>\\<Sadv\\NP>>\/<<Sadv\\NP>\\<Sadv\\NP>>;[A-Z;-]+$/ <: /^more$/) <2 /^<Sadv\\NP>\\<Sadv\\NP>;RB;[A-Z-]+$/))))
+
+adjoinF (<<<S\\NP>\\<S\\NP>>\/<<S\\NP>\\<S\\NP>>>\/<<<S\\NP>\\<S\\NP>>\/<<S\\NP>\\<S\\NP>>>=y @) x
+insert (<<<<S\\NP>\\<S\\NP>>\/<<S\\NP>\\<S\\NP>>>\/<<<S\\NP>\\<S\\NP>>\/<<S\\NP>\\<S\\NP>>>>\/<<<<S\\NP>\\<S\\NP>>\/<<S\\NP>\\<S\\NP>>>\/<<<S\\NP>\\<S\\NP>>\/<<S\\NP>\\<S\\NP>>>> dgr) >1 y
+
+% dgr2
+
+% as + adj + as + measure phrase
+
+/^S[a-z]*$/ << (/^Sadj\\NP$/ <2 (/^Sadj\\NP$/ <1 (/^<Sadj\\NP>\/<Sadj\\NP>;[A-Z;-]+$/=x <: /^as$/) <2 /^Sadj\\NP;JJ;[A-Z-]+$/) $. (/^<Sadj\\NP>\\<Sadj\\NP>$/ <1 /NPdeg/)) !<< /^Sdcl$/ !$, (/^<S\/S>\/S[a-z]*;[A-Z;-]+$/ <: /^[I|i]f$|^[B|b]efore$/) !$, (/^<<S\\NP>\/<S\\NP>>\/S[a-z]*;[A-Z;-]+$/ <: /^[I|i]f$|^[B|b]efore$/) !$, /^Sem\/S[a-z]*;[A-Z;-]+$/ !<< /^[F|f]ew|^[N|n]o$|^n't$|^[N|n]ot$|^[N|n]obody$|^[L|l]ess$|^without$/ !<< (NP << /^[E|e]very/ <2 (/^NP\\NP$/ <1 (/^<NP\\NP>\/<S[a-z]*\\NP>;[A-Z;-]+$/ <: /^who$/) << (/^Sadj\\NP$/ <2 (/^Sadj\\NP$/ <1 (/^<Sadj\\NP>\/<Sadj\\NP>;[A-Z;-]+$/ <: /^as$/) <2 /^Sadj\\NP;JJ;[A-Z-]+$/) $. (/^<Sadj\\NP>\\<Sadj\\NP>$/ <1 /NPdeg/))))
+
+adjoinF (<Sadj\\NP>\/<Sadj\\NP>=y @) x
+insert (<<Sadj\\NP>\/<Sadj\\NP>>\/<<Sadj\\NP>\/<Sadj\\NP>> dgr2) >1 y
+
+/^S[a-z]*$/ << (/^Sadj\\NP$/ <1 (/^<Sadj\\NP>\/<Sadj\\NP>$/=x <: dgr2) <2 (/^Sadj\\NP$/ <1 (/^<Sadj\\NP>\/<Sadj\\NP>;[A-Z;-]+$/ <: as) <2 /^Sadj\\NP;JJ;[A-Z-]+$/)) !<< /^Sdcl$/ !$, (/^<S\/S>\/S[a-z]*;[A-Z;-]+$/ <: /^[I|i]f$|^[B|b]efore$/) !$, (/^<<S\\NP>\/<S\\NP>>\/S[a-z]*;[A-Z;-]+$/ <: /^[I|i]f$|^[B|b]efore$/) !$, /^Sem\/S[a-z]*;[A-Z;-]+$/ !<< /^[F|f]ew|^[N|n]o$|^n't$|^[N|n]ot$|^[N|n]obody$|^[L|l]ess$|^without$/ !<< (NP << /^[E|e]very/ <2 (/^NP\\NP$/ <1 (/^<NP\\NP>\/<S[a-z]*\\NP>;[A-Z;-]+$/ <: /^who$/) << (/^Sadj\\NP$/ <1 (/^<Sadj\\NP>\/<Sadj\\NP>$/ <: dgr2) <2 (/^Sadj\\NP$/ <1 (/^<Sadj\\NP>\/<Sadj\\NP>;[A-Z;-]+$/ <: as) <2 /^Sadj\\NP;JJ;[A-Z-]+$/))))
+
+adjoinF (<Sadj\\NP>\/<Sadj\\NP>=y @) x
+insert (<<Sadj\\NP>\/<Sadj\\NP>>\/<<Sadj\\NP>\/<Sadj\\NP>> dgr) >1 y
+
+/^S[a-z]*$/ << (/^Sadj\\NP$/ <1 /^<Sadj\\NP>\/<Sadj\\NP>;RB;[A-Z-]+$/=x <2 (/^Sadj\\NP$/ <1 (/^<Sadj\\NP>\/<Sadj\\NP>;[A-Z;-]+$/ <: /^as$/) <2 /^Sadj\\NP;JJ;[A-Z-]+$/)) !<< /^Sdcl$/ !$, (/^<S\/S>\/S[a-z]*;[A-Z;-]+$/ <: /^[I|i]f$|^[B|b]efore$/) !$, (/^<<S\\NP>\/<S\\NP>>\/S[a-z]*;[A-Z;-]+$/ <: /^[I|i]f$|^[B|b]efore$/) !$, /^Sem\/S[a-z]*;[A-Z;-]+$/ !<< /^[F|f]ew|^[N|n]o$|^n't$|^[N|n]ot$|^[N|n]obody$|^[L|l]ess$|^without$/ !<< (NP << /^[E|e]very/ <2 (/^NP\\NP$/ <1 (/^<NP\\NP>\/<S[a-z]*\\NP>;[A-Z;-]+$/ <: /^who$/) << (/^Sadj\\NP$/ <1 /^<Sadj\\NP>\/<Sadj\\NP>;RB;[A-Z-]+$/ <2 (/^Sadj\\NP$/ <1 (/^<Sadj\\NP>\/<Sadj\\NP>;[A-Z;-]+$/ <: /^as$/) <2 /^Sadj\\NP;JJ;[A-Z-]+$/))))
+
+adjoinF (<Sadj\\NP>\/<Sadj\\NP>=y @) x
+insert (<<Sadj\\NP>\/<Sadj\\NP>>\/<<Sadj\\NP>\/<Sadj\\NP>> dgr) >1 y
+
+/^S[a-z]*$/ << (/^NPadj$/ <1 (/^NPadj\/N$/ <1 (/^<NPadj\/N>\/<NPadj\/N>$/=x <: dgr2) <2 (/^NPadj\/N;[A-Z;-]+$/ <: /^as~many$/)) <2 /^N$|^N;[A-Z;-]+$/) !<< /^Sdcl$/ !$, (/^<S\/S>\/S[a-z]*;[A-Z;-]+$/ <: /^[I|i]f$|^[B|b]efore$/) !$, (/^<<S\\NP>\/<S\\NP>>\/S[a-z]*;[A-Z;-]+$/ <: /^[I|i]f$|^[B|b]efore$/) !$, /^Sem\/S[a-z]*;[A-Z;-]+$/ !<< /^[F|f]ew|^[N|n]o$|^n't$|^[N|n]ot$|^[N|n]obody$|^[L|l]ess$|^without$/ !<< (NP << /^[E|e]very/ <2 (/^NP\\NP$/ <1 (/^<NP\\NP>\/<S[a-z]*\\NP>;[A-Z;-]+$/ <: /^who$/) << (/^NPadj$/ <1 (/^NPadj\/N$/ <1 (/^<NPadj\/N>\/<NPadj\/N>$/ <: dgr2) <2 (/^NPadj\/N;[A-Z;-]+$/ <: /^as~many$/)) <2 /^N$|^N;[A-Z;-]+$/)))
+
+adjoinF (<NPadj\/N>\/<NPadj\/N>=y @) x
+insert (<<NPadj\/N>\/<NPadj\/N>>\/<<NPadj\/N>\/<NPadj\/N>> dgr) >1 y
+
+/^S[a-z]*$/ << (/^NPadj$/ <1 (/^NPadj\/N$/ <1 /^<NPadj\/N>\/<NPadj\/N>;RB;[A-Z-]+$/=x <2 (/^NPadj\/N;[A-Z;-]+$/ <: /^as~many$/)) <2 /^N$|^N;[A-Z;-]+$/) !<< /^Sdcl$/ !$, (/^<S\/S>\/S[a-z]*;[A-Z;-]+$/ <: /^[I|i]f$|^[B|b]efore$/) !$, (/^<<S\\NP>\/<S\\NP>>\/S[a-z]*;[A-Z;-]+$/ <: /^[I|i]f$|^[B|b]efore$/) !$, /^Sem\/S[a-z]*;[A-Z;-]+$/ !<< /^[F|f]ew|^[N|n]o$|^n't$|^[N|n]ot$|^[N|n]obody$|^[L|l]ess$|^without$/ !<< (NP << /^[E|e]very/ <2 (/^NP\\NP$/ <1 (/^<NP\\NP>\/<S[a-z]*\\NP>;[A-Z;-]+$/ <: /^who$/) << (/^NPadj$/ <1 (/^NPadj\/N$/ <1 /^<NPadj\/N>\/<NPadj\/N>;RB;[A-Z-]+$/ <2 (/^NPadj\/N;[A-Z;-]+$/ <: /^as~many$/)) <2 /^N$|^N;[A-Z;-]+$/)))
+
+adjoinF (<NPadj\/N>\/<NPadj\/N>=y @) x
+insert (<<NPadj\/N>\/<NPadj\/N>>\/<<NPadj\/N>\/<NPadj\/N>> dgr) >1 y
+
+/^S[a-z]*$/ << (/^<Sadv\\NP>\\<Sadv\\NP>$/ <1 (/^<<Sadv\\NP>\\<Sadv\\NP>>\/<<Sadv\\NP>\\<Sadv\\NP>>$/=x <: dgr2) <2 (/^<Sadv\\NP>\\<Sadv\\NP>$/ <1 (/^<<Sadv\\NP>\\<Sadv\\NP>>\/<<Sadv\\NP>\\<Sadv\\NP>>;[A-Z;-]+$/ <: /^as$/) <2 /^<Sadv\\NP>\\<Sadv\\NP>;RB;[A-Z-]+$/)) !<< /^Sdcl$/ !$, (/^<S\/S>\/S[a-z]*;[A-Z;-]+$/ <: /^[I|i]f$|^[B|b]efore$/) !$, (/^<<S\\NP>\/<S\\NP>>\/S[a-z]*;[A-Z;-]+$/ <: /^[I|i]f$|^[B|b]efore$/) !$, /^Sem\/S[a-z]*;[A-Z;-]+$/ !<< /^[F|f]ew|^[N|n]o$|^n't$|^[N|n]ot$|^[N|n]obody$|^[L|l]ess$|^without$/ !<< (NP << /^[E|e]very/ <2 (/^NP\\NP$/ <1 (/^<NP\\NP>\/<S[a-z]*\\NP>;[A-Z;-]+$/ <: /^who$/) << (/^<Sadv\\NP>\\<Sadv\\NP>$/ <1 (/^<<Sadv\\NP>\\<Sadv\\NP>>\/<<Sadv\\NP>\\<Sadv\\NP>>$/ <: dgr2) <2 (/^<Sadv\\NP>\\<Sadv\\NP>$/ <1 (/^<<Sadv\\NP>\\<Sadv\\NP>>\/<<Sadv\\NP>\\<Sadv\\NP>>;[A-Z;-]+$/ <: /^as$/) <2 /^<Sadv\\NP>\\<Sadv\\NP>;RB;[A-Z-]+$/))))
+
+adjoinF (<<Sadv\\NP>\\<Sadv\\NP>>\/<<Sadv\\NP>\\<Sadv\\NP>>=y @) x
+insert (<<<Sadv\\NP>\\<Sadv\\NP>>\/<<Sadv\\NP>\\<Sadv\\NP>>>\/<<<Sadv\\NP>\\<Sadv\\NP>>\/<<Sadv\\NP>\\<Sadv\\NP>>> dgr) >1 y
+
+/^S[a-z]*$/ << (/^<Sadv\\NP>\\<Sadv\\NP>$/ <1 /^<<Sadv\\NP>\\<Sadv\\NP>>\/<<Sadv\\NP>\\<Sadv\\NP>>;RB;[A-Z-]+$/=x <2 (/^<Sadv\\NP>\\<Sadv\\NP>$/ <1 (/^<<Sadv\\NP>\\<Sadv\\NP>>\/<<Sadv\\NP>\\<Sadv\\NP>>;[A-Z;-]+$/ <: /^as$/) <2 /^<Sadv\\NP>\\<Sadv\\NP>;RB;[A-Z-]+$/)) !<< /^Sdcl$/ !$, (/^<S\/S>\/S[a-z]*;[A-Z;-]+$/ <: /^[I|i]f$|^[B|b]efore$/) !$, (/^<<S\\NP>\/<S\\NP>>\/S[a-z]*;[A-Z;-]+$/ <: /^[I|i]f$|^[B|b]efore$/) !$, /^Sem\/S[a-z]*;[A-Z;-]+$/ !<< /^[F|f]ew|^[N|n]o$|^n't$|^[N|n]ot$|^[N|n]obody$|^[L|l]ess$|^without$/ !<< (NP << /^[E|e]very/ <2 (/^NP\\NP$/ <1 (/^<NP\\NP>\/<S[a-z]*\\NP>;[A-Z;-]+$/ <: /^who$/) << (/^<Sadv\\NP>\\<Sadv\\NP>$/ <1 /^<<Sadv\\NP>\\<Sadv\\NP>>\/<<Sadv\\NP>\\<Sadv\\NP>>;RB;[A-Z-]+$/ <2 (/^<Sadv\\NP>\\<Sadv\\NP>$/ <1 (/^<<Sadv\\NP>\\<Sadv\\NP>>\/<<Sadv\\NP>\\<Sadv\\NP>>;[A-Z;-]+$/ <: /^as$/) <2 /^<Sadv\\NP>\\<Sadv\\NP>;RB;[A-Z-]+$/))))
+
+adjoinF (<<Sadv\\NP>\\<Sadv\\NP>>\/<<Sadv\\NP>\\<Sadv\\NP>>=y @) x
+insert (<<<Sadv\\NP>\\<Sadv\\NP>>\/<<Sadv\\NP>\\<Sadv\\NP>>>\/<<<Sadv\\NP>\\<Sadv\\NP>>\/<<Sadv\\NP>\\<Sadv\\NP>>> dgr) >1 y
+
+% much
+
+/^S[a-z]*$/ << (/^Sadj\\NP$/ <1 (/^<Sadj\\NP>\/<Sadj\\NP>;RB;[A-Z-]+$/=x <: /^much$/) <2 /^Sadj\\NP;JJR;[A-Z-]+$/) !<< /^Sdcl$/ !$, (/^<S\/S>\/S[a-z]*;[A-Z;-]+$/ <: /^[I|i]f$|^[B|b]efore$/) !$, (/^<<S\\NP>\/<S\\NP>>\/S[a-z]*;[A-Z;-]+$/ <: /^[I|i]f$|^[B|b]efore$/) !$, /^Sem\/S[a-z]*;[A-Z;-]+$/ !<< /^[F|f]ew|^[N|n]o$|^n't$|^[N|n]ot$|^[N|n]obody$|^[L|l]ess$|^without$/ !<< (NP << /^[E|e]very/ <2 (/^NP\\NP$/ <1 (/^<NP\\NP>\/<S[a-z]*\\NP>;[A-Z;-]+$/ <: /^who$/) << (/^Sadj\\NP$/ <1 (/^<Sadj\\NP>\/<Sadj\\NP>;RB;[A-Z-]+$/ <: /^much$/) <2 /^Sadj\\NP;JJR;[A-Z-]+$/)))
+
+adjoinF (<Sadj\\NP>\/<Sadj\\NP>=y @) x
+insert (<<Sadj\\NP>\/<Sadj\\NP>>\/<<Sadj\\NP>\/<Sadj\\NP>> dgr) >1 y
+
+/^S[a-z]*$/ << (/^Nadj$/ <1 (/^Nadj\/N$/ <1 (/^<Nadj\/N>\/<Nadj\/N>$/=x <: /^much$/) <2 /^Nadj\/N;JJR;[A-Z-]+$/) <2 /^N$|^N;[A-Z;-]+$/) !<< /^Sdcl$/ !$, (/^<S\/S>\/S[a-z]*;[A-Z;-]+$/ <: /^[I|i]f$|^[B|b]efore$/) !$, (/^<<S\\NP>\/<S\\NP>>\/S[a-z]*;[A-Z;-]+$/ <: /^[I|i]f$|^[B|b]efore$/) !$, /^Sem\/S[a-z]*;[A-Z;-]+$/ !<< /^[F|f]ew|^[N|n]o$|^n't$|^[N|n]ot$|^[N|n]obody$|^[L|l]ess$|^without$/ !<< (NP << /^[E|e]very/ <2 (/^NP\\NP$/ <1 (/^<NP\\NP>\/<S[a-z]*\\NP>;[A-Z;-]+$/ <: /^who$/) << (/^Nadj$/ <1 (/^Nadj\/N$/ <1 (/^<Nadj\/N>\/<Nadj\/N>$/ <1 /^<<N\/N>\/<N\/N>>\/<<N\/N>\/<N\/N>>;CD;[A-Z-]+$/ <2 /^<N\/N>\/<N\/N>;[A-Z-]+;I-QUANTITY$/) <2 /^Nadj\/N;JJR;[A-Z-]+$/) <2 /^N$|^N;[A-Z;-]+$/)))
+
+adjoinF (<Nadj\/N>\/<Nadj\/N>=y @) x
+insert (<<Nadj\/N>\/<Nadj\/N>>\/<<Nadj\/N>\/<Nadj\/N>> dgr) >1 y
+
+% very much
+
+/^S[a-z]*$/ << (/^Sadj\\NP$/ <1 (/^<Sadj\\NP>\/<Sadj\\NP>$/=x <1 (/^<<Sadj\\NP>\/<Sadj\\NP>>\/<<Sadj\\NP>\/<Sadj\\NP>>;RB;[A-Z-]+$/ <: /^very$/) <2 (/^<Sadj\\NP>\/<Sadj\\NP>;RB;[A-Z-]+$/ <: /^much$/)) <2 /^Sadj\\NP;JJR;[A-Z-]+$/) !<< /^Sdcl$/ !$, (/^<S\/S>\/S[a-z]*;[A-Z;-]+$/ <: /^[I|i]f$|^[B|b]efore$/) !$, (/^<<S\\NP>\/<S\\NP>>\/S[a-z]*;[A-Z;-]+$/ <: /^[I|i]f$|^[B|b]efore$/) !$, /^Sem\/S[a-z]*;[A-Z;-]+$/ !<< /^[F|f]ew|^[N|n]o$|^n't$|^[N|n]ot$|^[N|n]obody$|^[L|l]ess$|^without$/ !<< (NP << /^[E|e]very/ <2 (/^NP\\NP$/ <1 (/^<NP\\NP>\/<S[a-z]*\\NP>;[A-Z;-]+$/ <: /^who$/) << (/^Sadj\\NP$/ <1 (/^<Sadj\\NP>\/<Sadj\\NP>$/ <1 (/^<<Sadj\\NP>\/<Sadj\\NP>>\/<<Sadj\\NP>\/<Sadj\\NP>>;RB;[A-Z-]+$/ <: /^very$/) <2 (/^<Sadj\\NP>\/<Sadj\\NP>;RB;[A-Z-]+$/ <: /^much$/)) <2 /^Sadj\\NP;JJR;[A-Z-]+$/)))
+
+adjoinF (<Sadj\\NP>\/<Sadj\\NP>=y @) x
+insert (<<Sadj\\NP>\/<Sadj\\NP>>\/<<Sadj\\NP>\/<Sadj\\NP>> dgr) >1 y
+
+% many
+
+/^S[a-z]*$/ << (/^NPadj$/ <1 (/^NPadj\/N$/ <1 /^<NPadj\/N>\/<NPadj\/N>;[A-Z;-]+$/=x <2 /^NPadj\/N;JJR;[A-Z-]+$/) <2 /^N$|^N;[A-Z;-]+$/) !<< /^Sdcl$/ !$, (/^<S\/S>\/S[a-z]*;[A-Z;-]+$/ <: /^[I|i]f$|^[B|b]efore$/) !$, (/^<<S\\NP>\/<S\\NP>>\/S[a-z]*;[A-Z;-]+$/ <: /^[I|i]f$|^[B|b]efore$/) !$, /^Sem\/S[a-z]*;[A-Z;-]+$/ !<< /^[F|f]ew|^[N|n]o$|^n't$|^[N|n]ot$|^[N|n]obody$|^[L|l]ess$|^without$/ !<< (NP << /^[E|e]very/ <2 (/^NP\\NP$/ <1 (/^<NP\\NP>\/<S[a-z]*\\NP>;[A-Z;-]+$/ <: /^who$/) << (/^NPadj$/ <1 (/^NPadj\/N$/ <1 /^<NPadj\/N>\/<NPadj\/N>;CD;[A-Z-]+$/ <2 /^NPadj\/N;JJR;[A-Z-]+$/) <2 /^N$|^N;[A-Z;-]+$/)))
+
+adjoinF (<NPadj\/N>\/<NPadj\/N>=y @) x
+insert (<<NPadj\/N>\/<NPadj\/N>>\/<<NPadj\/N>\/<NPadj\/N>> dgr) >1 y
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Quantifiers
+% a~few => not many
+
+/^S[a-z]*$/ << (/^NPnb\/N;DT;O$/=x <: /^a~few$/ !$, /^<NP\/N>\/<NP\/N>/ !, /^<NP\/N>\/<NP\/N>/) !<< /^Sdcl$/ !$, (/^<S\/S>\/S[a-z]*;[A-Z;-]+$/ <: /^[I|i]f$|^[B|b]efore$/) !$, (/^<<S\\NP>\/<S\\NP>>\/S[a-z]*;[A-Z;-]+$/ <: /^[I|i]f$|^[B|b]efore$/) !$, /^Sem\/S[a-z]*;[A-Z;-]+$/ !<< /^[F|f]ew|^[N|n]o$|^n't$|^[N|n]ot$|^[N|n]obody$|^[L|l]ess$|^without$/ !<< (NP << /^[E|e]very/ <2 (/^NP\\NP$/ <1 (/^<NP\\NP>\/<S[a-z]*\\NP>;[A-Z;-]+$/ <: /^who$/) << (/^NPnb\/N;DT;O$/ <: /^a~few$/ !$, /^<NP\/N>\/<NP\/N>/ !, /^<NP\/N>\/<NP\/N>/))) !$, (/^S\/S$/ <1 (/^<S\/S>\/<S[a-z]*\\NP>;IN;O$/ <: /^[Aa]t$/) <2 (/^S[a-z]*\\NP;[A-Z;-]+$/ <: least))
+
+adjoinF (NP\/N=y @) x
+insert (<NP\/N>\/<NP\/N> pos) >1 y
+
+% % pos/very few => not no
+
+% /^S[a-z]*$/ << (/^Ndown\/N$/ <1 (/^<Ndown\/N>\/<Nadj\/N>/=x !<1 (/^<<Ndown\/N>\/<Nadj\/N>>\/<<Ndown\/N>\/<Nadj\/N>>$/ <: pos)) <2 (/^Nadj\/N;JJ;NEG$/ <: /^[Ff]ew$/)) !<< /^Sdcl$/ !$, (/^<S\/S>\/S[a-z]*;[A-Z;-]+$/ <: /^[I|i]f$|^[B|b]efore$/) !$, (/^<<S\\NP>\/<S\\NP>>\/S[a-z]*;[A-Z;-]+$/ <: /^[I|i]f$|^[B|b]efore$/) !$, /^Sem\/S[a-z]*;[A-Z;-]+$/ !<< /^[N|n]o$|^n't$|^[N|n]ot$|^[N|n]obody$|^[L|l]ess$|^without$/ !<< (NP << /^[E|e]very/ <2 (/^NP\\NP$/ <1 (/^<NP\\NP>\/<S[a-z]*\\NP>;[A-Z;-]+$/ <: /^who$/) << (/^Ndown\/N$/ <1 (/^<Ndown\/N>\/<Nadj\/N>/ !<1 (/^<<Ndown\/N>\/<Nadj\/N>>\/<<Ndown\/N>\/<Nadj\/N>>$/ <: pos)) <2 (/^Nadj\/N;JJ;NEG$/ <: /^[Ff]ew$/))))
+
+% adjoinF (<Ndown\/N>\/<Nadj\/N>=y @) x
+% insert (<<Ndown\/N>\/<Nadj\/N>>\/<<Ndown\/N>\/<Nadj\/N>> pos) >1 y

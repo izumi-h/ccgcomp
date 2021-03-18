@@ -20,34 +20,43 @@
 ##
 ## Type T ::= Entity | Event | Degree | Prop | T1 -> T2
 ## 
-## Variables    Type
-## x,y,z,x1,x2  Entity, E
-## e,e1,e2      Event, Ev
-## d,d1,d2      Degree, Int
-## F,G,F1,F2    E -> Prop
-## K,K1,K2      Ev -> Prop
-## Q,Q1,Q2      (E -> Prop) -> (E -> Prop) -> Prop (= NP*)
-## S,S1,S2      (Ev -> Prop) -> Prop (= S*)
-## V1           ((E -> Prop) -> (E -> Prop) -> Prop) -> (Ev -> Prop) -> Prop (= NP* -> S*)
-## V2           ((E -> Prop) -> (E -> Prop) -> Prop) -> ((E -> Prop) -> (E -> Prop) -> Prop) -> (Ev -> Prop) -> Prop (= NP* -> NP* -> S*)
-## E            expression (surface form)
+## Variables		Type
+## x,y,z,x1,x2		Entity, e
+## e,e1,e2,w       	Event, v
+## d,d1,d2       	Degree, d
+## F,G,F1,F2,G1,G2     	e -> t
+## K,K1,K2       	v -> t
+## C1,C2	 	e -> e -> t
+## H			(e -> d -> t) -> d -> t
+## H1			e -> d -> t
+## I,I1,I2		(e -> t) -> t -> t -> t
+## J1,J2	 	(d -> t) -> t
+## N,N1,N2		(e -> t) -> e -> t
+## Q,Q1,Q2		(e -> t) -> (e -> t) -> t (= NP*)
+## S,S1,S2       	(v -> t) -> t (= S*)
+## V1            	((e -> t) -> (e -> t) -> t) -> (v -> t) -> t (= NP* -> S*)
+## V2            	((e -> t) -> (e -> t) -> t) -> ((e -> t) -> (e -> t) -> t) -> (v -> t) -> t (= NP* -> NP* -> S*)
+## E             	expression (surface form)
 
-# Cat      Term : Type
-# S        \K. exists e.(E(e) & K(e)) : (Ev -> Prop) -> Prop (= S*)
-# N        \F x. (E(x) & F(E))
-# N[adj]   \d1 d2 d3 H I J c x.all d1.exists c.(N(x) & J(\d4.$less(d4,d1)) & H(\y.-N(y)) & (-H(\y.A(y,$difference(d1,_2))) -> _tall(x,d1)))
-# N[down]  \F x.exists d1 c.(N(x) & _many(x,d1) & $less(d1,_d0))
-# N[nm]    \N1 I. I(\F x.N1(\Q.F(Q,d),x), d)
-# NP       \F1 F2. exists x.(E(x) & F1(x) & F2(x)) : (E -> Prop) -> (E -> Prop) -> Prop (= NP*)
-# NP[dgr]  \F.F(E)
-# NP[npi]  \F2 F3.exists x.(N(x) & F2(x) & F3(x))
-# NP[adj]  \V d1 d2 I c Q K.exists d1 c.V(\F1 F2 y.F2(y),\F1 F2.Q(F1,\z2 z1.(exists x.(F2(z1,x) & N(x) & _many(x,d1)) & -exists y.(F2(z2,y) & N(y) & _many(y,d1)))),\e.True)
-# S|NP     \Q K. Q(\x.True, \x.exists e.(E(e) & (Nom(e) = x) & K(e))) : NP* -> S*
-# S[adj]|NP \d1 d2 d3 H I J Q.exists d1.Q(\w.True,\x.(E(x,d1) & J(\d4.$less(d4,d1)) & H(E,d1)))
-# (S|NP)|NP  \Q1 Q2 K. Q2(\y.True, \y.Q1(\x.True, \x.exists e.(E(e) & (Nom(e) = x) & (Acc(e) = y) & K(e)))) : NP* -> NP* -> S*
-# S|S      \S K. S(\e.(E(e) & K(e))) : S* -> S*
-# NP|NP    \Q F1 F2. Q(\x.(E(x) & F1(x)), F2) : NP* -> NP*
-# PP       \e.E(e) : Event -> Prop
+# Cat            	Term : Type
+# S	     	 	\K. exists e.(E(e) & K(e))
+# N          	 	\F x. (E(x) & F(E))
+# N[adj]     	 	\d1 d2 d3 H I J1 J2 c F x. all d1.exists c.(E(x) & F(E) & J1(\d4.$less(d4,d1)) & H(\y.-E(y)) & (-H(\y.A(y,$difference(d1,_2))) -> _tall(x,d1)))
+# N[down]    	 	\F x.exists d1 c.(N(x) & _many(x,d1) & $less(d1,_d0))
+# N[nm]      	 	\N1 I. I(\F x.N1(\Q.F(Q,d),x), d)
+# NP         	 	\F1 F2. exists x.(E(x) & F1(x) & F2(x))
+# NP[dgr]    	 	\F.F(E)
+# NP[npi]    	 	
+# NP[adj]    	 	
+# S|NP 	     	 	\Q K. Q(\x.True, \x.exists e.(E(e) & (Nom(e) = x) & K(e)))
+# S[adj]|NP  	 	\Q d1 d2 d3 H I J1 J2 K.exists d1.Q(\x.True,\x.(E(x,d1) & J1(\d4.$less(d4,d1)) & H(E,d1)))
+# (S[adv]|NP)|(S[adv]|NP)
+#			\V Q d1 d2 d3 H I J1 J2 K.V(Q,\e.I((E(e,d1) & K(e)),-(d1 = d3),(H(E,d2) & J1(\d4.$less(d4,d1)) & J2(\d4.$less(d4,d1)))))
+# (S|NP)|NP  		\Q1 Q2 K. Q2(\y.True, \y.Q1(\x.True, \x.exists e.(E(e) & (Nom(e) = x) & (Acc(e) = y) & K(e))))
+# S|S        		\S K. S(\e.(E(e) & K(e)))
+# NP|NP      		\Q F1 F2. Q(\x.(E(x) & F1(x)),F2)
+# N|N	     		\N F x. N(\G.(E(x) & F(G)),x)		
+# PP         		\e.E(e)
 
 
 ############### Unary lexical rule #################
@@ -55,24 +64,25 @@
 ## existential type-raising from N to NP
 - category: NP
   rule: lex
-  semantics: \E F1 F2. exists x. (E(\w.True,x) & F1(x) & F2(x))
-
-- category: NP
-  rule: lex
-  semantics: \E F3 F4 F1 F2.E(\w.True,d1,d2,d3,I,J,\W.exists x.(W(x) & F1(x) & F2(x)),\W.exists y.(W(y) & F3(y) & F4(y)),c)
-  child0_category: N[adj=true]
+  semantics: \E F1 F2. exists x. (E(\x.True,x) & F1(x) & F2(x))
 
 # Unary rule for downward monotonicity
 - category: NP
   rule: lex
-  semantics: \E F1 F2. - exists x. (E(\w.True,x) & F1(x) & F2(x))
+  semantics: \E F1 F2. - exists x. (E(\x.True,x) & F1(x) & F2(x))
   child0_category: N[down=true]
 
 # Unary rule for non-monotonic 
 - category: NP
   rule: lex
-  semantics: \E F1 F2. E(\Q1 Q2.(exists x.Q1(\N d.(_many(x,d) & F1(x) & F2(x)),x) & all d1.(exists x.Q1(\N d.(_many(x,d1) & F1(x) & F2(x)),x) -> $lesseq(d1,Q2))))
+  semantics: \E F1 F2. E(\W1 W2.(exists x.W1(\N d.(_many(x,d) & F1(x) & F2(x)),x) & all d1.(exists x.W1(\N d.(_many(x,d1) & F1(x) & F2(x)),x) -> $lesseq(d1,W2))))
   child0_category: N[nm=true]
+
+# Unary rule for nominal adjectives 
+- category: NP[adj=true]
+  rule: lex
+  semantics: \E F1 F2 V Q d1 d2 H I J K.exists x.E(d1,d2,d3,H,I,\W.(J(W) & F1(x) & F2(x)),J2,c,x)
+  child0_category: N[adj=true]
 
 - category: NP
   rule: lex
@@ -92,15 +102,23 @@
   # semantics: \E F1 F2. exists x. ((x = E) & F1(E) & F2(E))
   child0_pos: NNP
 
+# - category: NP
+#   rule: lex
+#   # semantics: \E F1 F2. (F1(E) & F2(E))
+#   # semantics: \E F1 F2. exists x. ((x = E) & F1(E) & F2(E))
+#   semantics: \E F1 F2. exists x. (E(\w.True,x) & F1(x) & F2(x))
+#   child0_pos: NNP
+#   child0_entity: B-PERSON
+
 - category: NP
   rule: lex
   # semantics: \E F1 F2. exists x. ((x = E) & F1(E) & F2(E))
-  semantics: \E F1 F2. exists x. (E(\w.True,x) & F1(x) & F2(x))
+  semantics: \E F1 F2. exists x. (E(\x.True,x) & F1(x) & F2(x))
   child0_pos: NN
 
 - category: NP
   rule: lex
-  semantics: \E F1 F2. exists x. (E(\w.True,x) & F1(x) & F2(x))
+  semantics: \E F1 F2. exists x. (E(\x.True,x) & F1(x) & F2(x))
   child0_entity: I-ORG
 
 - category: NP
@@ -111,17 +129,17 @@
 
 - category: NP
   rule: lex
-  semantics: \E F1 F2. exists x. (E(\w.True,x) & F1(x) & F2(x))
+  semantics: \E F1 F2. exists x. (E(\x.True,x) & F1(x) & F2(x))
   child0_entity: B-NORP
 
 - category: NP
   rule: lex
-  semantics: \E F1 F2. exists x. (E(\w.True,x) & F1(x) & F2(x))
+  semantics: \E F1 F2. exists x. (E(\x.True,x) & F1(x) & F2(x))
   child0_entity: B-GPE
 
 - category: NP
   rule: lex
-  semantics: \E F1 F2. exists x. (E(\w.True,x) & F1(x) & F2(x))
+  semantics: \E F1 F2. exists x. (E(\x.True,x) & F1(x) & F2(x))
   child0_entity: B-LOC
 
 - category: NP
@@ -141,7 +159,7 @@
 # S[to]|NP => N|N
 - category: N|N
   rule: lex
-  semantics: \V N F x. (N(\w.True,x) & V(\G1 G2.G2(x), \e.True))
+  semantics: \V N F x. (N(\x.True,x) & V(\G1 G2.G2(x), \e.True))
   child0_category: S|NP
 
 ## S[ng]|NP => NP
@@ -153,7 +171,7 @@
 ## S[adj]|NP => NP
 - category: NP
   rule: lex
-  semantics: \V F1 F2. exists x. (V(d1,d2,_th(u),H,\A1 A2 A3.(A1(x) & -A2),J,\G1 G2.G2,\e.True) & F1(x) & F2(x))
+  semantics: \V F1 F2. exists x. (V(\G1 G2.G2,d1,d2,_th(_u),H,\A1 A2 A3.(A1(x) & -A2),J1,J2,\e.True) & F1(x) & F2(x))
   child0_category: S[adj=true]|NP
 
 ## N|N => NP|NP
@@ -169,11 +187,27 @@
   child0_pos: CD
   child0_category: N|N
 
+## N|N => NP|NP
+- category: NP/NP
+  rule: lex
+  semantics: \E Q F1 F2.exists d1.(Q(\x.(_many(x,d1) & F1(x)),F2) & -Q(\x.(_many(x,d1) & F1(x)),-F2))
+  child0_child0_child0_child1_surf: more
+  child0_child0_child1_surf: than
+  child0_child1_surf: half
+
 ## N[down]|N => NP|NP
 - category: NP|NP
   rule: lex
   semantics: \E Q F1 F2.-Q(\x.(E(\A1 A2.A1(_u),\w.True,x) & F1(x)),F2)
   child0_category: N[down=true]|N
+
+## N[down]|N => NP|NP
+- category: NP|NP
+  rule: lex
+  semantics: \E Q F1 F2.-all d1.(Q(\x.(_many(x,d1) & F1(x)),-F2) -> Q(\x.(_many(x,d1) & F1(x)),F2))
+  child0_child0_child0_child1_surf: less
+  child0_child0_child1_surf: than
+  child0_child1_surf: half
 
 ## S[pss,ng]|NP => NP|NP; S[dcl]|NP => NP|NP
 - category: NP|NP
@@ -184,7 +218,7 @@
 ## S[adj]|NP => NP|NP
 - category: NP|NP
   rule: lex
-  semantics: \A Q F1 F2. Q(\x.(A(d1,d2,d3,H,I,J,\F2 F3.F3(x),\e.True) & F1(x)), F2)
+  semantics: \A Q F1. Q(\x.(A(\F1 F2.F2(x),d1,d2,d3,H,I,J1,J2,\e.True) & F1(x)), F2)
   child0_category: S[adj=true]|NP
 
 ## (S|NP)|NP => NP|NP
@@ -214,7 +248,7 @@
 ## S[adj]|NP ==> S|S
 - category: S|S
   rule: lex
-  semantics: \V S K. S(\e.(exists x.(V(d1,d2,_th(u),H,\A1 A2 A3.(A1(x) & -A2),J,\G1 G2.G2,\e.True) & (Dat(e) = x)) & K(e)))
+  semantics: \A S K. S(\e.(exists x.(A(\G1 G2.G2,d1,d2,_th(_u),H,\A1 A2 A3.(A1(x) & -A2),J1,J2,\e.True) & (Dat(e) = x)) & K(e)))
   child0_category: S[adj=true]|NP
 
 ## S ==> NP|NP
@@ -238,7 +272,7 @@
 ## S[adj]|NP => (S|NP)|(S|NP)
 - category: (S|NP)|(S|NP)
   rule: lex
-  semantics: \V1 V2 Q K. Q(\x.True, \x.(V1(d1,d2,_th(u),H,\A1 A2 A3.(A1(x) & -A2),J,\G1 G2.G2,\e.True) & V2(\F1 F2.F2(x),K)))
+  semantics: \A V2 Q K. Q(\x.True, \x.(A(\G1 G2.G2,d1,d2,_th(_u),H,\A1 A2 A3.(A1(x) & -A2),J1,J2,\e.True) & V2(\F1 F2.F2(x),K)))
   child0_category: S[adj=true]|NP
 
 ## NP => S|(S|NP)
@@ -246,11 +280,6 @@
   rule: tr
   semantics: \Q V K. V(Q,K)
   child0_category: NP
-
-- category: S|(S|NP)
-  rule: tr
-  semantics: \E W. W(E)
-  child0_child0_pos: NNP
 
 ## PP => (S[X=true]|NP)|((S[X=true]|NP)|PP)
 - category: (S|NP)|((S|NP)|PP)
@@ -273,19 +302,24 @@
 
 ##### Binary lexical rules #####
 
+# - category: NP/N
+#   semantics: \L R F1 F2 F3.(exists x.(exists d1.F1(\N.(_many(x,d1) & $less(d1,_th(N))),x) & F2(x) & F3(x)) & all x d1.exists d2.((F1(\N.(_many(x,d1) & (d2 = _th(N))),x) & F2(x) & F3(x)) -> $less(d1,d2)))
+#   child0_surf: pos
+#   child1_surf: a~few
+
 - category: NP
-  semantics: \L R F1 F2.exists x.(R(\N2._many(x,_th(N2)),x) & F1(x) & F2(x))
+  semantics: \L R F1 F2.exists x.(R(\G._many(x,_th(G)),x) & F1(x) & F2(x))
   child0_surf: a~lot~of
   child1_pos: NNS
 
 - category: NP
-  semantics: \L R F1 F2.exists x.(R(\N2._much(x,_th(N2)),x) & F1(x) & F2(x))
+  semantics: \L R F1 F2.exists x.(R(\G._much(x,_th(G)),x) & F1(x) & F2(x))
   child0_surf: a~lot~of
   child1_pos: NN
 
 # No less than ...
 - category: NP
-  semantics: \L R F2 F3.-L(R,F2,F3)
+  semantics: \L R F1 F2.-L(R,F1,F2)
   child1_category: N[down=true]
   child0_category: NP[nb=true]/N
 
@@ -319,8 +353,14 @@
 # ex. John is tall and cool.
 - category: (S[adj=true]|NP)|(S[adj=true]|NP)
   rule: conj
-  semantics: \L A1 A2 d1 d2 d3 H I J Q K.(exists d1.A2(d1,d1,_th(_u),H,\A1 A2 A3 x.(A1(x) & -A2),J,Q,K) & exists d1.A1(d1,d1,_th(_u),H,\A1 A2 A3 x.(A1(x) & -A2),J,Q,K))
+  semantics: \L A1 A2 Q d1 d2 d3 H I J1 J2 K.(exists d1.A2(Q,d1,d1,_th(_u),H,\A1 A2 A3 x.(A1(x) & -A2),J1,J2,K) & exists d1.A1(Q,d1,d1,_th(_u),H,\A1 A2 A3 x.(A1(x) & -A2),J1,J2,K))
   child0_surf: and
+
+# - category: (S|NP)|(S[adj=true]|NP)
+#   rule: bx
+#   semantics: \L R X0 Q K.Q(\x.True,\x.(X0(\F1 F2.-F2(x),d1,d2,d3,H,I,\d.True,\d.True,\e.True) & exists e.((Subj(e) = Subj(e)) & K(e))))
+#   child0_surf: is
+#   child1_surf: not
 
 - category: ((S|NP)|PP)|((S|NP)|PP)
   rule: conj
@@ -328,16 +368,26 @@
 
 - category: (N|N)|(N|N)
   rule: conj
-  semantics: \L M1 M2 N1 F x. M1(\Q1 Q2.N1(\N2.(M2(\P1 P2.P1(N2),\w.True,x) & Q1(N2)),Q2),F,x)
+  # semantics: \L M1 M2 F x. M1(M2(F),x)
+  semantics: \L M1 M2 N F x. M1(\G1 G2.N(\G3.(M2(\P1 P2.P1(G3),\w.True,x) & G1(G3)),G2),F,x)
 
 - category: (N|N)|(N|N)
   rule: conj
-  semantics: \L M1 M2 N1 F x. M1(\Q1 Q2.N1(\N2.(M2(\P1 P2.P1(N2),F,x) & Q1(N2)),Q2),F,x)
+  semantics: \L M1 M2 N F x. M1(\G1 G2.N(\G3.(M2(\P1 P2.P1(G3),F,x) & G1(G3)),G2),F,x)
   child1_child1_pos: JJ
-  
+
+# # ex. John bought a white and blue car.
+# - category: (N|N)|(N|N)
+#   rule: conj
+#   semantics: \L M1 M2 N1 F x. N1(\N2.M1(\Q1 Q2.Q1(N2),\N2.M2(\Q1 Q2.Q1(N2),\w.True,x),x),x)
+#   child0_surf: and
+#   child1_pos: JJ
+#   child1_entity: PRE
+
 - category: (N|PP)|(N|PP)
   rule: conj
-  semantics: \L M1 M2 F e. M1(M2(F,x),e)
+  # semantics: \L M1 M2 K F e. M1(M2(F),e)
+  semantics: \L M1 M2 K F e. M1(M2(K,F,x),e)
 
 - category: (NP|NP)|(NP|NP)
   rule: conj
@@ -488,7 +538,7 @@
 
 - category: (S[adj=true]|NP)|(S[adj=true]|NP)
   rule: conj
-  semantics: \L A1 A2 d1 d2 d3 H I J Q K.(exists d1.A2(d1,d1,_th(_u),H,\A1 A2 A3 x.(A1(x) & -A2),J,Q,K) | exists d1.A1(d1,d1,_th(_u),H,\A1 A2 A3 x.(A1(x) & -A2),J,Q,K))
+  semantics: \L A1 A2 Q d1 d2 d3 H I J1 J2 K.(exists d1.A2(Q,d1,d1,_th(_u),H,\A1 A2 A3 x.(A1(x) & -A2),J1,J2,K) | exists d1.A1(Q,d1,d1,_th(_u),H,\A1 A2 A3 x.(A1(x) & -A2),J1,J2,K))
   child0_surf: or
 
 - category: (N|N)|(N|N)
@@ -671,7 +721,7 @@
 
 - category: N
   rule: fa
-  semantics: \L R F x.(R(\w.True,x) & _many(x,L))
+  semantics: \L R F x.(R(\x.True,x) & _many(x,L))
   child0_pos: CD
   child0_entity: B-CARDINAL
   #child1_pos: NNS
@@ -679,7 +729,7 @@
 
 - category: N
   rule: fa
-  semantics: \L R F x.(R(\w.True,x) & _many(x,L))
+  semantics: \L R F x.(R(\x.True,x) & _many(x,L))
   child0_pos: CD
   child0_entity: O
   #child1_pos: NNS
@@ -693,11 +743,10 @@
 
 - category: N
   rule: fa
-  semantics: \L R F x.(R(\w.True,x) & _many(x,L))
+  semantics: \L R F x.(R(\x.True,x) & _many(x,L))
   child0_child0_pos: CD
   child0_child0_entity: B-CARDINAL 
   child1_category: N
-
 
 ### Measure phrases ###
 
@@ -734,78 +783,135 @@
 # degree modifiers
 - category: (S[adj=true]\NP)/(S[adj=true]\NP)
   rule: fa
-  semantics: \L R A d1 d2 d3 H I J Q K.all d1.A(d1,$difference(d1,L),L,H,\A1 A2 A3 x.(-A2 -> A1(x)),\w.True,Q,K)
+  semantics: \L R A Q d1 d2 d3 H I J1 J2 K.all d1.A(Q,d1,$difference(d1,L),L,H,\A1 A2 A3 x.(-A2 -> A1(x)),\d.True,\d.True,K)
   child0_pos: CD
   child1_entity: I-QUANTITY
 
 - category: (S[adj=true]\NP)/(S[adj=true]\NP)
   rule: fa
-  semantics: \L R A d1 d2 d3 H I J Q K.all d1.A(d1,$difference(d1,L),L,H,\A1 A2 A3 x.(-A2 -> A1(x)),\w.True,Q,K)
+  semantics: \L R A Q d1 d2 d3 H I J1 J2 K.all d1.A(Q,d1,$difference(d1,L),L,H,\A1 A2 A3 x.(-A2 -> A1(x)),\d.True,\d.True,K)
   child0_pos: CD
   child1_entity: I-DATE
 
 - category: (N/N)/(N[adj=true]/N)
   rule: fa
-  semantics: \L R A N F x.exists d1 c.A(\A1 A2.N(\N2.A1(N2),x),d1,$difference(d1,L),L,\w.True,\A1 A2 A3.(A1 & -A2),\w.True,c,x)
+  semantics: \L R A N F x.exists d1 c.A(\A1 A2.N(\G.A1(G),x),d1,$difference(d1,L),L,\w.True,\A1 A2 A3.(A1 & -A2),\d.True,\d.True,c,x)
   child0_pos: CD
   child1_entity: I-QUANTITY
 
 - category: (N/N)/(N[adj=true]/N)
   rule: fa
-  semantics: \L R A N F x.exists d1 c.A(\A1 A2.N(\N2.A1(N2),x),d1,$difference(d1,L),L,\w.True,\A1 A2 A3.(A1 & -A2),\w.True,c,x)
+  semantics: \L R A N F x.exists d1 c.A(\A1 A2.N(\G.A1(G),x),d1,$difference(d1,L),L,\w.True,\A1 A2 A3.(A1 & -A2),\d.True,\d.True,c,x)
   child0_pos: CD
   child1_entity: I-DATE
 
 - category: (N[adj=true]|N)|(N[adj=true]|N)
   rule: fa
-  semantics: \L R A N1 d1 d2 d3 H I J c x.all d1.exists c.A(N1,d1,$difference(d1,L),L,H,\A1 A2 A3.(-A2 -> A1),J,c,x)
+  semantics: \L R A N d1 d2 d3 H I J1 J2 c x.all d1.exists c.A(N,d1,$difference(d1,L),L,H,\A1 A2 A3.(-A2 -> A1),J1,J2,c,x)
   child0_pos: CD
   child1_entity: I-QUANTITY
 
 - category: (N[adj=true]|N)|(N[adj=true]|N)
   rule: fa
-  semantics: \L R A N1 d1 d2 d3 H I J c x.all d1.exists c.A(N1,d1,$difference(d1,L),L,H,\A1 A2 A3.(-A2 -> A1),J,c,x)
+  semantics: \L R A N d1 d2 d3 H I J1 J2 c x.all d1.exists c.A(N,d1,$difference(d1,L),L,H,\A1 A2 A3.(-A2 -> A1),J1,J2,c,x)
   child0_pos: CD
   child1_entity: I-DATE
 
+# - category: (N[nm=true]/N)/(N[adj=true]/N)
+#   rule: fa
+#   semantics: \L R A N F x.exists d1 c.A(\A1 A2.N(\G.F(G,L),x),d1,$difference(d1,L),L,\w.True,\A1 A2 A3.(A1 & -A2),\w.True,c,x)
+#   child0_child1_pos: CD
+#   child0_child0_pos: RB
+#   child1_entity: I-QUANTITY
+
+# - category: (N/N)/(N[adj=true]/N)
+#   rule: fa
+#   semantics: \L R A N F x.exists d1 c.A(\A1 A2.N(\G.F(G,L),x),d1,$difference(d1,L),L,\w.True,\A1 A2 A3.(A1 & -A2),\w.True,c,x)
+#   child0_child1_pos: CD
+#   child0_child0_surf: pos
+#   child1_entity: I-QUANTITY
+
+# - category: (N[adj=true]/N)/(N[adj=true]/N)
+#   rule: fa
+#   semantics: \L R A N d1 d2 d3 H I J1 J2 c x.all d1.exists c.A(N,d1,$difference(d1,L),L,H,\A1 A2 A3.(-A2 <-> A1),J,c,x)
+#   child0_child1_pos: CD
+#   child0_child0_surf: dgr
+#   child1_entity: I-QUANTITY
+
 - category: (N/N)/(N[adj=true]/N)
   rule: fa
-  semantics: \L R A N F x.exists d1 c.all d2.A(\A1 A2.N(\N2.A1(N2),x),d1,d2,L,\w.True,\A1 A2 A3.(A1 & -A2 & (A3(x) -> $lesseq(d2,L))),\w.True,c,x)
+  semantics: \L R A N F x.exists d1 c.all d2.A(\A1 A2.N(\G.A1(G),x),d1,d2,L,\w.True,\A1 A2 A3.(A1 & -A2 & (A3(x) -> $lesseq(d2,L))),\d.True,c,x)
   child0_child1_pos: CD
   child0_child0_pos: RB
   child1_entity: I-QUANTITY
 
+### Implicature ###
+
+- category: (N/N)/(N[adj=true]/N)
+  rule: fa
+  semantics: \L R A N F x.exists d1 c.all d2.A(\A1 A2.N(\G.A1(G),x),d1,d2,L,\w.True,\A1 A2 A3.(A1 & -A2 & (A3(x) -> $lesseq(d2,L))),\d.True,\d.True,c,x)
+  child0_child1_pos: CD
+  child0_child0_surf: pos
+  child1_entity: I-QUANTITY
+
+- category: (N[adj=true]/N)/(N[adj=true]/N)
+  rule: fa
+  semantics: \L R A N d1 d2 d3 H I J1 J2 c x.all d1.exists c.A(N,d1,$difference(d1,L),L,H,\A1 A2 A3.(-A2 <-> A1),J1,J2,c,x)
+  child0_child1_pos: CD
+  child0_child0_surf: dgr
+  child1_entity: I-QUANTITY
+
+#####################
+
 - category: (S[adj=true]\NP)/(S[adj=true]\NP)
   rule: fa
-  semantics: \L R A d1 d2 d3 H I J Q K. exists d1. A(d1,d1,d1,\w1 w2.True,\A1 A2 A3 x.(A1(x) & A3),\W.W(L),Q,K)
+  semantics: \L R A Q d1 d2 d3 H I J1 J2 K. exists d1. A(Q,d1,d1,d1,\H1 d.True,\A1 A2 A3 x.(A1(x) & A3),\W.W(L),\d.True,K)
   child0_child0_surf: more~than
   child0_child1_pos: CD
   child1_entity: I-QUANTITY
 
 - category: (S[adj=true]\NP)/(S[adj=true]\NP)
   rule: fa
-  semantics: \L R A d2 d1 d3 H I J Q K. -A(L,d1,d1,H,\A1 A2 A3.A1,\w.True,Q,K)
+  semantics: \L R A Q d2 d1 d3 H I J1 J2 K. -A(Q,L,d1,d1,H,\A1 A2 A3.A1,\d.True,\d.True,K)
   child0_child0_surf: less~than
   child0_child1_pos: CD
   child1_entity: I-QUANTITY
 
 - category: (S[adj=true]\NP)/(S[adj=true]\NP)
   rule: fa
-  semantics: \L R A d1 d2 d3 H I J Q K. Q(\w.True, \y.all d1 d2.A(d1,d2,L,\H d.H(y,d),\A1 A2 A3 x.((-A2 -> A1(y)) & (A3 -> $lesseq(d2,L))),\w.True,Q,K))
+  semantics: \L R A Q d1 d2 d3 H I J1 J2 K. Q(\x.True, \y.all d1 d2.A(Q,d1,d2,L,\H d.H(y,d),\A1 A2 A3 x.((-A2 -> A1(y)) & (A3 -> $lesseq(d2,L))),\d.True,\d.True,K))
   child0_child0_surf: exactly
+  child0_child1_pos: CD
+  child1_entity: I-QUANTITY
+
+### Implicature ###
+
+- category: (S[adj=true]\NP)/(S[adj=true]\NP)
+  rule: fa
+  semantics: \L R A Q d1 d2 d3 H I J1 J2 K. Q(\x.True, \y.all d1 d2.A(Q,d1,d2,L,\H d.H(y,d),\A1 A2 A3 x.((-A2 -> A1(y)) & (A3 -> $lesseq(d2,L))),\d.True,\d.True,K))
+  child0_child0_surf: pos
   child0_child1_pos: CD
   child1_entity: I-QUANTITY
 
 - category: (S[adj=true]\NP)/(S[adj=true]\NP)
   rule: fa
-  semantics: \L R A d1 d2 d3 H I J Q K. exists d1. A(d1,d1,d1,H,\A1 A2 A3 x.(A1(x) & $less($difference(L,_d0),d1) & $less(d1,$sum(L,_d0))),\w.True,Q,K)
+  semantics: \L R A Q d1 d2 d3 H I J1 J2 K.all d1.A(Q,d1,$difference(d1,L),L,H,\A1 A2 A3 x.(-A2 <-> A1(x)),\d.True,\d.True,K)
+  child0_child0_surf: dgr
+  child0_child1_pos: CD
+  child1_entity: I-QUANTITY
+
+####################
+
+- category: (S[adj=true]\NP)/(S[adj=true]\NP)
+  rule: fa
+  semantics: \L R A Q d1 d2 d3 H I J1 J2 K. exists d1. A(Q,d1,d1,d1,H,\A1 A2 A3 x.(A1(x) & $less($difference(L,_d0),d1) & $less(d1,$sum(L,_d0))),\d.True,\d.True,K)
   child0_child0_surf: about
   child0_child1_pos: CD
   child1_entity: I-QUANTITY
 
 - category: (S[adj=true]\NP)/(S[adj=true]\NP)
   rule: fa
-  semantics: \L R A d1 d2 d3 H I J Q K.all d1.A(d1,$difference(d1,_d0),d3,H,\A1 A2 A3 x.(-A2 -> A1(x)),J,Q,K)
+  semantics: \L R A Q d1 d2 d3 H I J1 J2 K.all d1.A(Q,d1,$difference(d1,_d0),d3,H,\A1 A2 A3 x.(-A2 -> A1(x)),J1,J2,K)
   child0_surf: very
   child1_surf: much
 
@@ -813,20 +919,20 @@
 
 - category: (NP/N)/(N/N)
   rule: fa
-  semantics: \L R d N F1 F2.exists x.(N(\w.True,x) & _many(x,d) & F1(x) & F2(x))
+  semantics: \L R d N F1 F2.exists x.(N(\x.True,x) & _many(x,d) & F1(x) & F2(x))
   child0_surf: at
   child1_surf: least
 
 - category: NP|N
   rule: fa
-  semantics: \L R N F1 F2.exists x.(N(\w.True,x) & _many(x,R) & F1(x) & F2(x))
+  semantics: \L R N F1 F2.exists x.(N(\x.True,x) & _many(x,R) & F1(x) & F2(x))
   child0_child0_surf: at
   child0_child1_surf: least
   child1_pos: CD
 
 - category: NP|N
   rule: fa
-  semantics: \L R N F1 F2.-exists x.(N(\w.True,x) & _many(x,$sum(R,1)) & F1(x) & F2(x))
+  semantics: \L R N F1 F2.-exists x.(N(\x.True,x) & _many(x,$sum(R,1)) & F1(x) & F2(x))
   child0_surf: at~most
   child1_pos: CD
 
@@ -845,47 +951,97 @@
 - category: NP/N
   rule: fa
   semantics: \L R N F1 F2. all d1.(L(d1,N,F1,-F2) -> L(d1,N,F1,F2))
-  child0_category: (NP/N)/(N/N)
+  # child0_category: (NP/N)/(N/N)
+  child0_child0_surf: at
+  child0_child1_surf: least
   child1_surf: half
 
 - category: NP/N
   rule: fa
-  semantics: \L R N F1 F2.-exists d1.(exists x.(N(\w.True,x) & _many(x,d1) & F1(x) & F2(x)) & -exists x.(N(\w.True,x) & _many(x,d1) & F1(x) & -F2(x)))
+  semantics: \L R N F1 F2.-exists d1.(exists x.(N(\x.True,x) & _many(x,d1) & F1(x) & F2(x)) & -exists x.(N(\x.True,x) & _many(x,d1) & F1(x) & -F2(x)))
   child0_category: (NP/N)/(N/N)
   child0_surf: at~most
   child1_surf: half
 
+- category: NP/NP
+  rule: fa
+  semantics: \L R Q F1 F2.-exists d1.(Q(\x.(_many(x,d1) & F1(x)),F2) & -Q(\x.(_many(x,d1) & F1(x)),-F2))
+  child0_category: (NP/NP)/(N/N)
+  child0_surf: at~most
+  child1_surf: half
+
+- category: NP/NP
+  rule: fa
+  semantics: \L R Q F1 F2.all d1.(Q(\x.(_many(x,d1) & F1(x)),-F2) -> Q(\x.(_many(x,d1) & F1(x)),F2))
+  child0_category: (NP/NP)/(N/N)
+  child0_surf: at~least
+  child1_surf: half
+
 - category: N|N
   rule: fa
-  semantics: \L R N1 F x.exists d1.N1(\N2.(_many(x,d1) & $less($difference(R,d0),d1) & $less(d1,$sum(R,d0)) & F(N2)),x)
+  semantics: \L R N F x.exists d1.N(\G.(_many(x,d1) & $less($difference(R,_d0),d1) & $less(d1,$sum(R,_d0)) & F(G)),x)
   child0_category: (N|N)|(N|N)
   child1_pos: CD
   child0_surf: about
 
 - category: N[nm=true]|N
   rule: fa
-  semantics: \L R N1 I. I(\F x.N1(\Q.F(Q,R),x), R)
+  # semantics: \L R N F x.(N(\Q.F(Q,R),x) & _many(x,R))
+  # semantics: \L R N F x.N(\Q.F(Q,R),x)
+  semantics: \L R N I. I(\F x.N(\C.F(C,R),x), R)
   child0_category: (N[nm=true]|N)|(N|N)
   child0_pos: RB
   child1_any_pos: CD
 
+### Implicature ###
+
+- category: N[nm=true]|N
+  rule: fa
+  semantics: \L R N I. I(\F x.N(\C.F(C,R),x), R)
+  child0_category: (N[nm=true]|N)|(N|N)
+  child0_surf: pos
+  child1_any_pos: CD
+
+###################
+
+# - category: (N/N)/(N/N)
+#   rule: ba
+#   semantics: \L R d2 N F x.exists d1.N(\d.(_many(x,d1) & $less(d2,d1)),x)
+#   child0_child1_surf: more
+#   child1_surf: than
+#   child0_category: S[adj=true]\NP
+
+# - category: (N[down=true]/N)/(N/N)
+#   rule: ba
+#   semantics: \L R d1 N F x. N(\d2._many(x,d1),x)
+#   child0_child1_surf: less
+#   child1_surf: than
+#   child0_category: S[adj=true]\NP
+
+# - category: (N[down=true]/N)/(N/N)
+#   rule: ba
+#   semantics: \L R d1 N F x. N(\d2._many(x,d1),x)
+#   child0_child1_surf: fewer
+#   child1_surf: than
+#   child0_category: S[adj=true]\NP
+
 - category: N/N
   rule: fa
-  semantics: \L R N1 F x.exists d1.N1(\d.(_many(x,d1) & $less(R,d1)),x)
+  semantics: \L R N F x.exists d1.N(\d.(_many(x,d1) & $less(R,d1)),x)
   child0_child0_child1_surf: more
   child0_child1_surf: than
   child0_category: (N/N)/(N/N)
 
 - category: N[down=true]/N
   rule: fa
-  semantics: \L R N1 F x. N1(\d2._many(x,R),x)
+  semantics: \L R N F x. N(\d2._many(x,R),x)
   child0_child0_child1_surf: less
   child0_child1_surf: than
   child0_category: (N[down=true]/N)/(N/N)
 
 - category: N[down=true]/N
   rule: fa
-  semantics: \L R N1 F x. N1(\d2._many(x,R),x)
+  semantics: \L R N F x. N(\d2._many(x,R),x)
   child0_child0_child1_surf: fewer
   child0_child1_surf: than
   child0_category: (N[down=true]/N)/(N/N)
@@ -906,15 +1062,37 @@
 
 - category: ((S\NP)\(S\NP))/((S[adv=true]\NP)\(S[adv=true]\NP))
   rule: fa
-  semantics: \L R A V Q K.all d1.Q(\x.True,\x.(-A(d1,d1,L,H,\A1 A2 A3.A2,\x.True,\F1 F2.F2(e),Q,K) -> A(d1,d1,_th(_u),H,\A1 A2 A3.A1,\x.True,V,\F1 F2.F2(x),K)))
+  semantics: \L R A V Q K.all d1.Q(\x.True,\x.(-A(\F1 F2.F2(e),Q,d1,d1,L,H,\A1 A2 A3.A2,\d.True,\d.True,K) -> A(V,\F1 F2.F2(x),d1,d1,_th(_u),H,\A1 A2 A3.A1,\d.True,\d.True,K)))
   child0_pos: CD
   child1_surf: MPH
 
+### Implicature ###
+
+- category: ((S\NP)\(S\NP))/((S[adv=true]\NP)\(S[adv=true]\NP))
+  rule: fa
+  semantics: \L R A V Q K.all d1 d2.Q(\x.True,\x.exists e1.(-A(\F1 F2.F2(e),Q,d1,d1,L,H,\A1 A2 A3.A2,\x.True,\d.True,K) -> A(V,\F1 F2.F2(x),d1,d2,_th(_u),\H d.H(e1,d),\A1 A2 A3.(A1 & (A3 -> $lesseq(d2,L))),\d.True,\d.True,\e.((e = e1) & K(e)))))
+  child0_child0_surf: pos
+  child0_child1_pos: CD
+  child1_surf: MPH
+
+###################
+
 - category: ((S[adv=true]\NP)\(S[adv=true]\NP))/((S[adv=true]\NP)\(S[adv=true]\NP))
   rule: fa
-  semantics: \L R A d1 d2 d3 H I1 J V Q K.Q(\x.True, \x.all d1.A(d1,$difference(d1,L),_th(_u),H,\A1 A2 A3.I1(A2,\I2.(-I2 -> A1)),J,V,\F1 F2.F2(x),K))
+  semantics: \L R A V Q d1 d2 d3 H I1 J1 J2 K.Q(\x.True, \x.all d1.A(V,\F1 F2.F2(x),d1,$difference(d1,L),_th(_u),H,\A1 A2 A3.I1(A2,\I2.(-I2 -> A1)),J1,J2,K))
   child0_pos: CD
   child1_surf: MPH
+
+### Implicature ###
+
+- category: ((S[adv=true]\NP)\(S[adv=true]\NP))/((S[adv=true]\NP)\(S[adv=true]\NP))
+  rule: fa
+  semantics: \L R A V Q d1 d2 d3 H I1 J1 J2 K.Q(\x.True, \x.all d1.A(V,\F1 F2.F2(x),d1,$difference(d1,L),_th(_u),H,\A1 A2 A3.I1(A2,\I2.(-I2 <-> A1)),J1,J2,K))
+  child0_child0_surf: dgr
+  child0_child1_pos: CD
+  child1_surf: MPH
+
+###################
 
 # one or more
 - category: N/N
@@ -926,6 +1104,7 @@
 
 - category: (N/N)\(N/N)
   rule: conj
+  # semantics: \L R P F x. (P(F,x) & _many(x,1))
   semantics: \L R X. X
   child0_surf: or
   child1_surf: more
@@ -1012,12 +1191,12 @@
 
 - category: (S|NP)|((S|NP)|NP)
   rule: bc
-  semantics: \L R. R(L(\Q1 Q2 K.exists e.Q2(\x.True,\x.((Subj(e) = x) & K(e)))),\F1 F2.exists x.F2(x),\e.True)
+  semantics: \L R. R(L(\C1 C2 K.exists e.C2(\x.True,\x.((Subj(e) = x) & K(e)))),\F1 F2.exists x.F2(x),\e.True)
   root: "true"
 
 - category: (S|NP)|((S|NP)|NP)
   rule: ba
-  semantics: \L R. R(L,\Q1 Q2 K.exists e.Q2(\x.True,\x.((Subj(e) = x) & K(e))),\F1 F2.exists x.F2(x),\e.True)
+  semantics: \L R. R(L,\C1 C2 K.exists e.C2(\x.True,\x.((Subj(e) = x) & K(e))),\F1 F2.exists x.F2(x),\e.True)
   root: "true"
 
 # - category: S
@@ -1060,6 +1239,8 @@
   entity: I-ORG
 
 - category: N
+  # semantics: \E x. E(x)
+  # semantics: \E. E
   semantics: \E F x. (E(x) & F(E))
   entity: B-NORP
 
@@ -1101,6 +1282,7 @@
   pos: PDT
 
 - category: N|NP
+  # semantics: \E Q x. Q(\y.True,\y.(E(y) & (y = x)))
   semantics: \E Q F x. Q(\y.True,\y.(E(y) & (y = x)))
 
 - category: (NP|NP)|(NP|NP) 
@@ -1114,160 +1296,197 @@
 
 ## default existential interpretation
 - category: NP|N
-  semantics: \E F1 F2 F3. exists x. (F1(\w.True,x) & F2(x) & F3(x))
+  semantics: \E N F1 F2. exists x. (N(\x.True,x) & F1(x) & F2(x))
 
 
 ##### Templates for Adverbs #####
 
 - category: (N|N)|(N|N) 
-  semantics: \E A N1 F x.exists d1.exists c.A(\A1 A2.N1(\N2.(A1(N2) & E(x)),x),F,x)
+  semantics: \E A N F x.exists d1.exists c.A(\A1 A2.N(\G.(A1(G) & E(x)),x),F,x)
 
 - category: (N|N)|(N|N) 
-  semantics: \E A N1 F x.exists d1.exists c.A(\A1 A2.N1(\N2.(A1(N2) & (E = x)),x),F,x)
+  semantics: \E A N F x.exists d1.exists c.A(\A1 A2.N(\G.(A1(G) & (E = x)),x),F,x)
   entity: B-PERCENT
 
 - category: (N|N)|(N[adj=true]|N) 
-  semantics: \E A N1 F x.exists d1.exists c.A(\A1 A2.N1(\N2.(A1(N2) & E(x) & (d1 = _th(N2)) & F(N2)),x),d1,d1,d1,\x.True,\A1 A2 A3.A1,\w.True,c,x)
+  semantics: \E A N F x.exists d1.exists c.A(\A1 A2.N(\G.(A1(G) & E(x) & (d1 = _th(G)) & F(G)),x),d1,d1,d1,\x.True,\A1 A2 A3.A1,\d.True,\d.True,c,x)
+
+# - category: (N[nm=true]|N)|(N|N) 
+#   semantics: \E d N F x.(N(\Q.F(Q,d),x) & _many(x,d))
 
 - category: (N|N)|(N[adj=true]|N) 
-  semantics: \E A N1 F x.exists d1.exists c.A(N1,d1,d1,d1,\x.True,\A1 A2 A3.A1,\W.W(_d0),c,x)
+  semantics: \E A N F x.exists d1 d2.exists c.A(\A1 A2.N(\G.(A1(G) & (d2 = _th(G)) & F(G)),x),d1,d1,d1,\x.True,\A1 A2 A3.A1,\d.True,\W.W(d2),c,x)
   surf: very
 
 - category: (N[down=true]|N)|(N[adj=true]|N) 
-  semantics: \E A N1 F x.exists d1.exists c.A(N1,d1,d1,d1,\x.True,\A1 A2 A3.A1,\w.True,c,x)
+  semantics: \E A N F x.exists d1.exists c.A(N,d1,d1,d1,\x.True,\A1 A2 A3.A1,\d.True,\d.True,c,x)
   surf: not
 
 - category: (N|N)|(N[adj=true]|N) 
-  semantics: \E A N1 F x.exists d1.exists c.A(\A1 A2.N1(\N2.(A1(N2) & (d1 = _th(N2)) & F(N2)),x),d1,d1,d1,\x.True,\A1 A2 A3.A1,\w.True,c,x)
+  semantics: \E A N F x.exists d1.exists c.A(\A1 A2.N(\G.(A1(G) & (d1 = _th(G)) & F(G)),x),d1,d1,d1,\x.True,\A1 A2 A3.A1,\d.True,\d.True,c,x)
   surf: pos
 
 # ex. John bought a dgr higher desk.
 - category: (N|N)|(N[adj=true]|N) 
-  semantics: \E A N1 F x.exists d1.exists c.A(\A1 A2.N1(\N2.(A1(N2) & (d1 = _th(N2)) & F(N2)),x),d1,d1,d1,\x.True,\A1 A2 A3.A1,\w.True,c,x)
+  semantics: \E A N F x.exists d1.exists c.A(\A1 A2.N(\G.(A1(G) & (d1 = _th(G)) & F(G)),x),d1,d1,d1,\x.True,\A1 A2 A3.A1,\d.True,\d.True,c,x)
   surf: dgr
 
 - category: (N|N)|(N[adj=true]|N) 
-  semantics: \E A N1 F x.exists d1.exists c.A(N1,d1,d1,d1,\x.True,\A1 A2 A3.A1,\W.W(_d0),c,x)
+  semantics: \E A N F x.exists d1 d2.exists c.A(\A1 A2.N(\G.(A1(G) & (d2 = _th(G)) & F(G)),x),d1,d1,d1,\x.True,\A1 A2 A3.A1,\d.True,\W.W(d2),c,x)
   surf: so
 
 - category: (N[adj=true]|N)|(N[adj=true]|N) 
-  semantics: \E A N1 d1 d2 d3 H I J c x.exists d1.exists c.A(N1,d1,d1,d1,H,\A1 A2 A3.(A1 & A2),J,c,x)
+  semantics: \E A N d1 d2 d3 H I J1 J2 c x.exists d1.exists c.A(N,d1,d1,d1,H,\A1 A2 A3.(A1 & A2),J1,J2,c,x)
   surf: dgr
 
 - category: (N[adj=true]|N)|(N[adj=true]|N) 
-  semantics: \E A N1 d1 d2 d3 H I J c x.all d1.exists c.A(N1,d1,$difference(d1,_d0),d1,H,\A1 A2 A3.(-A2 -> A1),J,c,x)
+  semantics: \E A N d1 d2 d3 H I J1 J2 c x.all d1.exists c.A(N,d1,$difference(d1,_d0),d1,H,\A1 A2 A3.(-A2 -> A1),J1,J2,c,x)
   surf: much
+
+# - category: (N[adj=true]/N)/(N[adj=true]/N) 
+#   semantics: \E A N F d1 d2 d3 I J W1 W2 c.all d1.exists c.A(N,F,$sum(d1,_d0),d1,d1,\A1 A2 A3.(A2 -> A1),\w.True,W1,W2,c)
+#   surf: many
 
 # ex. John is a more expensive car than Bob is.
 - category: (N[adj=true]|N)|(N[adj=true]|N)
-  semantics: \E A N1 d1 d2 d3 H I J c x.(A(N1,d1,d2,d3,H,\A1 A2 A3.I(A1,H(A3),A2),J,c,x))
+  semantics: \E A N d1 d2 d3 H I J1 J2 c x.A(N,d1,d2,d3,H,\A1 A2 A3.I(A1,H(A3),A2),J1,\d.True,c,x)
   surf: more
 
 - category: (N[adj=true]|N)|(N[adj=true]|N)
-  semantics: \E A N1 d1 d2 d3 H I J c x.(A(N1,d1,d2,d3,H,\A1 A2 A3.I(-A1,H(\y.-A3(y)),A2),J,c,x))
+  semantics: \E A N d1 d2 d3 H I J1 J2 c x.A(N,d1,d2,d3,H,\A1 A2 A3.I(-A1,H(\y.-A3(y)),A2),J1,\d.True,c,x)
   surf: less
 
 - category: (S|NP)|(S|NP)
   semantics: \E V Q K. V(Q, \e.(E(e) & K(e)))
 
 - category: (S|NP)|(S[adj=true]|NP)
-  semantics: \E A Q K. Q(\x.True,\x.(A(z,z,z,H,I,J,\F1 F2.F2,\e.True) & exists e.(E(e) & (Subj(e) = Subj(e)) & K(e))))
+  semantics: \E A Q K. Q(\x.True,\x.(A(\F1 F2.F2,z,z,z,H,I,J1,J2,\e.True) & exists e.(E(e) & (Subj(e) = Subj(e)) & K(e))))
 
 - category: (S[adv=true]|NP)|(S[adv=true]|NP)
-  semantics: \E d1 d2 d3 H I J V Q K.V(Q,\e.I((E(e,d1) & K(e)),-(d1 = d3),(H(E,d2) & J(\d4.$less(d4,d1)))))
+  # semantics: \E V Q d1 d2 d3 H I J1 J2 K.V(Q,\e.I((E(e,d1) & K(e)),-(d1 = d3),(H(E,d2) & J1(\d4.$less(d4,d1)) & J2(\d4.$less(d4,d1)))))
+  semantics: \E V Q d1 d2 d3 H I J1 J2 K.V(Q,\e.I((E(e,d1) & K(e)),-(d1 = d3),(H(E,d2) & J1(\d4.$less(d4,d1)) & J2(\d4.$lesseq($sum(d4,_d0),d1)))))
   pos: RB
   entity: POS
 
 - category: (S[adv=true]|NP)|(S[adv=true]|NP)
-  semantics: \E d2 d1 d3 H I J V Q K.V(Q,\e.I((E(e,d1) & K(e)),-(d1 = d3),(H(E,d2) & J(\d4.(d1 = d4)))))
+  # semantics: \E V Q d2 d1 d3 H I J1 J2 K.V(Q,\e.I((E(e,d1) & K(e)),-(d1 = d3),(H(E,d2) & J1(\d4.(d1 = d4)) & J2(\d4.$less(d1,d4)))))
+  semantics: \E V Q d2 d1 d3 H I J1 J2 K.V(Q,\e.I((E(e,d1) & K(e)),-(d1 = d3),(H(E,d2) & J1(\d4.(d1 = d4)) & J2(\d4.$lesseq(d1,$difference(d4,_d0))))))
   pos: RB
   entity: NEG
 
 - category: (S[adv=true]|NP)|(S[adv=true]|NP)
-  semantics: \E d1 d2 d3 H I J V Q K.V(Q,\e.I((E(e,d1) & K(e)),(H(E,d2) & J(\d4.$less(d4,d1))),-(d1 = d3)))
+  semantics: \E V Q d1 d2 d3 H I J1 J2 K.V(Q,\e.I((E(e,d1) & K(e)),(H(E,d2) & J1(\d4.$less(d4,d1))),-(d1 = d3)))
   pos: RBR
   entity: POS
 
 - category: (S[adv=true]|NP)|(S[adv=true]|NP)
-  semantics: \E d2 d1 d3 H I J V Q K.V(Q,\e.I((E(e,d1) & K(e)),(H(E,d2) & J(\d4.(d1 = d4))),-(d1 = d3)))
+  semantics: \E V Q d2 d1 d3 H I J1 J2 K.V(Q,\e.I((E(e,d1) & K(e)),(H(E,d2) & J1(\d4.(d1 = d4))),-(d1 = d3)))
   pos: RBR
   entity: NEG
 
 - category: (S\NP)\(S\NP)
+  # semantics: \E V Q. Q(\x.True, \x.exists d1.(E(x,d1) & V(\F1 F2.F2(x))))
   semantics: \E V Q K. V(Q, \e.exists d1.(E(e,d1) & K(e)))
   pos: JJ
 
+# - category: (S\NP)/(S\NP)
+#   semantics: \E V Q. exists d.Q(\x.True, \x.(E(x,d) & V(\F1 F2.F2(x))))
+#   pos: JJ
+
 - category: (S[adj=true]|NP)|(S|NP)
-  semantics: \E T d1 d2 d3 H I J Q K.exists d1.T(\F1 F2.Q(F1,\x.(E(x,d1) & F2(x))))
+  semantics: \E T Q d1 d2 d3 H I J1 J2 K.exists d1.T(\F1 F2.Q(F1,\x.(E(x,d1) & F2(x))))
   pos: JJ
 
 - category: (S[adj=true]|NP)|(S[adj=true]|NP)
-  semantics: \E A d1 d2 d3 H I J Q K.exists d1.A(d1,d1,d1,\w1 w2.True,\A1 A2 A3 x.A1(x),\w.True,\F1 F2.Q(F1,\x.(E(x,d1) & F2(x))),K)
+  semantics: \E A Q d1 d2 d3 H I J1 J2 K.exists d1.A(\F1 F2.Q(F1,\x.(E(x,d1) & F2(x))),d1,d1,d1,\H1 d.True,\A1 A2 A3 x.A1(x),\d.True,\d.True,K)
   pos: JJ
 
 - category: (S[adj=true]|NP)|(S[adj=true]|NP)
-  semantics: \E A d1 d2 d3 H I J Q K.exists d1.A(d1,d1,_th(_u),H,\A1 A2 A3 x.(A1(x) & -A2 & E(x)),J,Q,K)
+  semantics: \E A Q d1 d2 d3 H I J1 J2 K.exists d1.A(Q,d1,d1,_th(_u),H,\A1 A2 A3 x.(A1(x) & -A2 & E(x)),J1,J2,K)
   pos: RB
   
 # John is dgr taller than Bob .
 - category: (S[adj=true]|NP)|(S[adj=true]|NP)
-  semantics: \E A d1 d2 d3 H I J Q K.exists d1.A(d1,d1,_th(_u),H,\A1 A2 A3 x.(A1(x) & A2),J,Q,K)
+  # semantics: \E A Q d1 d2 d3 H I J1 J2 K.exists d1.A(Q,d1,d1,_th(_u),H,\A1 A2 A3 x.(A1(x) & A2),J1,J2,K)
+  semantics: \E A Q d1 d2 d3 H I J1 J2 K.Q(\x.True, \x.exists d1.A(\F1 F2.F2,d1,d1,_th(_u),H,\A1 A2 A3 x.(A1(x) & A2),J1,J2,K,x))
   surf: dgr
   pos: EMP
 
 # John is pos tall .
 - category: (S[adj=true]|NP)|(S[adj=true]|NP)
-  semantics: \E A d1 d2 d3 H I J Q K.Q(\w.True, exists d1.A(d1,d1,_th(_u),H,\A1 A2 A3 x.(A1(x) & -A2),J,\F1 F2.F2,K))
+  semantics: \E A Q d1 d2 d3 H I J1 J2 K.Q(\x.True, \x.exists d1.A(\F1 F2.F2,d1,d1,_th(_u),H,\A1 A2 A3 x.(A1(x) & -A2),J1,J2,K,x))
   surf: pos
   pos: EMP
 
 # ex. John is dgr2 as tall as Bob .
 - category: (S[adj=true]|NP)|(S[adj=true]|NP)
-  semantics: \E A d1 d2 d3 H I J Q K.all d1.A(d1,d1,_th(_u),H,\A1 A2 A3 x.(-A2 -> A1(x)),J,Q,K)
+  semantics: \E A Q d1 d2 d3 H I J1 J2 K.all d1.A(Q,d1,d1,_th(_u),H,\A1 A2 A3 x.(-A2 -> A1(x)),J1,J2,K)
   surf: dgr2
   pos: EMP
 
 - category: (S[adj=true]|NP)|(S[adj=true]|NP)
-  semantics: \E A d1 d2 d3 H I J Q K.exists e.Q(\w.True, exists d1.A(d1,d1,d1,\w1 w2.True,\A1 A2 A3 x.(A1(x) & A3),\W.W(_d0),\F1 F2.F2,K))
+  semantics: \E A Q d1 d2 d3 H I J1 J2 K.exists e.Q(\x.True, \x.exists d1.A(\F1 F2.F2,d1,d1,d1,\H1 d.True,\A1 A2 A3 x.(A1(x) & A3),\d.True,\W.W(_th(_u)),K,x))
   surf: very
 
 - category: (S[adj=true]|NP)|(S[adj=true]|NP)
-  semantics: \E A d1 d2 d3 H I J Q K.all d1.A(d1,$difference(d1,_d0),d3,H,\A1 A2 A3 x.(-A2 -> A1(x)),J,Q,K)
+  semantics: \E A Q d1 d2 d3 H I J1 J2 K.all d1.A(Q,d1,$difference(d1,_d0),d3,H,\A1 A2 A3 x.(-A2 -> A1(x)),J1,J2,K)
   surf: much
 
 - category: (S[adj=true]|NP)|(S[adj=true]|NP)
-  semantics: \E A d1 d2 d3 H I J Q K. A(d1,d2,d3,H,\A1 A2 A3.I(A1,A3,A2),J,Q,K)
+  semantics: \E A Q d1 d2 d3 H I J1 J2 K. A(Q,d1,d2,d3,H,\A1 A2 A3.I(A1,A3,A2),J1,J2,K)
   surf: more
 
 - category: (S[adj=true]|NP)|(S[adj=true]|NP)
-  semantics: \E A d1 d2 d3 H I J Q K.A(d1,d1,d1,H,\A1 A2 A3.I(\x.-A1(x),-A3,A2),J,Q,K)
+  semantics: \E A Q d1 d2 d3 H I J1 J2 K.A(Q,d1,d1,d1,H,\A1 A2 A3.I(\x.-A1(x),-A3,A2),J1,J2,K)
   surf: less
-  # pos: JJR
 
 - category: (S[adj=true]|NP)|(S[adj=true]|NP)
-  semantics: \E A d1 d2 d3 H I J Q K. A(d1,d2,d3,H,\A1 A2 A3.I(A1,A3,A2),J,Q,K)
+  semantics: \E A Q d1 d2 d3 H I J1 J2 K. A(Q,d1,d2,d3,H,\A1 A2 A3.I(A1,A3,A2),J1,J2,K)
   surf: as
   pos: RB
 
 # ex. John won many more orders than Bob.
 - category: (NP[adj=true]|N)|(NP[adj=true]|N)
-  semantics: \E A N V d1 d2 I Q K.all d1.A(N,V,$sum(d1,_d0),d1,\A1 A2 z2 z1.(exists y.A2(y,z2) -> exists x.A1(x,z1)),Q,K)
+  # semantics: \E A N V Q d1 d2 I K.all d1.A(N,V,Q,$sum(d1,_d0),d1,\A1 A2 z2 z1.(exists y.A2(y,z2) -> exists x.A1(x,z1)),K)
+  semantics: \E A N F1 F2 V Q d1 d2 H I J K.all d1.A(N,F1,F2,V,Q,$sum(d1,_d0),d1,H,\A1 A2 z2 z1.(exists y.A2(y,z2) -> exists x.A1(x,z1)),J,K)
   surf: many
 
 # John won dgr more orders than Bob .
 - category: (NP[adj=true]|N)|(NP[adj=true]|N)
-  semantics: \E A N V d1 d2 I Q K.exists d1.A(N,V,d1,d1,\A1 A2 z2 z1.(exists x.A1(x,z1) & -exists y.A2(y,z2)),Q,K)
+  # semantics: \E A N V Q d1 d2 I K.exists d1.A(N,V,Q,d1,d1,\A1 A2 z2 z1.(exists x.A1(x,z1) & -exists y.A2(y,z2)),K)
+  semantics: \E A N F1 F2 V Q d1 d2 H I J K.exists d1.A(N,F1,F2,V,Q,d1,d1,H,\A1 A2 z2 z1.(exists x.A1(x,z1) & -exists y.A2(y,z2)),J,K)
   surf: dgr
   pos: EMP
 
 # John won dgr2 as many orders as Bob .
 - category: (NP[adj=true]|N)|(NP[adj=true]|N)
-  semantics: \E A N V d1 d2 I Q K.all d1.A(N,V,d1,d1,\A1 A2 z2 z1.(exists y.A2(y,z2) -> exists x.A1(x,z1)),Q,K)
+  # semantics: \E A N V Q d1 d2 I K.all d1.A(N,V,Q,d1,d1,\A1 A2 z2 z1.(exists y.A2(y,z2) -> exists x.A1(x,z1)),K)
+  semantics: \E A N F1 F2 V Q d1 d2 H I J K.all d1.A(N,F1,F2,V,Q,d1,d1,H,\A1 A2 z2 z1.(exists y.A2(y,z2) -> exists x.A1(x,z1)),J,K)
   surf: dgr2
   pos: EMP
 
 - category: S|S
   semantics: \E S K. S(\e.(E(e) & K(e)))
+
+- category: S|S
+  semantics: \E S K. E(S(K))
+  pos: RB
+  surf: supposedly
+
+- category: S|S
+  semantics: \E S K. E(S(K))
+  pos: RB
+  surf: probably
+
+- category: S|S
+  semantics: \E S K. E(S(K))
+  pos: RB
+  surf: hopefully
+
+- category: S|S
+  semantics: \E S K. E(S(K))
+  pos: RB
+  surf: maybe
 
 - category: (S|S)|NP
   semantics: \E Q S K. S(\e.(Q(\x.True, \x.E(e,x)) & K(e)))
@@ -1287,53 +1506,77 @@
 - category: ((S|NP)|(S|NP))|((S|NP)|(S|NP))
   semantics: \E A V Q K. Q(\x.True, \x.(A(V,\F1 F2.(F2(x) & E(x)),K)))
 
+### Implicature ###
+
+- category: ((S[adj=true]|NP)|(S[adj=true]|NP))|((S[adj=true]|NP)|(S[adj=true]|NP))
+  semantics: \E D A Q d1 d2 d3 H I J1 J2 K.D(\Q d1 d2 d3 H I J1 J2 K.A(Q,d1,d2,d3,H,\A1 A2 A3 x.(-A2 <-> A1(x)),J1,J2,K),Q,d1,d2,d3,H,I,J1,J2,K)
+  surf: dgr
+  pos: EMP
+
+- category: ((S[adj=true]|NP)|(S[adj=true]|NP))|((S[adj=true]|NP)|(S[adj=true]|NP))
+  semantics: \E D A Q d1 d2 d3 H I J1 J2 K.(D(A,Q,d1,d2,d3,H,I,J1,J2,K) & all d2.D(\Q d1 d2 d3 H I J1 J2 K.A(Q,d1,d2,d3,H,\A1 A2 A3.I(\x.(A1(x) -> exists d.(-H(True,d) & $lesseq(d2,d))),True,-True),J1,J2,K),Q,d2,d2,d3,H,I,J1,J2,K))
+  surf: dgr2
+  pos: EMP
+
+###################
+
 - category: ((S[adv=true]|NP)|(S[adv=true]|NP))|((S[adv=true]|NP)|(S[adv=true]|NP))
-  semantics: \E A V Q K.Q(\x.True, \x.exists d1.A(d1,d1,d1,\x.True,\A1 A2 A3.A1,\W.W(_d0),V,\F1 F2.F2(x),K))
+  semantics: \E A V Q K.Q(\x.True, \x.exists d1.A(V,\F1 F2.F2(x),d1,d1,d1,\x.True,\A1 A2 A3.A1,\d.True,\W.W(_th(_u)),K))
   pos: RB
 
 - category: ((S[adv=true]|NP)|(S[adv=true]|NP))|((S[adv=true]|NP)|(S[adv=true]|NP))
-  semantics: \E A d1 d2 d3 H I J V Q K.A(d1,d2,d3,H,\A1 A2 A3.I(A1,A3,A2),J,V,Q,K)
+  semantics: \E A V Q d1 d2 d3 H I J1 J2 K.A(V,Q,d1,d2,d3,H,\A1 A2 A3.I(A1,A3,A2),J1,J2,K)
   pos: RBR
   surf: more
 
 - category: ((S[adv=true]|NP)|(S[adv=true]|NP))|((S[adv=true]|NP)|(S[adv=true]|NP))
-  semantics: \E A d1 d2 d3 H I J V Q K.A(d1,d2,d3,H,\A1 A2 A3.I(-A1,-A3,A2),J,V,Q,K)
+  semantics: \E A V Q d1 d2 d3 H I J1 J2 K.A(V,Q,d1,d2,d3,H,\A1 A2 A3.I(-A1,-A3,A2),J1,J2,K)
   pos: RBR
   surf: less
 
 - category: ((S|NP)|(S|NP))|((S[adv=true]|NP)|(S[adv=true]|NP))
-  semantics: \E A V Q K.Q(\x.True, \x.exists d1.A(d1,d1,_th(_u),H,\A1 A2 A3.(A1 & -A2),\x.True,V,\F1 F2.F2(x),K))
+  semantics: \E A V Q K.Q(\x.True, \x.exists d1.A(V,\F1 F2.F2(x),d1,d1,_th(_u),H,\A1 A2 A3.(A1 & -A2),\d.True,\d.True,K))
   pos: EMP
   surf: pos
 
 - category: ((S|NP)|(S|NP))|((S[adv=true]|NP)|(S[adv=true]|NP))
-  semantics: \E A V Q K.Q(\x.True,\x.exists d1.A(d1,d1,d1,\w1 w2.True,\A1 A2 A3.(A1 & A3),\W.W(_d0),V,\F1 F2.F2(x),K))
+  # semantics: \E A V Q K.Q(\x.True,\x.exists d1.A(V,\F1 F2.F2(x),d1,d1,d1,\w1 w2.True,\A1 A2 A3.(A1 & A3),\w.True,\W.W(_th(_u)),K))
+  semantics: \E A V Q K.Q(\x.True,\x.V(\F1 F2.F2(x),\e.exists d1.A(\F1 F2.F2(e),Q,d1,d1,d1,\H1 d.True,\A1 A2 A3.(A1 & A3),\d.True,\W.W(_th(_u)),K)))
   pos: RB
   surf: very
 
 - category: ((S[adv=true]|NP)|(S[adv=true]|NP))|((S[adv=true]|NP)|(S[adv=true]|NP))
-  semantics: \E A d1 d2 d3 H I1 J V Q K.Q(\x.True, \x.exists d1.A(d1,d1,d1,H,\A1 A2 A3.I1(A2,\I2.(I2 & A1)),J,V,\F1 F2.F2(x),K))
+  semantics: \E A V Q d1 d2 d3 H I1 J1 J2 K.Q(\x.True, \x.exists d1.A(V,\F1 F2.F2(x),d1,d1,d1,H,\A1 A2 A3.I1(A2,\I2.(I2 & A1)),J1,J2,K))
   pos: EMP
   surf: dgr
 
 - category: ((S[adv=true]|NP)|(S[adv=true]|NP))|((S[adv=true]|NP)|(S[adv=true]|NP))
-  semantics: \E A d1 d2 d3 H I1 J V Q K.Q(\x.True, \x.all d1.A(d1,d1,_th(_u),H,\A1 A2 A3.I1(A2,\I2.(I2 -> A1)),J,V,\F1 F2.F2(x),K))
+  semantics: \E A V Q d1 d2 d3 H I1 J1 J2 K.Q(\x.True, \x.all d1.A(V,\F1 F2.F2(x),d1,d1,_th(_u),H,\A1 A2 A3.I1(A2,\I2.(I2 -> A1)),J1,J2,K))
   pos: EMP
   surf: dgr2
 
 - category: ((S[adv=true]|NP)|(S[adv=true]|NP))|((S[adv=true]|NP)|(S[adv=true]|NP))
-  semantics: \E A d1 d2 d3 H I1 J V Q K.Q(\x.True, \x.all d1.A($product(d1,2),d1,_th(_u),H,\A1 A2 A3.I1(A2,\I2.(I2 -> A1)),J,V,\F1 F2.F2(x),K))
+  semantics: \E A V Q d1 d2 d3 H I1 J1 J2 K.Q(\x.True, \x.all d1.A(V,\F1 F2.F2(x),$product(d1,2),d1,_th(_u),H,\A1 A2 A3.I1(A2,\I2.(I2 -> A1)),J1,J2,K))
   pos: RB
   surf: twice
 
 - category: ((S[adv=true]|NP)|(S[adv=true]|NP))|((S[adv=true]|NP)|(S[adv=true]|NP))
-  semantics: \E A d1 d2 d3 H I J V Q K.A(d1,d2,d3,H,\A1 A2 A3.I(A1,A3,A2),J,V,Q,K)
+  semantics: \E A V Q d1 d2 d3 H I J1 J2 K.A(V,Q,d1,d2,d3,H,\A1 A2 A3.I(A1,A3,A2),J1,J2,K)
   surf: as
 
 - category: ((S[adv=true]|NP)|(S[adv=true]|NP))|((S[adv=true]|NP)|(S[adv=true]|NP))
-  semantics: \E A d1 d2 d3 H I1 J V Q K.Q(\x.True, \x.all d1.A(d1,$difference(d1,_d0),_th(_u),H,\A1 A2 A3.I1(A2,\I2.(-I2 -> A1)),J,V,\F1 F2.F2(x),K))
+  semantics: \E A V Q d1 d2 d3 H I1 J1 J2 K.Q(\x.True, \x.all d1.A(V,\F1 F2.F2(x),d1,$difference(d1,_d0),_th(_u),H,\A1 A2 A3.I1(A2,\I2.(-I2 -> A1)),J1,J2,K))
   pos: RB
   surf: much
+
+### Implicature ###
+
+- category: (((S[adv=true]|NP)|(S[adv=true]|NP))|((S[adv=true]|NP)|(S[adv=true]|NP)))|(((S[adv=true]|NP)|(S[adv=true]|NP))|((S[adv=true]|NP)|(S[adv=true]|NP)))
+  semantics: \E D A V Q d1 d2 d3 H I1 J1 J2 K.D((\V Q d1 d2 d3 H I J1 J2 K.A(V,Q,d1,d2,d3,H,\A1 A2 A3.I1(A2,\I2.(I2 <-> A1)),J1,J2,K)),V,Q,d1,d2,d3,H,I1,J1,J2,K)
+  surf: dgr
+  pos: EMP
+
+##################
 
 - category: (((S|NP)|(S|NP))|((S|NP)|(S|NP)))|(S|NP)
   semantics: \E V1 A V2 Q K. Q(\x.True, \x.(A(V2,\F1 F2.(F2(x) & E(x)),K) & V1(\F1 F2.F2(x), \e.True)))
@@ -1353,18 +1596,18 @@
 #   semantics: \E F x. (F(x) & E(x)) # plain semantics
 
 - category: N|N
-  semantics: \E N1 F x. N1(\N2.(E(x) & F(N2)),x)
+  semantics: \E N F x. N(\G.(E(x) & F(G)),x)
 
 - category: N|N
   semantics: \E x F y. ((y = x) & E(y) & F(y))
   surf: Mr.
 
 - category: N|N
-  semantics: \E N1 F x. N1(\N2.F(N2),x)
+  semantics: \E N F x. N(\G.F(G),x)
   surf: none
 
 # - category: N|N
-#   semantics: \E N1 F x. exists e.(E(e) & (Acc(e) = x) & F(x))
+#   semantics: \E N F x. exists e.(E(e) & (Acc(e) = x) & F(x))
 #   pos: VBN
 
 ## ex. bug # 33_33 (fracas-098)
@@ -1373,7 +1616,7 @@
   surf: "#"
 
 - category: NP/N
-  semantics: \E N F1 F2. exists d. (exists x.(N(\w.True,x) & F1(x) & F2(x) & _many(x,d)) & -exists y.(N(\w.True,y) & F1(y) & -F2(y) & _many(y,d)))
+  semantics: \E N F1 F2. exists d. (exists x.(N(\x.True,x) & F1(x) & F2(x) & _many(x,d)) & -exists y.(N(\x.True,y) & F1(y) & -F2(y) & _many(y,d)))
   surf: most
 
 # - category: N|N
@@ -1389,28 +1632,38 @@
 #   pos: JJS
 
 - category: (N|N)|NP
-  semantics: \E Q F x. Q(\y.True, \y.(E(x,y) & F(x)))
+  # semantics: \E Q F x. Q(\y.True, \y.(E(x,y) & F(x)))
+  semantics: \E Q N F x. Q(\y.True, \y.N(\G.(E(x,y) & F(G)),x))
 
 - category: (NP|NP)|N
-  semantics: \E F Q F1 F2. Q(\x.(F(\w.True,x) & F1(x)),F2)
+  semantics: \E N Q F1 F2. Q(\x.(N(\x.True,x) & F1(x)),F2)
 
 - category: (NP|NP)|PP
   semantics: \E K Q F1 F2. Q(\x.exists e.(E(e,x) & K(e) & F1(x)),F2)
 
 - category: (N|N)|PP
-  semantics: \E K N1 F x. exists e. (N1(\N2.(E(e,x) & F(N2)),x) & K(e))
+  semantics: \E K N F x. exists e. (N(\G.(E(e,x) & F(G)),x) & K(e))
 
 - category: (N|N)|N
-  semantics: \E N1 N2 F x.(N1(\w.True,x) & N2(\w.True,x))
+  semantics: \E N1 N2 F x.(N1(\x.True,x) & N2(\x.True,x))
 
 - category: ((N|N)|(N|N))|(N|N)
-  semantics: \E M1 M2 N1 F x. (M1(\F1 F2.F1(N2),\x.True,x) & M2(\F1 F2.F1(N2),\x.True,x) & N1(\x.True,x))
+  semantics: \E M1 M2 N F x. (M1(\F1 F2.F1(N2),\x.True,x) & M2(\F1 F2.F1(N2),\x.True,x) & N(\x.True,x))
 
 - category: ((N|N)|(N|N))|((N|N)|(N|N))
-  semantics: \E A M N1 F x. A(M,N1,\N2.(E(x) & F(N2)),x)
+  semantics: \E A M N1 F x. A(M,N1,\G.(E(x) & F(G)),x)
+
+### Implicature ###
+
+- category: ((N[adj=true]|N)|(N[adj=true]|N))|((N[adj=true]|N)|(N[adj=true]|N))
+  semantics: \E D A N d1 d2 d3 H I J1 J2 c x.D((\N d1 d2 d3 H I J1 J2 c x.A(N,d1,d2,d3,H,\A1 A2 A3.(A1 <-> -A2),J1,J2,c,x)),N,d1,d2,d3,H,I,J1,J2,c,x)
+  surf: dgr
+  pos: EMP
+
+###################
 
 - category: ((S|NP)|(S|NP))|N
-  semantics: \E F V Q K. Q(\x.True, \x.(E(x) & V(\F1 F2.F2(x), K) & F(\w.True,x)))
+  semantics: \E N V Q K. Q(\x.True, \x.(E(x) & V(\F1 F2.F2(x), K) & N(\x.True,x)))
 
 
 ##### Templates for Preposition #####
@@ -1421,30 +1674,36 @@
 
 ## nominal modifiers
 - category: (NP|NP)|NP
-  semantics: \E Q1 Q2 F1 F2. Q2(\x.(Q1(\w.True, \y.exists e.(E(e,y) & (Subj(e) = x) & F1(x)))), F2)
-  # semantics: \E Q1 Q2 F1 F2. Q2(\x.(Q1(\w.True, \y.exists e.(E(e) & (Subj(e) = x) & (Dat(e) = y) & F1(x)))), F2)
-  # semantics: \E Q1 Q2 F1 F2. Q2(\x.(Q1(\w.True, \y.(x = y)) & F1(x)), F2)
-
-- category: (N|N[adj=true])|NP
-  semantics: \E Q1 A F x.Q1(\w.True, \y.A(d1,d2,d3,\W.-W(y),I,\x.True,c,x))
-  surf: than
-
-- category: (N|N[adj=true])|NP
-  semantics: \E Q1 A F x.Q1(\w.True, \y.A(d1,d2,d3,\W.-W(y),I,\x.True,c,x))
-  surf: as
-
-- category: (N|N[adj=true])|NP[deg=true]
-  semantics: \E Q1 A F x.(A(d1,d2,d3,\w.True,I,Q1,c,x))
-  surf: than
+  semantics: \E Q1 Q2 F1 F2. Q2(\x.(Q1(\x.True, \y.exists e.(E(e,y) & (Subj(e) = x) & F1(x)))), F2)
+  # semantics: \E Q1 Q2 F1 F2. Q2(\x.(Q1(\x.True, \y.exists e.(E(e) & (Subj(e) = x) & (Dat(e) = y) & F1(x)))), F2)
+  # semantics: \E Q1 Q2 F1 F2. Q2(\x.(Q1(\x.True, \y.(x = y)) & F1(x)), F2)
 
 - category: (NP|NP)|NP
-  semantics: \E Q1 Q2 F1 F2. Q2(\x.(Q1(\w.True, \y.(y = x)) & F1(x)), F2)
+  semantics: \E Q1 Q2 F1 F2. Q2(\x.(Q1(\x.True, \y.(y = x)) & F1(x)), F2)
   surf: of
 
 # commentout for sick_trial
 # - category: (NP|NP)|NP
-#   semantics: \E Q1 Q2 F1 F2. Q2(\x.(Q1(\w.True, \y.(x = y)) & F1(x)), F2)
+#   semantics: \E Q1 Q2 F1 F2. Q2(\x.(Q1(\x.True, \y.(x = y)) & F1(x)), F2)
 #   surf: for
+
+# - category: (N|N[adj=true])|NP
+- category: (NP|NP[adj=true])|NP
+  # semantics: \E Q1 A F x.Q1(\x.True, \y.A(d1,d2,d3,\W.-W(y),I,\d.True,\d.True,c,x))
+  semantics: \E Q1 Q2 F1 F2.Q1(\x.True, \y.Q2(F1,F2,V,Q,d1,d2,\W.-W(y),I,\d.True,\e.True))
+  surf: than
+
+# - category: (N|N[adj=true])|NP
+- category: (NP|NP[adj=true])|NP
+  # semantics: \E Q1 A F x.Q1(\x.True, \y.A(d1,d2,d3,\W.-W(y),I,\d.True,\d.True,c,x))
+  semantics: \E Q1 Q2 F1 F2.Q1(\x.True, \y.Q2(F1,F2,V,Q,d1,d2,\W.-W(y),I,\d.True,\e.True))
+  surf: as
+
+# - category: (N|N[adj=true])|NP[deg=true]
+- category: (NP|NP[adj=true])|NP[deg=true]
+  # semantics: \E Q1 A F x.A(d1,d2,d3,\w.True,I,Q1,\w.True,c,x)
+  semantics: \E Q1 Q2 F1 F2.Q2(F1,F2,V,Q,d1,d2,\w.True,I,Q1,\e.True)
+  surf: than
 
 - category: ((NP|NP)|(NP|NP))|NP
   semantics: \E Q1 M Q2 F1 F2. Q2(\y.True,\y.Q1(\x.((x = y) & M(\G1 G2.G1(x),\w.True,\w.True) & F1(x)), F2))
@@ -1465,6 +1724,9 @@
 - category: PP|(S|NP)
   semantics: \E V e1. exists x. V(\F1 F2.F2(x),\e2.((Subj(e2) = x) & E(e1,x)))
 
+# - category: PP|(S[adj=true]|NP)
+#   semantics: \E A e1. exists x. A(d1,d2,d3,H,I,J1,J2,\F1 F2.F2(x),\e2.((Subj(e2) = x) & E(e1,x)))
+
 - category: (PP|(S|NP))|NP
   semantics: \E Q V e1. (Q(\x.True,\x.E(e1,x)) & exists x. V(\F1 F2.F2(x),\e2.((Subj(e2) = x) & (e2 = e1))))
 
@@ -1481,42 +1743,42 @@
   # semantics: \E Q1 V Q2 K. Q2(\x.True, \x.Q1(\y.True, \y.(V(\F1 F2.F2(x), \w.True) & E(x,y))))
 
 - category: ((S[adj=true]|NP)|(S[adj=true]|NP))|NP
-  semantics: \E Q1 A d1 d2 d3 H I J Q2 K. A(d1,d2,d3,H,I,\w.True,Q2,K)
+  semantics: \E Q1 A Q2 d1 d2 d3 H I J1 J2 K. A(Q2,d1,d2,d3,H,I,\d.True,\d.True,K)
 
 - category: ((S[adj=true]|NP)|(S[adj=true]|NP))|NP
-  semantics: \E Q1 A d1 d2 d3 H I J Q2 K.Q1(\w.True, \y.A(d1,d2,d3,\K d.-K(y,d),I,\w.True,Q2,K))
+  semantics: \E Q1 A Q2 d1 d2 d3 H I J1 J2 K.Q1(\x.True, \y.A(Q2,d1,d2,d3,\H1 d.-H1(y,d),I,\d.True,\d.True,K))
   surf: than
 
 - category: ((S[adj=true]|NP)|(S[adj=true]|NP))|NP
-  semantics: \E Q1 A d1 d2 d3 H I J Q2 K. Q1(\w.True, \y.A(d1,d2,d3,\K d.-K(y,d),I,\w.True,Q2,K))
+  semantics: \E Q1 A Q2 d1 d2 d3 H I J1 J2 K. Q1(\x.True, \y.A(Q2,d1,d2,d3,\H1 d.-H1(y,d),I,\d.True,\d.True,K))
   surf: as
 
 # differential "than", "as"
 - category: ((S[adj=true]|NP)|(S[adj=true]|NP))|NP[deg=true]
-  semantics: \E Q1 A d1 d2 d3 H I J Q2 K. A(d1,d2,d3,\w1 w2.True,I,Q1,Q2,K)
+  semantics: \E Q1 A Q2 d1 d2 d3 H I J1 J2 K. A(Q2,d1,d2,d3,\H1 d.True,I,Q1,\d.True,K)
   surf: than
 
 - category: ((S[adj=true]|NP)|(S[adj=true]|NP))|NP[deg=true]
-  semantics: \E Q1 A d1 d2 d3 H I J Q2 K. A(d1,d2,d3,\K d4.-Q1(\d5.(d4 = d5)),I,\w.True,Q2,K)
+  semantics: \E Q1 A Q2 d1 d2 d3 H I J1 J2 K. A(Q2,d1,d2,d3,\H1 d4.-Q1(\d5.(d4 = d5)),I,\d.True,\d.True,K)
   surf: as
 
 # deletion "than", "as"
 - category: ((S[adj=true]|NP)|(S[adj=true]|NP))|(S|(S|NP))
-  semantics: \E Q1 A d1 d2 d3 H I J Q2 K. Q1(\X.X, \w.True, \y.A(d1,d2,d3,\K d.-K(y,d),I,\w.True,Q2,K))
+  semantics: \E Q1 A Q2 d1 d2 d3 H I J1 J2 K. Q1(\X.X, \w.True, \y.A(Q2,d1,d2,d3,\H1 d.-H1(y,d),I,\d.True,\d.True,K))
   surf: than
 
 - category: ((S[adj=true]|NP)|(S[adj=true]|NP))|(S|(S|NP))
-  semantics: \E Q1 A d1 d2 d3 H I J Q2 K. Q1(\X.X, \w.True, \y.A(d1,d2,d3,\K d.-K(y,d),I,\w.True,Q2,K))
+  semantics: \E Q1 A Q2 d1 d2 d3 H I J1 J2 K. Q1(\X.X, \w.True, \y.A(Q2,d1,d2,d3,\H1 d.-H1(y,d),I,\d.True,\d.True,K))
   surf: as
 
 # ex. John won more orders than Bob.
 - category: (((S|NP)|((S|NP)|NP))|NP[adj=true])|NP
-  semantics: \E Q1 A V Q2 K. A(\W1 W2 W3.V(W1,\F1 F2.W2(F1,F2,F2),W3),d1,d2,I,\A1 A2.Q2(A1,\z1.Q1(\w.True,\x.A2(x,z1))),K)
+  semantics: \E Q1 A V Q2 K. A(F1,F2,\W1 W2 W3.V(W1,\F1 F2.W2(F1,F2,F2),W3),\A1 A2.Q2(A1,\z1.Q1(\x.True,\x.A2(x,z1))),d1,d2,H,I,J,K)
   surf: than
 
 # ex. John won as many orders as Bob.
 - category: (((S|NP)|((S|NP)|NP))|NP[adj=true])|NP
-  semantics: \E Q1 A V Q2 K. A(\W1 W2 W3.V(W1,\F1 F2.W2(F1,F2,F2),W3),d1,d2,I,\A1 A2.Q2(A1,\z1.Q1(\w.True,\x.A2(x,z1))),K)
+  semantics: \E Q1 A V Q2 K. A(F1,F2,\W1 W2 W3.V(W1,\F1 F2.W2(F1,F2,F2),W3),\A1 A2.Q2(A1,\z1.Q1(\x.True,\x.A2(x,z1))),d1,d2,H,I,J,K)
   surf: as
 
 - category: (((S|NP)|(S|NP))|NP)|NP
@@ -1524,12 +1786,12 @@
 
 # ex. John won more orders than Bob did.
 - category: (((S|NP)|((S|NP)|NP))|NP[adj=true])|S
-  semantics: \E Q1 A V Q2 K. A(\W1 W2 W3.V(W1,\F1 F2.W2(F1,F2,F2),W3),d1,d2,I,\A1 A2.Q2(A1,\z1.Q1(\w.True,\x.A2(x,z1))),K)
+  semantics: \E Q1 A V Q2 K. A(F1,F2,\W1 W2 W3.V(W1,\F1 F2.W2(F1,F2,F2),W3),\A1 A2.Q2(A1,\z1.Q1(\x.True,\x.A2(x,z1))),d1,d2,H,I,J,K)
   surf: than
 
 # ex. John won as many orders as Bob did.
 - category: (((S|NP)|((S|NP)|NP))|NP[adj=true])|S
-  semantics: \E Q1 A V Q2 K. A(\W1 W2 W3.V(W1,\F1 F2.W2(F1,F2,F2),W3),d1,d2,I,\A1 A2.Q2(A1,\z1.Q1(\w.True,\x.A2(x,z1))),K)
+  semantics: \E Q1 A V Q2 K. A(F1,F2,\W1 W2 W3.V(W1,\F1 F2.W2(F1,F2,F2),W3),\A1 A2.Q2(A1,\z1.Q1(\x.True,\x.A2(x,z1))),d1,d2,H,I,J,K)
   surf: as
 
 - category: (((S|NP)|(S|NP))|NP)|S
@@ -1541,44 +1803,48 @@
 
 - category: (((S|NP)|(S|NP))|(S|NP))|NP
   semantics: \E Q1 V1 V2 Q2 K. Q2(\x.True,\x.(Q1(\y.True,\y.(y = x)) & V1(\F1 F2.F2(x),\e.True) & V2(\F1 F2.F2(x),K)))
+  # semantics: \E Q1 V1 V2 Q2 K. Q2(\x.True, \x.V1(\F1 F2.(V2(\G1 G2.G2(x), \e.True) & F2(x)), K))
+  # semantics: \E Q1 V1 V2 Q2 K. Q2(\x.True, \x.Q1(\y.True, \y.exists e.((Subj(e) = x) & (Acc(e) = y) & V1(\F1 F2.F2(y),\w.True) & V2(\F1 F2.F2(y),\w.True) & K(e))))
 
 - category: (((S|NP)|(S|NP))|(S|NP))|N
-  semantics: \E F V1 V2 Q K. Q(\x.True,\x.(F(\w.True,x) & V1(\F1 F2.F2(x),\e.True) & V2(\F1 F2.F2(x),K)))
+  semantics: \E N V1 V2 Q K. Q(\x.True,\x.(N(\x.True,x) & V1(\F1 F2.F2(x),\e.True) & V2(\F1 F2.F2(x),K)))
 
 - category: (PP|PP)|(PP|PP)
   semantics: \E X. X
 
 - category: ((N|N)|(N|N))|(S|NP)
-  semantics: \E V M N1 F x. (V(\G1 G2. G2(x), \e.True) & M(\A1 A2.N1(\N2.A1(N2),x),F,x))
+  # semantics: \E V M F x. (V(\G1 G2. G2(x), \e.True) & M(F,x))
+  semantics: \E V M N F x. (V(\G1 G2. G2(x), \e.True) & M(\A1 A2.N(\G.A1(G),x),F,x))
 
 - category: ((N|N)|(N|N))|NP
-  semantics: \E Q A N1 F x. Q(\x.True, \x. (E(x) & A(\A1 A2.N1(\N2.A1(N2),x),F,x)))
+  # semantics: \E Q A F x. Q(\x.True, \x. (E(x) & A(F,x)))
+  semantics: \E Q A N F x. Q(\x.True, \x. (E(x) & A(\A1 A2.N(\G.A1(G),x),F,x)))
 
 - category: (((S|NP)|(S|NP))|((S|NP)|(S|NP)))|NP 
   semantics: \E Q1 M V Q2 K. M(V,Q2,\e.(Q1(\x.True,\x.(E(e,x) & K(e)))))
 
 - category: (((S|NP)|(S|NP))|((S[adv=true]|NP)|(S[adv=true]|NP)))|NP 
-  semantics: \E Q1 A V Q2 K. Q2(\x.True,\x.V(\F2 F3.F3(x),\e1.V(\F1 F2.Q1(\x.True,F2),\e2.A(d1,d2,d3,\K d.K(e2,d),\A1 A2.A2(-A1),\x.True,\A1 A2.A2(e1),Q2,K))))
+  semantics: \E Q1 A V Q2 K. Q2(\x.True,\x.V(\F1 F2.F2(x),\e1.V(\F1 F2.Q1(\x.True,F2),\e2.A(\A1 A2.A2(e1),Q2,d1,d2,d3,\H1 d.H1(e2,d),\A1 A2.A2(-A1),\d.True,\d.True,K))))
   surf: than
 
 - category: (((S|NP)|(S|NP))|((S[adv=true]|NP)|(S[adv=true]|NP)))|NP 
-  semantics: \E Q1 A V Q2 K. Q2(\x.True,\x.V(\F2 F3.F3(x),\e1.V(\F1 F2.Q1(\x.True,F2),\e2.A(d1,d2,d3,\K d.K(e2,d),\A1 A2.A2(A1),\x.True,\A1 A2.A2(e1),Q2,K))))
+  semantics: \E Q1 A V Q2 K. Q2(\x.True,\x.V(\F1 F2.F2(x),\e1.V(\F1 F2.Q1(\x.True,F2),\e2.A(\A1 A2.A2(e1),Q2,d1,d2,d3,\H1 d.H1(e2,d),\A1 A2.A2(A1),\d.True,\d.True,K))))
   surf: as
 
 # differential "than", "as"
 - category: (((S|NP)|(S|NP))|((S[adv=true]|NP)|(S[adv=true]|NP)))|NP[deg=true]
-  semantics: \E Q1 A V Q2 K. A(d1,d2,d3,\w1 w2.True,\A1 A2.A2(A1),Q1,V,Q2,K)
+  semantics: \E Q1 A V Q2 K. A(V,Q2,d1,d2,d3,\H1 d.True,\A1 A2.A2(A1),Q1,\d.True,K)
   surf: than
 
 - category: (((S|NP)|(S|NP))|((S|NP)|(S|NP)))|S
   semantics: \E S X. X
 
 - category: (((S|NP)|(S|NP))|((S[adv=true]|NP)|(S[adv=true]|NP)))|S
-  semantics: \E Q1 A V Q2 K. Q2(\x.True,\x.V(\F2 F3.F3(x),\e1.V(\F1 F2.Q1(\x.True,F2),\e2.A(d1,d2,d3,\K d.K(e2,d),\A1 A2.A2(-A1),\x.True,\A1 A2.A2(e1),Q2,K))))
+  semantics: \E Q1 A V Q2 K. Q2(\x.True,\x.V(\F1 F2.F2(x),\e1.V(\F1 F2.Q1(\x.True,F2),\e2.A(\A1 A2.A2(e1),Q2,d1,d2,d3,\H1 d.H1(e2,d),\A1 A2.A2(-A1),\d.True,\d.True,K))))
   surf: than
 
 - category: (((S|NP)|(S|NP))|((S[adv=true]|NP)|(S[adv=true]|NP)))|S
-  semantics: \E Q1 A V Q2 K. Q2(\x.True,\x.V(\F2 F3.F3(x),\e1.V(\F1 F2.Q1(\x.True,F2),\e2.A(d1,d2,d3,\K d.K(e2,d),\A1 A2.A2(A1),\x.True,\A1 A2.A2(e1),Q2,K))))
+  semantics: \E Q1 A V Q2 K. Q2(\x.True,\x.V(\F1 F2.F2(x),\e1.V(\F1 F2.Q1(\x.True,F2),\e2.A(\A1 A2.A2(e1),Q2,d1,d2,d3,\H1 d.H1(e2,d),\A1 A2.A2(A1),\d.True,\d.True,K))))
   surf: as
 
 - category: ((NP|NP)|(NP|NP))|((NP|NP)|(NP|NP))
@@ -1590,7 +1856,7 @@
   semantics: \E Q1 Q2 Q3 F1 F2. Q3(\x.(Q2(\y.True,\y.((y = x) & Q1(\z.True,\z.(E(y,z))))) & F1(x)),F2)
 
 - category: (S|S)|N
-  semantics: \E F S K. S(\e.(E(e) & F(\w.True,e) & K(e)))
+  semantics: \E F S K. S(\e.(E(e) & F(\x.True,e) & K(e)))
 
 - category: (S|S)|PP
   semantics: \E F S K. S(\e.(E(e) & F(e) & K(e)))
@@ -1622,7 +1888,7 @@
 
 - category: ((S\NP)/(S[adj=true]\NP))/NP
 # - category: ((S|NP)|(S|NP))|NP
-  semantics: \E Q1 A Q2 K. Q2(\x.True, \x.exists e1.(E(e1) & (Subj(e1) = x) & A(d1,d2,d3,H,I,J,Q1,\e2.(AccE(e1) = e2)) & K(e1)))
+  semantics: \E Q1 A Q2 K. Q2(\x.True, \x.exists e1.(E(e1) & (Subj(e1) = x) & A(Q1,d1,d2,d3,H,I,J1,J2,\e2.(AccE(e1) = e2)) & K(e1)))
 
 - category: ((S|NP)|PP)|NP
   semantics: \E Q1 K1 Q2 K2. Q2(\x.True, \x.Q1(\y.True, \y.exists e.(E(e) & (Subj(e) = x) & (Acc(e) = y) & K1(e) & K2(e))))
@@ -1632,7 +1898,7 @@
 
 - category: ((S|NP)|PP)|(S[adj=true]|NP)
   # semantics: \E V K1 Q K2. Q(\x.True,\x.exists e.(E(e) & (Subj(e) = x) & V(\F1 F2.F2(x),\e.True) & K1(e))) # plain semantics
-  semantics: \E V K1 Q K2. Q(\x.True,\x.exists e.(E(e) & (Subj(e) = x) & V(d1,d2,_th(u),H,\A1 A2 A3.(A1(x) & -A2),J,\G1 G2.G2,K) & K1(e))) # plain semantics
+  semantics: \E A K1 Q K2. Q(\x.True,\x.exists e.(E(e) & (Subj(e) = x) & A(\G1 G2.G2,d1,d2,_th(_u),H,\A1 A2 A3.(A1(x) & -A2),J1,J2,K) & K1(e))) # plain semantics
 
 ## control verbs
 - category: (S|NP)|(S[to=true]|NP)
@@ -1653,7 +1919,7 @@
   semantics: \E F Q K. Q(\x.True, \x.exists e.(E(e) & (Subj(e) = x) & F(e) & K(e)))
 
 - category: (S[adj=true]|NP)|PP
-  semantics: \E F d1 d2 d3 H I J Q K. Q(\w.True,(I(\x.E(x,d1),-(d1 = d3),(H(\y.E(y,d2)) & J(\d4.$less(d1,d4)))) & F(e)))
+  semantics: \E F Q d1 d2 d3 H I J1 J2 K. Q(\x.True,(I(\x.E(x,d1),-(d1 = d3),(H(\y.E(y,d2)) & J1(\d4.$less(d1,d4)))) & F(e)))
 
 - category: ((S|NP)|NP)|PP
   semantics: \E K1 Q1 Q2 K1. Q2(\x.True, \x.Q1(\y.True, \y.exists e.(E(e) & (Subj(e) = x) & (Acc(e) = y) & K1(e) & K2(e))))
@@ -1694,21 +1960,29 @@
 - category: (NP|NP)|(S|NP)
   semantics: \E V Q F1 F2. Q(\x.(V(\G1 G2.G2(x), \e.True) & F1(x)), F2)
 
+# - category: (NP|NP[adj=true])|(S|NP)
+#   # semantics: \E Q1 A F2 F3.A(\V1 V2 V3.V2(W1,\U1 U2.(F2(U2) & F3(U2)),\U1 U2.Q1(\W1 W2.W2(U2),\e.True)),\W1 W2.W2(x,z2),d,d,I,K)
+#   semantics: \E Q1 A F2 F3.A(F2,F3,\V1 V2 V3.V2(W1,\U1 U2.(F2(U2) & F3(U2)),\U1 U2.Q1(\W1 W2.W2(U2),\e.True)),\W1 W2.W2(x,z2),d,d,H,I,J,K)
+#   surf: than
+
+# - category: (NP|NP[adj=true])|(S|NP)
+#   semantics: \E Q1 A F1 F2.exists y.(A(F2,F3,V,Q,d1,d2,\W.-W(y),I,\x.True,\e.True) & Q1(\F1 F2.F2(y),\e.True))
+#   surf: than
+
 # ex. John has more orders than Bob lost.
+# ex. APCOM has a more important customer than ITEL is.
 - category: (NP|NP[adj=true])|(S|NP)
-  semantics: \E Q1 A F2 F3.A(\V1 V2 V3.V2(W1,\U1 U2.(F2(U2) & F3(U2)),\U1 U2.Q1(\W1 W2.W2(U2),\e.True)),d,d,I,\W1 W2.W2(x,z2),K)
+  semantics: \E Q1 A F1 F2.exists y.A(F1,F2,\W1 W2 W3.W2(W1,\x1 x2.(F1(x2) & F2(x2)),\x1 x2.Q1(\W1 W2.W2(x2),\e.True)),\W1 W2.W2(x,z2),d1,d2,\W.-W(y),I,\x.Q1(\F1 F2.F2(y),\e.True),\e.True)
   surf: than
 
 - category: NP|(S|NP)
   semantics: \E V F1 F2. exists x. (V(\F1 F2.F2(x),\e.True) & F1(x) & F2(x))
 
 - category: (NP|(S|NP))|N
-  # semantics: \E F V F1 F2. exists x. (F(x) & V(\G1 G2.G2(x),\e.True) & F1(x) & F2(x))
-  semantics: \E F V F1 F2. exists x. (F(\w.True,x) & V(\G1 G2.G2(x),\e.True) & F1(x) & F2(x))
+  semantics: \E N V F1 F2. exists x. (N(\x.True,x) & V(\G1 G2.G2(x),\e.True) & F1(x) & F2(x))
 
 - category: (S[qem=true]|(S|NP))|N
-  # semantics: \E F V K. exists x. (F(x) & V(\F1 F2.F2(x),K))
-  semantics: \E F V K. exists x. (F(\w.True,x) & V(\F1 F2.F2(x),K))
+  semantics: \E N V K. exists x. (N(\x.True,x) & V(\F1 F2.F2(x),K))
 
 - category: NP|((S|NP)|NP) 
   semantics: \E V F1 F2. exists x y. (V(\F1 F2.F2(y),\G1 G2.G2(x),\e.True) & F1(x) & F2(x))
@@ -1718,15 +1992,14 @@
   base: whose
 
 - category: ((NP|NP)|(S|NP))|N
-  # semantics: \E F V Q F1 F2. Q(\y.exists x.(F(x) & Rel(x,y) & V(\F1 F2.F2(x),\e.True) & F1(x)),F2)
-  semantics: \E F V Q F1 F2. Q(\y.exists x.(F(\w.True,x) & Rel(x,y) & V(\F1 F2.F2(x),\e.True) & F1(x)),F2)
+  semantics: \E N V Q F1 F2. Q(\y.exists x.(N(\x.True,x) & Rel(x,y) & V(\F1 F2.F2(x),\e.True) & F1(x)),F2)
   base: whose
 
 - category: ((NP|NP)|(NP|NP))|S
   semantics: \E S M Q F1 F2. Q(\x.(S(\e.(Dat(e) = x)) & M(\G1 G2.G1(x),\w.True,\w.True) & F1(x)), F2)
 
 - category: ((NP|NP)|(NP|NP))|(S|NP)
-  semantics: \E V M Q F1 F2. Q(\x.(V(\H1 H2.H2(x),\e.True) & M(\G1 G2.G1(x),\w.True,\w.True) & F1(x)), F2)
+  semantics: \E V M Q F1 F2. Q(\x.(V(\G1 G2.G2(x),\e.True) & M(\G1 G2.G1(x),\w.True,\w.True) & F1(x)), F2)
 
 - category: ((NP|NP)|(S|NP))|(NP|NP)
   semantics: \E M V Q F1 F2. M(Q, \x.(F1(x) & F2(x)), \x.V(\G1 G2.G2(x), \e.True))
@@ -1741,8 +2014,7 @@
   semantics: \E V K. exists x. V(\G1 G2. G2(x), \e.True)
 
 - category: (S|(S|NP))|N
-  # semantics: \E F V K. exists x. (F(x) & V(\G1 G2. G2(x), \e.True))
-  semantics: \E F V K. exists x. (F(\w.True,x) & V(\G1 G2. G2(x), \e.True))
+  semantics: \E N V K. exists x. (N(\x.True,x) & V(\G1 G2. G2(x), \e.True))
 
 
 ##### Templates for connectives #####
@@ -1764,7 +2036,7 @@
 
 - category: ((S|NP[expl=true])|S[em=true])|(S[adj=true]|NP)
   # semantics: \E V S Q K. V(\F1 F2.F2(S(K)),\e.True)
-  semantics: \E A S Q K. A(d1,d2,d3,H,I,J,\F1 F2.Q(F1,\x.F2(S(K))),K)
+  semantics: \E A S Q K. A(\F1 F2.Q(F1,\x.F2(S(K))),d1,d2,d3,H,I,J1,J2,K)
 
 ##### Templates for Adjectives #####
 
@@ -1774,20 +2046,19 @@
 
 - category: (S[adj=true]|NP)|NP
   # semantics: \E Q1 Q2 K. Q2(\x.True, \x.Q1(\y.True, \y.E(x,y))) # plain semantics
-  semantics: \E Q1 d1 d2 d3 H I J Q2 K. Q2(\x.True, \x.Q1(\y.True, \y.E(x,y))) # plain semantics
+  semantics: \E Q1 Q2 d1 d2 d3 H I J1 J2 K. Q2(\x.True, \x.Q1(\y.True, \y.E(x,y))) # plain semantics
   # semantics: \E Q1 Q2 K. Q2(\x.True, \x.Q1(\y.True, \y.exists e.(E(e) & (Subj(e) = x) & (Acc(e) = y) & K(e)))) # event semantics
 
 - category: (S[adj=true]|NP)|(S[to=true]|NP)
-  # semantics: \E T d1 d2 d3 H I J Q.exists d1.T(\F1 F2.Q(F1,\x.(E(x,d1) & F2(x))))
-  semantics: \E V d1 d2 d3 H I J Q K. Q(\x.True, \x.exists e.(E(e) & (Subj(e) = x) & AccI(e, V(\F1 F2.F2(x),\e.True))))
+  # semantics: \E T d1 d2 d3 H I J1 J2 Q.exists d1.T(\F1 F2.Q(F1,\x.(E(x,d1) & F2(x))))
+  semantics: \E V Q d1 d2 d3 H I J1 J2 K. Q(\x.True, \x.exists e.(E(e) & (Subj(e) = x) & AccI(e, V(\F1 F2.F2(x),\e.True))))
 
 ## tough constructions
 - category: (S[adj=true]|NP)|((S[to=true]|NP)|NP)
   # semantics: \E V2 Q K. Q(\x.True, \x.(exists y. V2(\F1 F2.F2(x),\F1 F2.F2(y),\e.(E(e) & K(e)))))
-  semantics: \E V2 d1 d2 d3 H I J Q K. Q(\x.True, I(\x.(E(x,d1) & exists y. V2(\F1 F2.F2(x),\F1 F2.F2(y),\e.K(e))),-(d1 = d3),(H(\y.E(y,d2)) & J(\d4.$less(d1,d4)))))
+  semantics: \E V2 Q d1 d2 d3 H I J1 J2 K. Q(\x.True, I(\x.(E(x,d1) & exists y. V2(\F1 F2.F2(x),\F1 F2.F2(y),\e.K(e))),-(d1 = d3),(H(\y.E(y,d2)) & J1(\d4.$less(d1,d4)))))
   
 - category: N|S
-  # semantics: \E S x. (E(x) & S(\e.True))
   semantics: \E S F x. (E(x) & F(E) & S(\e.True))
 
 
@@ -1803,8 +2074,7 @@
   semantics: \E F Q K. Q(\x.True, \x.exists e.(E(e) & (Acc(e) = x) & F(e) & K(e)))
 
 - category: (S[pss=true]|NP)|(S[adj=true]|NP)
-  semantics: \E A Q K. Q(\x.True, \x.(A(d1,d2,d3,H,I,J,\F1 F2.F2(x),\e.True) & exists e.(E(e) & (Acc(e) = x) & K(e))))
-
+  semantics: \E A Q K. Q(\x.True, \x.(A(\F1 F2.F2(x),d1,d2,d3,H,I,J1,J2,\e.True) & exists e.(E(e) & (Acc(e) = x) & K(e))))
 
 ##### Templates for semantically empty expressions #####
 
@@ -1821,22 +2091,19 @@
   semantics: \E X Y. Y
 
 - category: N|N
-  # semantics: \E F x. F(x)
-  semantics: \E F1 F2 x. F1(\w.True,x)
+  semantics: \E N F x. N(\x.True,x)
   pos: LQU
 
 - category: N|N
-  # semantics: \E F x. F(x)
-  semantics: \E F1 F2 x. F1(\w.True,x)
+  semantics: \E N F x. N(\x.True,x)
   pos: RQU
 
 - category: N
-  # semantics: \E x. True
   semantics: \E F x. True
   pos: RQU
 
 - category: (NP|N)|NP
-  semantics: \E Q F F1 F2. Q(\x.(F(x) & F1(x)),F2)
+  semantics: \E Q N F1 F2. Q(\x.(N(\x.True,x) & F1(x)),F2)
   # pos: RQU
 
 
@@ -1865,23 +2132,19 @@
   semantics: \E. E
 
 - category: N|PP
-  # semantics: \E K x. (E(x) & exists e.((Subj(e) = x) & K(e)))
   semantics: \E K F x. (E(x) & F(E) & exists e.((Subj(e) = x) & K(e)))
 
 - category: NP|PP
   semantics: \E K F1 F2. exists x. (E(x) & exists e.((Subj(e) = x) & K(e)) & F1(x) & F2(x))
 
 - category: N|(S|NP)
-  # semantics: \E V x. (E(x) & V(\F1 F2.F2(x),\w.True))
   semantics: \E V F x. (E(x) & F(E) & V(\F1 F2.F2(x),\w.True))
 
 - category: (N|PP)|PP
-  # semantics: \E K1 K2 x. (E(x) & exists e. ((Subj(e) = x) & K1(e) & K2(e)))
   semantics: \E K1 K2 F x. (E(x) & F(E) & exists e. ((Subj(e) = x) & K1(e) & K2(e)))
 
 - category: NP|(N|PP)
-  # semantics: \E M F1 F2. exists x.(exists y.(E(y) & Rel(x,y)) & M(\w.True,x) & F1(x) & F2(x))
-  semantics: \E M F1 F2. exists x.(exists y.(E(y) & Rel(x,y)) & M(\w.True,\w.True,x) & F1(x) & F2(x))
+  semantics: \E M F1 F2. exists x.(exists y.(E(y) & Rel(x,y)) & M(\w.True,\x.True,x) & F1(x) & F2(x))
 
 - category: (S|NP)|PR
   semantics: \E R Q K. Q(\x.True, \x.exists e.(E(e) & (Subj(e) = x) & R(e) & K(e)))
@@ -1893,25 +2156,20 @@
   semantics: \E R V Q K. V(Q,K)
 
 - category: (N|PP)|(S|NP) 
-  # semantics: \E V K x. (E(x) & exists y. (Rel(x,y) & V(\G1 G2.G2(y),\w.True) & exists e.((Subj(e) = x) & K(e))))
   semantics: \E V K F x. (E(x) & F(E) & exists y. (Rel(x,y) & V(\G1 G2.G2(y),\w.True) & exists e.((Subj(e) = x) & K(e))))
 
 - category: (N|N)|(S|NP)
-  # semantics: \E V F x. (V(\G1 G2.G2(x),\w.True) & F(x))
-  semantics: \E V N1 F x. N1(\N2.(V(\G1 G2.G2(x),\w.True) & F(N2)),x)
+  semantics: \E V N F x. N(\G3.(V(\G1 G2.G2(x),\w.True) & F(G3)),x)
 
-- category: (N|N[adj=true])|(S|NP)
-  semantics: \E Q1 A F x.exists y.(A(d1,d2,d3,\W.-W(y),I,\x.True,c,x) & Q1(\F1 F2.F2(y),\e.True))
-  # semantics: \E Q1 A F x.Q1(\w.True, \y.A(d1,d2,d3,\W.-W(y),I,\x.True,c,x))
-  surf: than
+# - category: (N|N[adj=true])|(S|NP)
+#   semantics: \E Q1 A F x.exists y.(A(d1,d2,d3,\W.-W(y),I,\x.True,\x.True,c,x) & Q1(\F1 F2.F2(y),\e.True))
+#   surf: than
 
 - category: (N|N)|S
-  # semantics: \E S F x. (S(\w.True) & F(x))
-  semantics: \E S N1 F x. N1(\N2.(S(\w.True) & F(N2)),x)
+  semantics: \E S N F x. N(\G.(S(\w.True) & F(G)),x)
 
 - category: ((N|PP)|(N|PP))|(S|NP)
-  # semantics: \E V M K x. (V(\F1 F2.F2(x),\w.True) & M(\w.True,x) & exists e. ((Subj(e) = x) & K(e)))
-  semantics: \E V M K F x. (V(\F1 F2.F2(x),\w.True) & M(\w.True,\w.True,x) & exists e. ((Subj(e) = x) & K(e)))
+  semantics: \E V M K F x. (V(\F1 F2.F2(x),\w.True) & M(\w.True,\x.True,x) & exists e. ((Subj(e) = x) & K(e)))
 
 
 ############### Lexical entries #################
@@ -2013,60 +2271,87 @@
 ##### Lexical entries for determiners #####
 
 - category: NP|N
-  semantics: \E F1 F2 F3. forall x. (F1(\w.True,x) -> (F2(x) -> F3(x)))
+  semantics: \E N F1 F2. forall x. (N(\x.True,x) -> (F1(x) -> F2(x)))
   surf: every
 
 - category: NP|N
-  semantics: \E F1 F2 F3. forall x. (F1(\w.True,x) -> (F2(x) -> F3(x)))
+  semantics: \E N F1 F2. forall x. (N(\x.True,x) -> (F1(x) -> F2(x)))
   surf: all
 
 - category: NP|N
-  semantics: \E F1 F2 F3. forall x. (F1(\w.True,x) -> (F2(x) -> F3(x)))
+  semantics: \E N F1 F2. forall x. (N(\x.True,x) -> (F1(x) -> F2(x)))
   surf: each
 
 - category: NP|N
-  semantics: \E F1 F2 F3. forall x. (F1(\w.True,x) -> (F2(x) -> F3(x)))
+  semantics: \E N F1 F2. forall x. (N(\x.True,x) -> (F1(x) -> F2(x)))
   surf: any
 
 - category: NP[npi=true]|N
-  semantics: \E F1 F2 F3. exists x. (F1(\w.True,x) & F2(x) & F3(x))
+  semantics: \E N F1 F2. exists x. (N(\x.True,x) & F1(x) & F2(x))
   surf: any
 
 - category: NP|N
-  semantics: \E F1 F2 F3. exists x. (F1(\w.True,x) & F2(x) & F3(x))
+  semantics: \E N F1 F2. exists x. (N(\x.True,x) & F1(x) & F2(x))
   surf: some
 
 - category: NP|N
-  semantics: \E F1 F2 F3. exists x. (F1(\w.True,x) & F2(x) & F3(x))
+  semantics: \E N F1 F2. exists x. (N(\x.True,x) & F1(x) & F2(x))
   surf: a
 
 - category: NP|N
-  semantics: \E F1 F2 F3. exists x. (F1(\w.True,x) & F2(x) & F3(x))
+  semantics: \E N F1 F2. exists x. (N(\x.True,x) & F1(x) & F2(x))
   surf: an
 
 - category: NP|N
-  semantics: \E F1 F2 F3. exists x. (F1(\w.True,x) & F2(x) & F3(x))
+  semantics: \E N F1 F2. exists x. (N(\x.True,x) & F1(x) & F2(x))
+  # semantics: \E N F1 F2. exists x. (N(\x.True,x) & forall y. (N(\w.True,y) -> (y = x)) & F1(x) & F2(x))
   surf: the
 
 - category: NP|N
-  semantics: \E F1 F2 F3. exists x. (F1(\w.True,x) & F2(x) & F3(x))
+  semantics: \E N F1 F2. exists x. (N(\x.True,x) & F1(x) & F2(x))
   surf: both
 
 - category: NP|N
-  semantics: \E F1 F2 F3. -exists x. (F1(\w.True,x) & F2(x) & F3(x))
+  semantics: \E N F1 F2. -exists x. (N(\x.True,x) & F1(x) & F2(x))
   surf: neither
 
 - category: NP|N
-  semantics: \E F1 F2 F3. -exists x. (F1(\w.True,x) & F2(x) & F3(x))
+  semantics: \E N F1 F2. -exists x. (N(\x.True,x) & F1(x) & F2(x))
   surf: "no"
 
-- category: NP[nb=true]/N
-  semantics: \E F1 F2 F3. exists x. (F1(\w.True,x) & F2(x) & F3(x))
-  # semantics: \E F1 F2 F3. -exists x. (F1(\N._many(x,_th(N)),x) & F2(x) & F3(x))
+- category: NP[nb=true]|N
+  # semantics: \E N F1 F2. exists x. (exists d1.N(\G.(_many(x,d1) & $less(d1,_th(G))),x) & F1(x) & F2(x))
+  semantics: \E N F1 F2. exists x. (exists d1.N(\G.(_many(x,d1) & $less(d1,_th(G))),x) & F1(x) & F2(x))
   surf: a~few
 
+- category: NP[adj=true]|N[adj=true]
+  semantics: \E A F1 F2 V Q d1 d2 H I J K. exists x. A(d1,d2,d3,H,I,\W.(J(W) & F1(x) & F2(x)),J2,c,x)
+  surf: a
+
+- category: NP[adj=true]|N[adj=true]
+  semantics: \E A F1 F2 V Q d1 d2 H I J K. exists x. A(d1,d2,d3,H,I,\W.(J(W) & F1(x) & F2(x)),J2,c,x)
+  surf: an
+
+- category: NP[adj=true]|N[adj=true]
+  semantics: \E A F1 F2 V Q d1 d2 H I J K. exists x. A(d1,d2,d3,H,I,\W.(J(W) & F1(x) & F2(x)),J2,c,x)
+  surf: the
+
+### Implicature ###
+
+# ex. There are pos a few books.
+- category: (NP|N)|(NP|N)
+  semantics: \E Q G1 G2 G3. (Q(G1,G2,G3) & all x d1.exists d2.(G1(\G4.(_many(x,d1) & (d2 = _th(G4))),x) & G2(x) & G3(x) -> $less(d1,d2)))
+  surf: pos
+
+# # ex. There are pos pos few books.
+# - category: ((N[down=true]|N)|(N[adj=true]|N))|((N[down=true]|N)|(N[adj=true]|N))
+#   semantics: \E Q A N F x. (Q(A,N,F,x) | -exists x.N(\x.True,x))
+#   surf: pos
+
+###################
+
 # - category: (NP/N)/(N/N)
-#   semantics: \E d N F1 F2.-exists x.(N(\w.True,x) & _many(x,$sum(d,1)) & F1(x) & F2(x))
+#   semantics: \E d N F1 F2.-exists x.(N(\x.True,x) & _many(x,$sum(d,1)) & F1(x) & F2(x))
 #   surf: at~most
 
 - category: NP|NP
@@ -2126,6 +2411,10 @@
   semantics: \E Q1 V Q2 K. V(Q2, \e.Q1(\x.True, \x.((Subj(e) = x) & K(e))))  # subject wide scope
   # semantics: \E Q1 V Q2 K. Q1(\x.True, \x.V(Q2,\e.((Subj(e) = x) & K(e))))  # subject narrow scope
   surf: by
+
+- category: ((S|NP)|(S|NP))|NP
+  semantics: \E Q1 V Q2 K. V(Q2, \e.-Q1(\x.True, \x.((Subj(e) = x) & K(e))))
+  surf: without
 
 - category: ((S|NP)|(S|NP))|(S[ng=true]|NP)
   semantics: \E V1 V2 Q K. Q(\x.True, \x.V1(\F1 F2.(V2(\G1 G2.G2(x),\e.True) & -F2(x)),K))
@@ -2204,8 +2493,7 @@
   base: be
 
 - category: (S|NP)|(S[adj=true]|NP)
-  # semantics: \E A Q K. A(d1,d2,d3,H,I,\w.True,Q,\e.True)
-  semantics: \E A Q K. Q(\x.True, \x.(A(d1,d2,d3,H,I,\w.True,\F1 F2.F2(x),\e.True) & exists e.((Subj(e) = Subj(e)) & K(e))))
+  semantics: \E A Q K. Q(\x.True, \x.(A(\F1 F2.F2(x),d1,d2,d3,H,I,\d.True,\d.True,\e.True) & exists e.((Subj(e) = Subj(e)) & K(e))))
   base: be 
 
 - category: (S|NP)|NP
@@ -2235,33 +2523,33 @@
   base: not
 
 - category: (S|NP)|(S|NP) 
-  # semantics: \E V Q K. -Q(\w.True, \x.V(\F1 F2.F2(x), K))
-  semantics: \E V Q K. Q(\x.True, \x.-V(\F1 F2.F2(x), K))
+  semantics: \E V Q K. -Q(\x.True, \x.V(\F1 F2.F2(x), K))
+  # semantics: \E V Q K. Q(\x.True, \x.-V(\F1 F2.F2(x), K))
   surf: not
 
 - category: (S|NP)|(S|NP) 
-  # semantics: \E V Q K. -Q(\x.True, \x.V(\F1 F2.F2(x), K))
-  semantics: \E V Q K. Q(\x.True, \x.-V(\F1 F2.F2(x), K))
+  semantics: \E V Q K. -Q(\x.True, \x.V(\F1 F2.F2(x), K))
+  # semantics: \E V Q K. Q(\x.True, \x.-V(\F1 F2.F2(x), K))
   surf: n't
 
 - category: (S|NP)|(S[adj=true]|NP)
-  # semantics: \E Q1 Q2 K.-Q2(\w.True,\x.Q1(d1,d2,d3,H,I,\w.True,\F1 F2.F2(x),\e.True))
-  semantics: \E Q1 Q2 K.Q2(\w.True,\x.(-Q1(d1,d2,d3,H,I,\w.True,\F1 F2.F2(x),\e.True) & exists e.((Subj(e) = Subj(e)) & K(e))))
+  semantics: \E Q1 Q2 K.-Q2(\x.True,\x.Q1(d1,d2,d3,H,I,\w.True,\F1 F2.F2(x),\e.True))
+  # semantics: \E Q1 Q2 K.Q2(\x.True,\x.-Q1(\F1 F2.F2(x),d1,d2,d3,H,I,\d.True,\d.True,\e.True))
   surf: isn't
 
 - category: (S[adj=true]|NP)|(S[adj=true]|NP) 
-  # semantics: \E A d1 d2 d3 H I J Q K. -Q(\x.True, \x.A(d1,d2,d3,H,I,J,Q,K))
-  semantics: \E A d1 d2 d3 H I J Q K. Q(\x.True, \x.-A(d1,d2,d3,H,I,J,\F1 F2.F2(x),K))
+  semantics: \E A d1 d2 d3 H I J1 J2 Q K. -Q(\x.True, \x.A(d1,d2,d3,H,I,J1,J2,Q,K))
+  # semantics: \E A Q d1 d2 d3 H I J1 J2 K. Q(\x.True, \x.-A(Q,d1,d2,d3,H,I,J1,J2,K))
   surf: not
 
 - category: (S[adj=true]|NP)|(S[adj=true]|NP) 
-  # semantics: \E A d1 d2 d3 H I J Q K. -Q(\x.True, \x.A(d1,d2,d3,H,I,J,Q,K))
-  semantics: \E A d1 d2 d3 H I J Q K. Q(\x.True, \x.-A(d1,d2,d3,H,I,J,\F1 F2.F2(x),K))
+  semantics: \E A d1 d2 d3 H I J1 J2 Q K. -Q(\x.True, \x.A(d1,d2,d3,H,I,J1,J2,Q,K))
+  # semantics: \E A Q d1 d2 d3 H I J1 J2 K. Q(\x.True, \x.-A(Q,d1,d2,d3,H,I,J1,J2,K))
   surf: n't
 
 - category: (S|NP)|(S|NP) 
-  # semantics: \E V Q K. -Q(\x.True, \x.V(\F1 F2.F2(x), K))
-  semantics: \E V Q K. Q(\x.True, \x.-V(\F1 F2.F2(x), K))
+  semantics: \E V Q K. -Q(\x.True, \x.V(\F1 F2.F2(x), K))
+  # semantics: \E V Q K. Q(\x.True, \x.-V(\F1 F2.F2(x), K))
   surf: never
 
 - category: ((S|NP)|(S|NP))|((S|NP)|(S|NP)) 
@@ -2271,11 +2559,11 @@
 ##### Adjectives #####
 
 - category: S[adj=true]|NP
-  semantics: \E d1 d2 d3 H I J Q K.Q(\w.True,I(\x.many(x,d1),(H(_many,d2) & J(\d4.$less(d4,d1))),-(d1 = d3)))
+  semantics: \E Q d1 d2 d3 H I J1 J2 K. Q(\x.True,I(\x.many(x,d1),(H(_many,d2) & J1(\d4.$less(d4,d1))),-(d1 = d3)))
   pos: RBR
 
 - category: S[adj=true]|NP
-  semantics: \E d1 d2 d3 H I J Q K. Q(\x.True, \x.exists e.(E(e) & (Subj(e) = x) & K(e)))
+  semantics: \E Q d1 d2 d3 H I J1 J2 K. Q(\x.True, \x.exists e.(E(e) & (Subj(e) = x) & K(e)))
   pos: RB
 
 # - category: S[adj=true]|NP
@@ -2287,117 +2575,129 @@
 #   surf: "false"
 
 - category: S[adj=true]|NP
-  semantics: \E d2 d1 d3 H I J Q K. Q(\w.True,I(\x.E(x,d1),-(d1 = d3),(H(E,d2) & J(\d4.(d1 = d4)))))
+  # semantics: \E Q d2 d1 d3 H I J1 J2 K. Q(\x.True,I(\x.E(x,d1),-(d1 = d3),(H(E,d2) & J1(\d4.(d1 = d4)) & J2(\d4.$less(d1,d4)))))
+  semantics: \E Q d2 d1 d3 H I J1 J2 K. Q(\x.True,I(\x.E(x,d1),-(d1 = d3),(H(E,d2) & J1(\d4.(d1 = d4)) & J2(\d4.$lesseq(d1,$difference(d4,_d0))))))
   pos: JJ
   entity: NEG
 
 - category: S[adj=true]|NP
-  semantics: \E d1 d2 d3 H I J Q K. Q(\w.True,I(\x.E(x,d1),-(d1 = d3),(H(E,d2) & J(\d4.$less(d4,d1)))))
+  # semantics: \E Q d1 d2 d3 H I J1 J2 K. Q(\x.True,I(\x.E(x,d1),-(d1 = d3),(H(E,d2) & J1(\d4.$less(d4,d1)) & J2(\d4.$less(d4,d1)))))
+  semantics: \E Q d1 d2 d3 H I J1 J2 K. Q(\x.True,I(\x.E(x,d1),-(d1 = d3),(H(E,d2) & J1(\d4.$less(d4,d1)) & J2(\d4.$lesseq($sum(d4,_d0),d1)))))
   pos: JJ
   entity: POS
 
 - category: S[adj=true]|NP
-  semantics: \E d2 d1 d3 H I J Q K. Q(\w.True,I(\x.E(x,_np(_u,d1)),-(d1 = d3),(H(E,_np(_u,d2)) & J(\d4.(d1 = d4)))))
+  # semantics: \E Q d2 d1 d3 H I J1 J2 K. Q(\x.True,I(\x.E(x,_np(_u,d1)),-(d1 = d3),(H(E,_np(_u,d2)) & J1(\d4.(d1 = d4)) & J2(\d4.$less(d1,d4)))))
+  semantics: \E Q d2 d1 d3 H I J1 J2 K. Q(\x.True,I(\x.E(x,_np(_u,d1)),-(d1 = d3),(H(E,_np(_u,d2)) & J1(\d4.(d1 = d4)) & J2(\d4.$lesseq(d1,$difference(d4,_d0))))))
   pos: JJ
   entity: NEG-INT
 
 - category: S[adj=true]|NP
-  semantics: \E d1 d2 d3 H I J Q K. Q(\w.True,I(\x.E(x,_np(_u,d1)),-(d1 = d3),(H(E,_np(_u,d2)) & J(\d4.$less(d4,d1)))))
+  # semantics: \E Q d1 d2 d3 H I J1 J2 K. Q(\x.True,I(\x.E(x,_np(_u,d1)),-(d1 = d3),(H(E,_np(_u,d2)) & J1(\d4.$less(d4,d1)) & J2(\d4.$less(d4,d1)))))
+  semantics: \E Q d1 d2 d3 H I J1 J2 K. Q(\x.True,I(\x.E(x,_np(_u,d1)),-(d1 = d3),(H(E,_np(_u,d2)) & J1(\d4.$less(d4,d1)) & J2(\d4.$lesseq($sum(d4,_d0),d1)))))
   pos: JJ
   entity: POS-INT
 
 - category: S[adj=true]|NP
-  semantics: \E d1 d2 d3 H I J Q K. Q(\w.True,\x.E(x))
+  semantics: \E Q d1 d2 d3 H I J1 J2 K. Q(\x.True,\x.E(x))
   # pos: JJ
   entity: PRE
 
 - category: S[adj=true]|NP
-  semantics: \E d1 d2 d3 H I J Q K. Q(\w.True,\x.E(x))
+  semantics: \E Q d1 d2 d3 H I J1 J2 K. Q(\x.True,\x.E(x))
   entity: B-NORP
 
 - category: S[adj=true]|NP
-  semantics: \E d2 d1 d3 H I J Q K. Q(\w.True,I(\x.E(x,d1),(H(E,d2) & J(\d4.(d1 = d4))),-(d1 = d3)))
+  semantics: \E Q d2 d1 d3 H I J1 J2 K. Q(\x.True,I(\x.E(x,d1),(H(E,d2) & J1(\d4.(d1 = d4))),-(d1 = d3)))
   pos: JJR
   entity: NEG
 
 - category: S[adj=true]|NP
-  semantics: \E d2 d1 d3 H I J Q K. Q(\w.True,I(\x._much(x,d1),(H(E,d2) & J(\d4.(d1 = d4))),-(d1 = d3)))
+  semantics: \E Q d2 d1 d3 H I J1 J2 K. Q(\x.True,I(\x._much(x,d1),(H(E,d2) & J1(\d4.(d1 = d4))),-(d1 = d3)))
   pos: JJR
   surf: less
 
 - category: S[adj=true]|NP
-  semantics: \E d2 d1 d3 H I J Q K. Q(\w.True,I(\x._many(x,d1),(H(E,d2) & J(\d4.(d1 = d4))),-(d1 = d3)))
+  semantics: \E Q d2 d1 d3 H I J1 J2 K. Q(\x.True,I(\x._many(x,d1),(H(E,d2) & J1(\d4.(d1 = d4))),-(d1 = d3)))
   pos: JJR
   surf: fewer
 
 - category: S[adj=true]|NP
-  semantics: \E d1 d2 d3 H I J Q K. Q(\w.True,I(\x.E(x,d1),(H(E,d2) & J(\d4.$less(d4,d1))),-(d1 = d3)))
+  semantics: \E Q d1 d2 d3 H I J1 J2 K. Q(\x.True,I(\x.E(x,d1),(H(E,d2) & J1(\d4.$less(d4,d1))),-(d1 = d3)))
   pos: JJR
   entity: POS
 
 - category: S[adj=true]|NP
-  semantics: \E d1 d2 d3 H I J Q K. Q(\w.True,I(\x.many(x,d1),(H(E,d2) & J(\d4.$less(d4,d1))),-(d1 = d3)))
+  semantics: \E Q d1 d2 d3 H I J1 J2 K. Q(\x.True,I(\x.many(x,d1),(H(E,d2) & J1(\d4.$less(d4,d1))),-(d1 = d3)))
   pos: JJR
   surf: more
 
 - category: S[adj=true]|NP
-  semantics: \E d2 d1 d3 H I J Q K. Q(\w.True,I(\x.E(x,_np(_u,d1)),(H(E,_np(_u,d2)) & J(\d4.(d1 = d4))),-(d1 = d3)))
+  semantics: \E Q d2 d1 d3 H I J1 J2 K. Q(\x.True,I(\x.E(x,_np(_u,d1)),(H(E,_np(_u,d2)) & J1(\d4.(d1 = d4))),-(d1 = d3)))
   pos: JJR
   entity: NEG-INT
 
 - category: S[adj=true]|NP
-  semantics: \E d1 d2 d3 H I J Q K. Q(\w.True,I(\x.E(x,_np(_u,d1)),(H(E,_np(_u,d2)) & J(\d4.$less(d4,d1))),-(d1 = d3)))
+  semantics: \E Q d1 d2 d3 H I J1 J2 K. Q(\x.True,I(\x.E(x,_np(_u,d1)),(H(E,_np(_u,d2)) & J1(\d4.$less(d4,d1))),-(d1 = d3)))
   pos: JJR
   entity: POS-INT
 
 - category: N[adj=true]|N
-  semantics: \E N1 d2 d1 d3 H I J c x.(N1(\w.True,x) & J(\d4.(d1 = d4)) & H(\y.-N1(\w.True,y)) & I(E(x,d1),-(d1 = d3),\y.E(y,d2)))
+  # semantics: \E N d2 d1 d3 H I J1 J2 c x.(N(\x.True,x) & J1(\d4.(d1 = d4)) & J2(\d4.$less(d1,d4)) & H(\y.-N(\x.True,y)) & I(E(x,d1),-(d1 = d3),\y.E(y,d2)))
+  semantics: \E N d2 d1 d3 H I J1 J2 c x.(N(\x.True,x) & J1(\d4.(d1 = d4)) & J2(\d4.$lesseq(d1,$difference(d4,_d0))) & H(\y.-N(\x.True,y)) & I(E(x,d1),-(d1 = d3),\y.E(y,d2)))
   pos: JJ
   entity: NEG
 
 - category: N[adj=true]|N
-  semantics: \E N1 d2 d1 d3 H I J c x.(N1(\w.True,x) & J(\d4.(d1 = d4)) & H(\y.-N1(\w.True,y)) & I(_many(x,d1),-(d1 = d3),\y.E(y,d2)))
+  # semantics: \E N d2 d1 d3 H I J1 J2 c x.(N(\x.True,x) & J1(\d4.(d1 = d4)) & J2(\d4.$less(d1,d4)) & H(\y.-N(\x.True,y)) & I(_many(x,d1),-(d1 = d3),\y.E(y,d2)))
+  semantics: \E N d2 d1 d3 H I J1 J2 c x.(N(\x.True,x) & J1(\d4.(d1 = d4)) & J2(\d4.$lesseq(d1,$difference(d4,_d0))) & H(\y.-N(\x.True,y)) & I(_many(x,d1),-(d1 = d3),\y.E(y,d2)))
   pos: JJ
   surf: few
 
 - category: N[adj=true]|N
-  semantics: \E N1 d1 d2 d3 H I J c x.(N1(\w.True,x) & J(\d4.$less(d4,d1)) & H(\y.-N1(\w.True,y)) & I(E(x,d1),-(d1 = d3),\y.E(y,d2)))
+  # semantics: \E N d1 d2 d3 H I J1 J2 c x.(N(\x.True,x) & J1(\d4.$less(d4,d1)) & J2(\d4.$less(d4,d1)) & H(\y.-N(\x.True,y)) & I(E(x,d1),-(d1 = d3),\y.E(y,d2)))
+  semantics: \E N d1 d2 d3 H I J1 J2 c x.(N(\x.True,x) & J1(\d4.$less(d4,d1)) & J2(\d4.$lesseq($sum(d4,_d0),d1)) & H(\y.-N(\x.True,y)) & I(E(x,d1),-(d1 = d3),\y.E(y,d2)))
   pos: JJ
   entity: POS
 
 - category: N[adj=true]|N
-  pos: JJ
-  semantics: \E N1 d2 d1 d3 H I J c x.(N1(\N2.(N2 = c),x) & J(\d4.(d1 = d4)) & H(\y.-N1(\N2.(N2 = c),y)) & I(E(x,_np(c,d1)),-(d1 = d3),\y.E(y,_np(c,d2))))
+  # semantics: \E N d2 d1 d3 H I J1 J2 c x.(N(\G.(G = c),x) & J1(\d4.(d1 = d4)) & J2(\d4.$less(d1,d4)) & H(\y.-N(\G.(G = c),y)) & I(E(x,_np(c,d1)),-(d1 = d3),\y.E(y,_np(c,d2))))
+  # semantics: \E N d2 d1 d3 H I J1 J2 c x.(N(\G.(G = c),x) & J1(\d4.(d1 = d4)) & J2(\d4.$lesseq(d1,$difference(d4,_d0))) & H(\y.-N(\G.(G = c),y)) & I(E(x,_np(c,d1)),-(d1 = d3),\y.E(y,_np(c,d2))))
+  semantics: \E N d2 d1 d3 H I J1 J2 c x.(N(\G.(G = c),x) & J1(\d4.(d1 = d4)) & J2(\d4.$lesseq(d1,$difference(d4,_d0))) & H(\y.-N(\x.True,y)) & I(E(x,_np(c,d1)),-(d1 = d3),\y.E(y,_np(c,d2))))
   pos: JJ
   entity: NEG-INT
 
 - category: N[adj=true]|N
-  semantics: \E N1 d1 d2 d3 H I J c x.(N1(\N2.(N2 = c),x) & J(\d4.$less(d4,d1)) & H(\y.-N1(\N2.(N2 = c),y)) & I(E(x,_np(c,d1)),-(d1 = d3),\y.E(y,_np(c,d2))))
+  # semantics: \E N d1 d2 d3 H I J1 J2 c x.(N(\G.(G = c),x) & J1(\d4.$less(d4,d1)) & J2(\d4.$less(d4,d1)) & H(\y.-N(\G.(G = c),y)) & I(E(x,_np(c,d1)),-(d1 = d3),\y.E(y,_np(c,d2))))
+  # semantics: \E N d1 d2 d3 H I J1 J2 c x.(N(\G.(G = c),x) & J1(\d4.$less(d4,d1)) & J2(\d4.$lesseq($sum(d4,_d0),d1)) & H(\y.-N(\G.(G = c),y)) & I(E(x,_np(c,d1)),-(d1 = d3),\y.E(y,_np(c,d2))))
+  semantics: \E N d1 d2 d3 H I J1 J2 c x.(N(\G.(G = c),x) & J1(\d4.$less(d4,d1)) & J2(\d4.$lesseq($sum(d4,_d0),d1)) & H(\y.-N(\x.True,y)) & I(E(x,_np(c,d1)),-(d1 = d3),\y.E(y,_np(c,d2))))
   pos: JJ
   entity: POS-INT
 
 - category: N[adj=true]|N
-  semantics: \E N1 d2 d1 d3 H I J c x.(N1(\w.True,x) & J(\d4.(d1 = d4)) & H(\y.-N1(\w.True,y)) & I(E(x,d1),H(\y.E(y,d2)),(d1 = d3)))
+  semantics: \E N d2 d1 d3 H I J1 J2 c x.(N(\x.True,x) & J1(\d4.(d1 = d4)) & H(\y.-N(\x.True,y)) & I(E(x,d1),H(\y.E(y,d2)),(d1 = d3)))
   pos: JJR
   entity: NEG
 
 - category: N[adj=true]|N
-  semantics: \E N1 d1 d2 d3 H I J c x.(N1(\w.True,x) & J(\d4.$less(d4,d1)) & H(\y.-N1(\w.True,y)) & I(E(x,d1),H(\y.E(y,d2)),(d1 = d3)))
+  semantics: \E N d1 d2 d3 H I J1 J2 c x.(N(\x.True,x) & J1(\d4.$less(d4,d1)) & H(\y.-N(\x.True,y)) & I(E(x,d1),H(\y.E(y,d2)),(d1 = d3)))
   pos: JJR
   entity: POS
   
 - category: N[adj=true]|N
-  semantics: \E N1 d2 d1 d3 H I J c x.(N1(\N2.(N2 = c),x) & J(\d4.(d1 = d4)) & H(\y.-N1(\N2.(N2 = c),y)) & I(E(x,_np(c,d1)),H(\y.E(y,_np(c,d2))),(d1 = d3)))
+  # semantics: \E N d2 d1 d3 H I J1 J2 c x.(N(\G.(G = c),x) & J1(\d4.(d1 = d4)) & H(\y.-N(\G.(G = c),y)) & I(E(x,_np(c,d1)),H(\y.E(y,_np(c,d2))),(d1 = d3)))
+  semantics: \E N d2 d1 d3 H I J1 J2 c x.(N(\G.(G = c),x) & J1(\d4.(d1 = d4)) & H(\y.-N(\x.True,y)) & I(E(x,_np(c,d1)),H(\y.E(y,_np(c,d2))),(d1 = d3)))
   pos: JJR
   entity: NEG-INT
 
 - category: N[adj=true]|N
-  semantics: \E N1 d1 d2 d3 H I J c x.(N1(\N2.(N2 = c),x) & J(\d4.$less(d4,d1)) & H(\y.-N1(\N2.(N2 = c),y)) & I(E(x,_np(c,d1)),H(\y.E(y,_np(c,d2))),(d1 = d3)))
+  # semantics: \E N1 d1 d2 d3 H I J1 J2 c x.(N1(\N2.(N2 = c),x) & J1(\d4.$less(d4,d1)) & H(\y.-N1(\N2.(N2 = c),y)) & I(E(x,_np(c,d1)),H(\y.E(y,_np(c,d2))),(d1 = d3)))
+  semantics: \E N d1 d2 d3 H I J1 J2 c x.(N(\G.(G = c),x) & J1(\d4.$less(d4,d1)) & H(\y.-N(\x.True,y)) & I(E(x,_np(c,d1)),H(\y.E(y,_np(c,d2))),(d1 = d3)))
   pos: JJR
   entity: POS-INT
 
 - category: N|N
-  semantics: \E N1 F x. N1(\N2.(E(x) & F(N2)),x)
+  semantics: \E N F x. N(\G.(E(x) & F(G)),x)
   entity: PRE
 
 # - category: N|N
@@ -2414,16 +2714,18 @@
   surf: former
 
 - category: N|N
-  semantics: \E N1 F x. N1(\N2.(E(x) & F(N2)),x)
+  semantics: \E N F x. N(\G.(E(x) & F(G)),x)
   entity: B-NORP
 
 # ex. John won more orders than Bob.
 - category: NP[adj=true]|N
-  semantics: \E N1 V d1 d2 I Q K.V(\F1 F2 y.F2(y),\F1 F2 F3.Q(F1,I(\x z1.(F2(z1,x) & N1(\w.True,x) & _many(x,d1)),\y z2.(F3(z2,y) & N1(\w.True,y) & _many(y,d2)))),\e.True)
+  # semantics: \E N1 V Q d1 d2 I K.V(\F1 F2 y.F2(y),\F1 F2 F3.Q(F1,I(\x z1.(F2(z1,x) & N1(\x.True,x) & _many(x,d1)),\y z2.(F3(z2,y) & N1(\x.True,y) & _many(y,d2)))),\e.True)
+  semantics: \E N F1 F2 V Q d1 d2 H I J K.V(\G1 G2 y.G2(y),\G C1 C2.Q(G,I(\x z1.(C1(z1,x) & N(\x.True,x) & _many(x,d1)),\y z2.(C2(z2,y) & N(\x.True,y) & _many(y,d2)))),\e.True)
   surf: more
 
 - category: NP[adj=true]|N
-  semantics: \E N1 V d1 d2 I Q K.V(\F1 F2 y.F2(y),\F1 F2 F3.Q(F1,I(\x z1.(F2(z1,x) & N1(\w.True,x) & _many(x,d1)),\y z2.(F3(z2,y) & N1(\w.True,y) & _many(y,d2)))),\e.True)
+  # semantics: \E N1 V Q d1 d2 I K.V(\F1 F2 y.F2(y),\F1 F2 F3.Q(F1,I(\x z1.(F2(z1,x) & N1(\x.True,x) & _many(x,d1)),\y z2.(F3(z2,y) & N1(\x.True,y) & _many(y,d2)))),\e.True)
+  semantics: \E N F1 F2 V Q d1 d2 H I J K.V(\G1 G2 y.G2(y),\G C1 C2.Q(G,I(\x z1.(C1(z1,x) & N(\x.True,x) & _many(x,d1)),\y z2.(C2(z2,y) & N(\x.True,y) & _many(y,d2)))),\e.True)
   surf: as~many
 
 ##### Auxiliary expressions #####
@@ -2494,7 +2796,7 @@
   surf: unless
 
 - category: ((S[adj=true]|NP)|(S[adj=true]|NP))|S
-  semantics:  \E S A d1 d2 d3 H I J Q K. A(d1,d2,d3,H,I,J,\A1 A2.Q(A1,\x.(A2(x) & S(\e.True))),K)
+  semantics:  \E S A Q d1 d2 d3 H I J1 J2 K. A(\A1 A2.Q(A1,\x.(A2(x) & S(\e.True))),d1,d2,d3,H,I,J1,J2,K)
 
 - category: (S|S)|S
   semantics: \E S1 S2 K. (S1(\e.True) -> S2(K))
@@ -2547,21 +2849,21 @@
   pos: CD
 
 - category: N|N
-  semantics: \E N1 F x. N1(\N2.((x = E) & F(N2)),x)
+  semantics: \E N F x. N(\G.((x = E) & F(G)),x)
   pos: CD
   entity: I-PERCENT
 
 - category: N|N
-  semantics: \E N1 F x. N1(\N2.((x = E) & F(N2)),x)
+  semantics: \E N F x. N(\G.((x = E) & F(G)),x)
   pos: CD
   entity: B-PERCENT
 
 - category: N|N
-  semantics: \E N1 F x. N1(\N2.(E(x) & F(N2)),x)
+  semantics: \E N F x. N(\G.(E(x) & F(G)),x)
   entity: I-MONEY
 
 - category: N|N
-  semantics: \E N1 F x. N1(\N2.((x = E) & F(N2)),x)
+  semantics: \E N F x. N(\G.((x = E) & F(G)),x)
   entity: B-DATE
 
 - category: ((S[adj=true]\NP)/(S[adj=true]\NP))/((S[adj=true]\NP)/(S[adj=true]\NP))
@@ -2584,40 +2886,51 @@
 - category: N|N
   semantics: \E d. $product(d,2)
   surf: twice
-  
 
 - category: (N|N)|(N|N)
   semantics: \E d. $product(d,2)
   surf: twice
 
 - category: (S[adj=true]|NP)|(S[adj=true]|NP)
-  semantics: \E A d1 d2 d3 H I J Q K.exists d1.A($product(d1,2),d1,_th(_u),H,\A1 A2 A3 x.(-A2 -> A1(x)),J,Q,K)
+  semantics: \E A Q d1 d2 d3 H I J1 J2 K.exists d1.A(Q,$product(d1,2),d1,_th(_u),H,\A1 A2 A3 x.(-A2 -> A1(x)),J1,J2,K)
   surf: twice
 
 - category: (N[adj=true]|N)|(N[adj=true]|N)
-  semantics: \E A N1 d1 d2 d3 H I J c x.all d1.exists c.A(N1,d1,$difference(d1,E),E,\A1 A2 A3.(-A2 -> A1),J,c,x)
+  semantics: \E A N d1 d2 d3 H I J1 J2 c x.all d1.exists c.A(N,d1,$difference(d1,E),E,\A1 A2 A3.(-A2 -> A1),J1,J2,c,x)
   pos: CD
 
 - category: (NP[adj=true]|N)|(NP[adj=true]|N)
-  semantics: \E A N V d1 d2 I Q K.all d1.A(N,V,$product(d1,2),d1,\A1 A2 z2 z1.(exists y.A2(y,z2) -> exists x.A1(x,z1)),Q,K)
+  # semantics: \E A N V Q d1 d2 I K.all d1.A(N,V,Q,$product(d1,2),d1,\A1 A2 z2 z1.(exists y.A2(y,z2) -> exists x.A1(x,z1)),K)
+  semantics: \E A N F1 F2 V Q d1 d2 H I J K.all d1.A(N,F1,F2,V,Q,$product(d1,2),d1,H,\A1 A2 z2 z1.(exists y.A2(y,z2) -> exists x.A1(x,z1)),J,K)
   surf: twice
 
 - category: (NP[adj=true]|N)|(NP[adj=true]|N)
-  semantics: \E A N V d1 d2 I Q K.all d1.A(N,V,$sum(d1,E),d1,\A1 A2 z2 z1.(exists y.A2(y,z2) -> exists x.A1(x,z1)),Q,K)
+  # semantics: \E A N V Q d1 d2 I K.all d1.A(N,V,Q,$sum(d1,E),d1,\A1 A2 z2 z1.(exists y.A2(y,z2) -> exists x.A1(x,z1)),K)
+  semantics: \E A N F1 F2 V Q d1 d2 H I J K.all d1.A(N,F1,F2,V,Q,$sum(d1,E),d1,H,\A1 A2 z2 z1.(exists y.A2(y,z2) -> exists x.A1(x,z1)),J,K)
   pos: CD
+
+### Implicature ###
+
+- category: ((NP[adj=true]|N)|(NP[adj=true]|N))|((NP[adj=true]|N)|(NP[adj=true]|N))
+  # semantics: \E D A N V Q d1 d2 I K.D((\N V Q d1 d2 I K.A(N,V,Q,d1,d2,\A1 A2 z2 z1.(exists y.A2(y,z2) <-> exists x.A1(x,z1)),K)),N,V,Q,d1,d2,I,K)
+  semantics: \E D A N F1 F2 V Q d1 d2 H I J K.D((\N F1 F2 V Q d1 d2 H I J K.A(N,F1,F2,V,Q,d1,d2,H,\A1 A2 z2 z1.(exists y.A2(y,z2) <-> exists x.A1(x,z1)),J,K)),N,F1,F2,V,Q,d1,d2,H,I,J,K)
+  surf: dgr
+  pos: EMP
+
+###################
 
 ##### Possesive particle #####
 
 - category: (NP|N)|NP
-  semantics: \E Q F1 F2 F3. exists x.((Q(\w.True, \y.Rel(x, y)) & F1(\w.True,x)) & F2(x) & F3(x))
+  semantics: \E Q N F1 F2. exists x.((Q(\x.True, \y.Rel(x, y)) & N(\x.True,x)) & F1(x) & F2(x))
   surf: "'s"
 
 - category: ((S|NP[expl=true])/S[em=true])/(S[adj=true]\NP)
-  semantics: \E A S Q K.Q(\x.True,\x.exists e.(A(d1,d2,d3,H,I,J,\F1 F2.Q(F1,\x.F2(S)),K) & (Subj(e) = x) & AccI(e,S(\w.True)) & K(e)))
+  semantics: \E A S Q K.Q(\x.True,\x.exists e.(A(\F1 F2.Q(F1,\x.F2(S)),d1,d2,d3,H,I,J1,J2,K) & (Subj(e) = x) & AccI(e,S(\w.True)) & K(e)))
   surf: "_'s"
 
 - category: (NP|N)|NP
-  semantics: \E Q F1 F2 F3. exists x.((Q(\w.True, \y.Rel(x, y)) & F1(\w.True,x)) & F2(x) & F3(x))
+  semantics: \E Q N F1 F2. exists x.((Q(\x.True, \y.Rel(x, y)) & N(\x.True,x)) & F1(x) & F2(x))
   surf: "'"
 
 ##### Sentence final particle #####
@@ -2649,9 +2962,9 @@
   surf: to
 
 - category: (NP|(N|PP))|NP
-  semantics: \E Q M F1 F2. exists x.((Q(\w.True, \y.Rel(x,y)) & M(\w.True,\w.True,x)) & F1(x) & F2(x))
+  semantics: \E Q M F1 F2. exists x.((Q(\x.True, \y.Rel(x,y)) & M(\w.True,\x.True,x)) & F1(x) & F2(x))
   surf: "'s"
 
 - category: (NP|(N|PP))|NP
-  semantics: \E Q M F1 F2. exists x.((Q(\w.True, \y.Rel(x,y)) & M(\w.True,\w.True,x)) & F1(x) & F2(x))
+  semantics: \E Q M F1 F2. exists x.((Q(\x.True, \y.Rel(x,y)) & M(\w.True,\x.True,x)) & F1(x) & F2(x))
   surf: "'"
