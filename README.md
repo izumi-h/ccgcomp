@@ -223,7 +223,7 @@ You can also run the system on each inference in FraCaS. For example, the follow
 ```
 ./scripts/rte_neg.sh fracas_plain/fracas_243_comparatives.txt scripts/semantic_template.yaml
 ```
-Or, you can do the experiment for each component here, as described in [Ablation experiment](https://github.com/izumi-h/ccgcomp#ablation-experiment):
+Or, you can do the experiment for each component, as described in [Ablation experiment](https://github.com/izumi-h/ccgcomp#ablation-experiment):
 ```
 ./scripts/rte_neg_ablation.sh fracas_plain/fracas_243_comparatives.txt scripts/semantic_template.yaml 4
 ```
