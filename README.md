@@ -221,11 +221,11 @@ By default, created files are to be stored in the three directories (`cache`, `e
 
 You can also run the system on each inference in FraCaS. For example, the following tried to prove the inference with ID FraCaS-243:
 ```
-./scripts/rte_neg.sh fracas_plain/fracas_243_comparatives.txt scripts/semantic_template.yaml
+./scripts/rte_neg.sh fracas_plain/fracas_243_comparatives.txt scripts/semantic_templates.yaml
 ```
 Or, you can do the experiment for each component, as described in [Ablation experiment](https://github.com/izumi-h/ccgcomp#ablation-experiment):
 ```
-./scripts/rte_neg_ablation.sh fracas_plain/fracas_243_comparatives.txt scripts/semantic_template.yaml 4
+./scripts/rte_neg_ablation.sh fracas_plain/fracas_243_comparatives.txt scripts/semantic_templates.yaml 4
 ```
 
 ### Ablation experiment
