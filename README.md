@@ -275,7 +275,23 @@ The code is divided into the following:
 5. `./CAD` - CAD dataset which focuses on comparatives and numerical constructions
 
 ## Citation
-* Izumi Haruta, Koji Mineshima, Daisuke Bekki. Combining Event Semantics and Degree Semantics for Natural Language Inference. Proceedings of  the 28nd International Conference on Computational Linguistics (COLING), pages 1758--1764, Online, December, 2020. [pdf](https://www.aclweb.org/anthology/2020.coling-main.156.pdf)
+
+* Izumi Haruta, Koji Mineshima, and Daisuke Bekki. Implementing Natural Language Inference for comparatives. Journal of Language Modelling, 10(1), 139–191, 2023. [PDF](https://jlm.ipipan.waw.pl/index.php/JLM/article/view/294)
+```
+@article{Haruta-Mineshima-Bekki-2023,
+    title={Implementing Natural Language Inference for comparatives},
+    author={Haruta, Izumi and Mineshima, Koji and Bekki, Daisuke},
+    journal={Journal of Language Modelling},    
+    volume={10},
+    number={1},
+    DOI={10.15398/jlm.v10i1.294},
+    year={2023},
+    month={Jan.},
+    pages={139–191}
+}
+```
+
+* Izumi Haruta, Koji Mineshima, and Daisuke Bekki. Combining Event Semantics and Degree Semantics for Natural Language Inference. Proceedings of  the 28nd International Conference on Computational Linguistics (COLING), pages 1758--1764, Online, December, 2020. [pdf](https://www.aclweb.org/anthology/2020.coling-main.156.pdf)
 ```
 @inproceedings{haruta-etal-2020-combining,
     title = "Combining Event Semantics and Degree Semantics for Natural Language Inference",
@@ -291,7 +307,7 @@ The code is divided into the following:
     pages = "1758--1764",
 }
 ```
-* Izumi Haruta, Koji Mineshima, Daisuke Bekki. Logical Inferences with Comparatives and Generalized Quantifiers. Proceedings of the 58th Annual Meeting of the Association for Computational Linguistics: Student Research Workshop (ACL-SRW), pages 263--270, Online, july, 2020. [pdf](https://www.aclweb.org/anthology/2020.acl-srw.35.pdf)
+* Izumi Haruta, Koji Mineshima, and Daisuke Bekki. Logical Inferences with Comparatives and Generalized Quantifiers. Proceedings of the 58th Annual Meeting of the Association for Computational Linguistics: Student Research Workshop (ACL-SRW), pages 263--270, Online, july, 2020. [pdf](https://www.aclweb.org/anthology/2020.acl-srw.35.pdf)
 ```
 @inproceedings{haruta-etal-2020-logical,
     title = "Logical Inferences with Comparatives and Generalized Quantifiers",
