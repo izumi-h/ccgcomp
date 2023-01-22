@@ -1,7 +1,7 @@
 # Comparatives for Natural Language Inference
-This repository contains code for our paper: 
-* Izumi Haruta, Koji Mineshima and Daisuke Bekki. 2022. [Implementing Natural Language Inference for comparatives](https://jlm.ipipan.waw.pl/index.php/JLM/article/view/294). In *Journal of Language Modelling*.
-* Izumi Haruta, Koji Mineshima and Daisuke Bekki. 2020. [Combining Event Semantics and Degree Semantics for Natural Language Inference](https://www.aclweb.org/anthology/2020.coling-main.156.pdf). In *Proceedings of the 2020 Conference on COLING*.
+This repository contains code for our papers: 
+* Izumi Haruta, Koji Mineshima and Daisuke Bekki. 2023. [Implementing Natural Language Inference for comparatives](https://jlm.ipipan.waw.pl/index.php/JLM/article/view/294). *Journal of Language Modelling*.
+* Izumi Haruta, Koji Mineshima and Daisuke Bekki. 2020. [Combining Event Semantics and Degree Semantics for Natural Language Inference](https://www.aclweb.org/anthology/2020.coling-main.156.pdf). In *Proceedings of COLING 2020*.
 * Izumi Haruta, Koji Mineshima and Daisuke Bekki. 2020. [Logical Inferences with Comparatives and Generalized Quantifiers](https://www.aclweb.org/anthology/2020.acl-srw.35.pdf). In *Proceedings of the 2020 ACL Student Research Workshop (ACL-SRW)*.
 
 ## Requirements
@@ -276,7 +276,7 @@ The code is divided into the following:
 
 ## Citation
 
-* Izumi Haruta, Koji Mineshima, and Daisuke Bekki. Implementing Natural Language Inference for comparatives. Journal of Language Modelling, 10(1), 139–191, 2023. [PDF](https://jlm.ipipan.waw.pl/index.php/JLM/article/view/294)
+* Izumi Haruta, Koji Mineshima, and Daisuke Bekki. Implementing Natural Language Inference for comparatives. Journal of Language Modelling, 10(1), 139–191, 2023. [pdf](https://jlm.ipipan.waw.pl/index.php/JLM/article/view/294)
 ```
 @article{Haruta-Mineshima-Bekki-2023,
     title={Implementing Natural Language Inference for comparatives},
