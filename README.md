@@ -1,5 +1,6 @@
 # Comparatives for Natural Language Inference
 This repository contains code for our paper: 
+* Izumi Haruta, Koji Mineshima and Daisuke Bekki. 2022. [Implementing Natural Language Inference for comparatives](https://jlm.ipipan.waw.pl/index.php/JLM/article/view/294). In *Journal of Language Modelling*.
 * Izumi Haruta, Koji Mineshima and Daisuke Bekki. 2020. [Combining Event Semantics and Degree Semantics for Natural Language Inference](https://www.aclweb.org/anthology/2020.coling-main.156.pdf). In *Proceedings of the 2020 Conference on COLING*.
 * Izumi Haruta, Koji Mineshima and Daisuke Bekki. 2020. [Logical Inferences with Comparatives and Generalized Quantifiers](https://www.aclweb.org/anthology/2020.acl-srw.35.pdf). In *Proceedings of the 2020 ACL Student Research Workshop (ACL-SRW)*.
 
